@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+
+  #PHP Service
+  app-test:
+    build:
+      context: .
+      args:
+        user: 1000
+        uid: 1000
+      dockerfile: Dockerfile
+    container_name: app-test
+    restart: unless-stopped
+    tty: true
+    environment:
+      SERVICE_NAME: app
+      SERVICE_TAGS: dev
+    working_dir: /var/www
+    volumes:
+      - ./:/var/www
+    networks:
+      - app-network
+
+  #MySQL Service
+  db-test:
+    image: mysql:8.0.25
+    container_name: db-test
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "3308:3306"
+    environment:
+          MYSQL_DATABASE: test
+          MYSQL_USER: test
+          MYSQL_PASSWORD: test
+          MYSQL_ROOT_PASSWORD: test
+    volumes:
+          - dbdata_test:/var/lib/mysql/
+    networks:
+          - app-network
+
+
+#Docker Networks
+networks:
+  app-network:
+    driver: bridge
+#Volumes
+volumes:
+  dbdata_test:
+    driver: local
+

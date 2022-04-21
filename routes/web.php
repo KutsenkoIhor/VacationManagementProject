@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\SocialController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,15 +15,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [SocialController::class, 'googleRedirect']);
+Route::get('/', [SocialController::class, 'googleRedirect'])->name('login');
 Route::get('/auth/google/callback', [SocialController::class, 'loginWithGoogle']);
 
-//Route::get('/', function () {
-//    return Socialite::driver('google')->redirect();
-//
-//});
-//
-//Route::get('auth/google/callback', function () {
-//    $user = Socialite::driver('google')->stateless()->user();
-//    print_r($user->name);
-//});
+Route::get('/test', function () {
+    return view('welcome');
+})->middleware('auth')->name('test');
+
+Route::get('/testq', function () {
+    Auth::logout();
+    return redirect(route('login'));
+});

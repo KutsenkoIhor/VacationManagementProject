@@ -2,40 +2,43 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
+use App\Repositories\Interfaces\SocialRepositoryInterface;
+use App\Repositories\SocialRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
 
 class SocialController extends Controller
 {
+    private SocialRepository $socialRepository;
+
+    public function __construct(SocialRepositoryInterface $socialRepository)
+    {
+        $this->socialRepository = $socialRepository;
+    }
+
     public function googleRedirect()
     {
-        return Socialite::driver('google')->redirect();
+        return Auth::check() ? redirect(route('test')) : Socialite::driver('google')->redirect();
     }
 
     public function loginWithGoogle()
     {
-        $user = Socialite::driver('google')->stateless()->user();
-        $isUser = User::where('email', $user->email)->first();
+        if (Auth::check()) {
+            return redirect(route('test'));
+        }
+        $user = Socialite::driver('google')->stateless()->user()->user;
+        $isUser = $this->socialRepository->searchEmail($user["email"]);
         if ($isUser) {
             Auth::login($isUser);
-            print_r("getAvatar - ");
-            print_r($user->getAvatar());
-            print_r("<br>");
-            print_r("getName - ");
-            print_r($user->getName());
-            print_r("<br>");
-            print_r("getNickname - ");
-            print_r($user->getNickname());
         } else {
-            $createUser = User::create([
-                'first_name' => $user->name,
-                'email' => $user->email,
-                'google_avatar' => $user->avatar,
-            ]);
+            $createUser = $this->socialRepository->createUser(
+                $user["given_name"],
+                $user["family_name"],
+                $user["email"],
+                $user["picture"]);
             Auth::login($createUser);
-            print_r("wery good");
         }
+        return redirect(route('test'));
     }
 }

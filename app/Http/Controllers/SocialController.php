@@ -3,29 +3,30 @@
 namespace App\Http\Controllers;
 
 use App\Repositories\Interfaces\SocialRepositoryInterface;
-use App\Repositories\SocialRepository;
-use Illuminate\Http\Request;
+use Illuminate\Console\Application;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
 
 class SocialController extends Controller
 {
-    private SocialRepository $socialRepository;
+    private SocialRepositoryInterface $socialRepository;
 
     public function __construct(SocialRepositoryInterface $socialRepository)
     {
         $this->socialRepository = $socialRepository;
     }
 
-    public function googleRedirect()
+    public function googleRedirect(): Redirector|RedirectResponse|Application
     {
-        return Auth::check() ? redirect(route('test')) : Socialite::driver('google')->redirect();
+        return Auth::check() ? redirect(route('dashboard')) : Socialite::driver('google')->redirect();
     }
 
-    public function loginWithGoogle()
+    public function loginWithGoogle(): Redirector|RedirectResponse|Application
     {
         if (Auth::check()) {
-            return redirect(route('test'));
+            return redirect(route('dashboard'));
         }
         $user = Socialite::driver('google')->stateless()->user()->user;
         $isUser = $this->socialRepository->searchEmail($user["email"]);
@@ -39,6 +40,6 @@ class SocialController extends Controller
                 $user["picture"]);
             Auth::login($createUser);
         }
-        return redirect(route('test'));
+        return redirect(route('dashboard'));
     }
 }

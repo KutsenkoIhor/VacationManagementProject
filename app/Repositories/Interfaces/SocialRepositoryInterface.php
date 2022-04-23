@@ -5,6 +5,6 @@ namespace App\Repositories\Interfaces;
 
 interface SocialRepositoryInterface
 {
-    public function searchEmail($email);
-    public function createUser($firstName, $lastName, $userEmail, $userAvatar);
+    public function searchEmail(string $email);
+    public function createUser(string $firstName, string $lastName, string $userEmail, string $userAvatar);
 }

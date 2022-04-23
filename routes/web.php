@@ -18,11 +18,11 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [SocialController::class, 'googleRedirect'])->name('login');
 Route::get('/auth/google/callback', [SocialController::class, 'loginWithGoogle']);
 
-Route::get('/test', function () {
+Route::get('/quantox', function () {
     return view('welcome');
-})->middleware('auth')->name('test');
+})->middleware('auth')->name('dashboard');
 
-Route::get('/testq', function () {
+Route::get('/quantoxq', function () {
     Auth::logout();
     return redirect(route('login'));
 });

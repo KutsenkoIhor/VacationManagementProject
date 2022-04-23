@@ -2,18 +2,29 @@
 
 namespace App\Repositories;
 
-
 use App\Models\User;
 use App\Repositories\Interfaces\SocialRepositoryInterface;
 
 class SocialRepository implements SocialRepositoryInterface
 {
-    public function searchEmail($email)
+
+    /**
+     * @param string $email
+     * @return object|null
+     */
+    public function searchEmail(string $email): object|null
     {
         return User::where('email', $email)->first();
     }
 
-    public function createUser($firstName, $lastName, $userEmail, $userAvatar)
+    /**
+     * @param string $firstName
+     * @param string $lastName
+     * @param string $userEmail
+     * @param string $userAvatar
+     * @return object
+     */
+    public function createUser(string $firstName, string $lastName, string $userEmail, string $userAvatar): object
     {
         return User::create([
                 'first_name' => $firstName,

@@ -1,3 +1,19 @@
+## Install composer packages
+
+```sh
+$ cd laravel-socialite
+$ composer install
+```
+
+## Create and setup .env file
+
+- #### make a copy of .env.example and rename to .env command:
+```sh
+$ copy .env.example .env
+$ php artisan key:generate
+```
+- #### put database credentials in .env file
+
 ## Installation
 
 - #### For deploying the project you can use [Docker](https://www.docker.com/) command:

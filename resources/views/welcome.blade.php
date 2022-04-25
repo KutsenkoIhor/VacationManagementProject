@@ -7,6 +7,9 @@
 </head>
 <body>
 
+
+
+
 <div class="min-h-full">
     <header class="pb-24 bg-gradient-to-r from-sky-800 to-cyan-600">
         <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:max-w-7xl lg:px-8">
@@ -557,6 +560,7 @@
         </div>
     </footer>
 </div>
+
 
 </body>
 </html>

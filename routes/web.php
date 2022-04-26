@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\MainPageController;
 use App\Http\Controllers\SocialController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -18,9 +19,11 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [SocialController::class, 'googleRedirect'])->name('login');
 Route::get('/auth/google/callback', [SocialController::class, 'loginWithGoogle']);
 
-Route::get('/quantox', function () {
-    return view('welcome');
-})->middleware('auth')->name('dashboard');
+Route::get('/quantox', [MainPageController::class, 'test']);
+
+//Route::get('/quantox', function () {
+//    return view('welcome');
+//})->middleware('auth')->name('dashboard');
 
 Route::get('/quantoxq', function () {
     Auth::logout();

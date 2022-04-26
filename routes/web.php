@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\SocialController;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\VacationController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -26,3 +27,10 @@ Route::get('/quantoxq', function () {
     Auth::logout();
     return redirect(route('login'));
 });
+
+Route::get('/createVacation', function () {
+    return view('vacations/creation');
+});
+
+Route::post('/vacations', [VacationController::class, 'createVacation']);
+Route::get('/vacationList/{userId}', [VacationController::class, 'getVacationsByUserId']);

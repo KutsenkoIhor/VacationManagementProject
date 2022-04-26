@@ -16,8 +16,8 @@ return new class extends Migration
         Schema::create('vacations', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->dateTime('start_date');
-            $table->dateTime('end_date');
+            $table->date('start_date');
+            $table->date('end_date');
             $table->integer('number_of_days');
             $table->enum('type', ['VACATIONS', 'PERSONAL_DAYS', 'SICK_DAYS']);
             $table->enum('status', ['NEW', 'APPROVED', 'DENIED']);

@@ -2,6 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
+
 .pop_up{
     display: none;
 }
@@ -9,3 +10,4 @@
 .pop_up.active{
     display: block;
 }
+

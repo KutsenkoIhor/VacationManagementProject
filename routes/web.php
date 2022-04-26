@@ -3,6 +3,7 @@
 use App\Http\Controllers\MainPageController;
 use App\Http\Controllers\SocialController;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\VacationController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,13 +20,20 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [SocialController::class, 'googleRedirect'])->name('login');
 Route::get('/auth/google/callback', [SocialController::class, 'loginWithGoogle']);
 
-Route::get('/quantox', [MainPageController::class, 'test']);
+//Route::get('/quantox', [MainPageController::class, 'test'])->middleware('auth')->name('dashboard');
 
-//Route::get('/quantox', function () {
-//    return view('welcome');
-//})->middleware('auth')->name('dashboard');
+Route::get('/quantox', function () {
+    return view('welcome');
+})->middleware('auth')->name('dashboard');
 
 Route::get('/quantoxq', function () {
     Auth::logout();
     return redirect(route('login'));
 });
+
+Route::get('/createVacation', function () {
+    return view('vacations/creation');
+})->middleware('auth');
+
+Route::post('/vacations', [VacationController::class, 'createVacation'])->middleware('auth');
+Route::get('/vacationList/{userId}', [VacationController::class, 'getVacationsByUserId'])->middleware('auth');

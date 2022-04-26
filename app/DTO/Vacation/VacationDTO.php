@@ -8,17 +8,24 @@ use Carbon\Carbon;
 
 class VacationDTO implements \JsonSerializable
 {
+    private int $id;
     private int $userId;
     private Carbon $startDate;
     private Carbon $endDate;
     private string $type;
 
-    public function __construct(int $userId, Carbon $startDate, Carbon $endDate, string $type)
+    public function __construct(int $id, int $userId, Carbon $startDate, Carbon $endDate, string $type)
     {
+        $this->id = $id;
         $this->userId = $userId;
         $this->startDate = $startDate;
         $this->endDate = $endDate;
         $this->type = $type;
+    }
+
+    public function getId(): int
+    {
+        return $this->id;
     }
 
     public function getUserId(): int
@@ -44,6 +51,7 @@ class VacationDTO implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return [
+            'id'         => $this->getId(),
             'user_id'    => $this->getUserId(),
             'start_date' => $this->getStartDate(),
             'end_date'   => $this->getEndDate(),

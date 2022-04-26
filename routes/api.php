@@ -20,3 +20,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::post('/vacations', [VacationController::class, 'createVacation']);
+Route::get('/vacations', [VacationController::class, 'getVacations']);
+Route::get('/vacations/{vacation}', [VacationController::class, 'getVacation']);
+Route::post('/vacations/{vacation}', [VacationController::class, 'updateVacation']);
+Route::delete('/vacations/{vacation}', [VacationController::class, 'deleteVacation']);

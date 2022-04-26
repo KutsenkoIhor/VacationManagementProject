@@ -31,4 +31,16 @@ class Vacation extends Model
     public const TYPE_VACATIONS = 'VACATIONS';
     public const TYPE_PERSONAL_DAYS = 'PERSONAL_DAYS';
     public const TYPE_SICK_DAYS = 'SICK_DAYS';
+
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $casts = [
+//        'start_date'    => 'datetime:'.DATE_W3C,
+//        'end_date'      => 'datetime:'.DATE_W3C,
+        'start_date'    => 'datetime:Y-m-d',
+        'end_date'      => 'datetime:Y-m-d',
+    ];
 }

@@ -2,8 +2,8 @@
 
 namespace App\Providers;
 
+use App\Factories\VacationFactory;
 use App\Interfaces\VacationRepositoryInterface;
-use App\Repositories\Vacation\Factory\VacationFactory;
 use App\Repositories\Vacation\VacationRepository;
 use App\Services\Vacation\VacationService;
 use Illuminate\Support\ServiceProvider;

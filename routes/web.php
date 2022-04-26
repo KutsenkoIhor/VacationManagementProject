@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\VacationController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,3 +17,10 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/createVacation', function () {
+    return view('vacations/creation');
+});
+
+Route::post('/vacations', [VacationController::class, 'createVacation']);
+Route::get('/vacationList/{userId}', [VacationController::class, 'getVacationsByUserId']);

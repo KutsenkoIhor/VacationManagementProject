@@ -30,7 +30,7 @@ Route::get('/quantoxq', function () {
 
 Route::get('/createVacation', function () {
     return view('vacations/creation');
-});
+})->middleware('auth');
 
-Route::post('/vacations', [VacationController::class, 'createVacation']);
-Route::get('/vacationList/{userId}', [VacationController::class, 'getVacationsByUserId']);
+Route::post('/vacations', [VacationController::class, 'createVacation'])->middleware('auth');
+Route::get('/vacationList/{userId}', [VacationController::class, 'getVacationsByUserId'])->middleware('auth');

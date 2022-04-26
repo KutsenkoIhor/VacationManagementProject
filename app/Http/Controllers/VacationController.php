@@ -12,6 +12,7 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Auth;
 
 class VacationController extends Controller
 {
@@ -19,7 +20,7 @@ class VacationController extends Controller
     {
         $startDate = Carbon::createFromFormat("Y-m-d", $request->get('start_date'));
         $endDate = Carbon::createFromFormat("Y-m-d", $request->get('end_date'));
-        $userId = 1; //TODO take id of logged in user
+        $userId = Auth::id();
 
         $vacationService->createVacation(
             $userId,

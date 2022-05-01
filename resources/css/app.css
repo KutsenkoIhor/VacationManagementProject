@@ -3,11 +3,29 @@
 @tailwind utilities;
 
 
-.pop_up{
-    display: none;
-}
+/*.bg-home{*/
+/*    !*display: none;*!*/
+/*}*/
 
-.pop_up.active{
-    display: block;
-}
+/*.bg-home.active{*/
+/*    --tw-bg-opacity: 1;*/
+/*    background-color: rgb(55 65 81 / var(--tw-bg-opacity));*/
+/*}*/
 
+
+
+/*.pop_up{*/
+/*    display: none;*/
+/*}*/
+
+/*.pop_up.active{*/
+/*    display: block;*/
+/*}*/
+
+/*.mobile_menu_pop_up{*/
+/*    display: none;*/
+/*}*/
+
+/*.mobile_menu_pop_up.active{*/
+/*    display: block;*/
+/*}*/

@@ -2164,30 +2164,6 @@ module.exports = {
 
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
-var openPopUp = document.getElementById("user-menu-button");
-var closePopUp = document.getElementById("user-menu-item-2");
-var popUp = document.getElementById("pop_up_menu");
-document.addEventListener('click', function (e) {
-  var clickMenu = e.composedPath().includes(openPopUp);
-  var clickBox = e.composedPath().includes(popUp);
-
-  if (clickMenu) {
-    var statusMenu = popUp.classList.contains('active');
-
-    if (!statusMenu) {
-      popUp.classList.add('active');
-    } else {
-      popUp.classList.remove('active');
-    }
-  } else if (!clickBox) {
-    var _statusMenu = popUp.classList.contains('active');
-
-    if (_statusMenu) {
-      popUp.classList.remove('active');
-    }
-  }
-});
-
 /***/ }),
 
 /***/ "./resources/js/bootstrap.js":

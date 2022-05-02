@@ -2,3 +2,30 @@
 @tailwind components;
 @tailwind utilities;
 
+
+/*.bg-home{*/
+/*    !*display: none;*!*/
+/*}*/
+
+/*.bg-home.active{*/
+/*    --tw-bg-opacity: 1;*/
+/*    background-color: rgb(55 65 81 / var(--tw-bg-opacity));*/
+/*}*/
+
+
+
+/*.pop_up{*/
+/*    display: none;*/
+/*}*/
+
+/*.pop_up.active{*/
+/*    display: block;*/
+/*}*/
+
+/*.mobile_menu_pop_up{*/
+/*    display: none;*/
+/*}*/
+
+/*.mobile_menu_pop_up.active{*/
+/*    display: block;*/
+/*}*/

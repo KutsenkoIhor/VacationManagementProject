@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Repositories\Interfaces\HomePageRepositoryInterface;
 use App\Repositories\Interfaces\SocialRepositoryInterface;
+use App\Repositories\HomePageRepository;
 use App\Repositories\SocialRepository;
 use Illuminate\Support\ServiceProvider;
 
@@ -18,6 +20,11 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(
             SocialRepositoryInterface::class,
             SocialRepository::class
+        );
+
+        $this->app->bind(
+            HomePageRepositoryInterface::class,
+            HomePageRepository::class
         );
     }
 

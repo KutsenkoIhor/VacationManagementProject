@@ -768,6 +768,9 @@ select {
 .h-20 {
   height: 5rem;
 }
+.h-32 {
+  height: 8rem;
+}
 .min-h-full {
   min-height: 100%;
 }
@@ -818,6 +821,10 @@ select {
 }
 .origin-top {
   transform-origin: top;
+}
+.-rotate-90 {
+  --tw-rotate: -90deg;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 .scale-100 {
   --tw-scale-x: 1;
@@ -1099,6 +1106,10 @@ select {
 .py-2\.5 {
   padding-top: 0.625rem;
   padding-bottom: 0.625rem;
+}
+.py-3\.5 {
+  padding-top: 0.875rem;
+  padding-bottom: 0.875rem;
 }
 .py-3 {
   padding-top: 0.75rem;

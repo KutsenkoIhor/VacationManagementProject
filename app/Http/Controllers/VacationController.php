@@ -6,17 +6,21 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateVacationRequest;
 use App\Http\Requests\UpdateVacationRequest;
+use App\Http\Requests\UpcomingVacationsRequest;
+use App\Models\Vacation;
 use App\Services\Vacation\VacationService;
 use Carbon\Carbon;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
 
 class VacationController extends Controller
 {
-    public function createVacation(CreateVacationRequest $request, VacationService $vacationService)
+    public function createVacation(CreateVacationRequest $request, VacationService $vacationService): Redirector|Application|RedirectResponse
     {
         $startDate = Carbon::createFromFormat("Y-m-d", $request->get('start_date'));
         $endDate = Carbon::createFromFormat("Y-m-d", $request->get('end_date'));
@@ -57,14 +61,29 @@ class VacationController extends Controller
         return view('vacations/vacation_list', ['vacations' => $vacations]);
     }
 
+    public function getUpcomingVacations(UpcomingVacationsRequest $request, VacationService $vacationService): Application|Factory|View
+    {
+        $startDate = $request->get('start_date') ? Carbon::createFromFormat("Y-m-d", $request->get('start_date')) : Carbon::now();
+        $endDate = $request->get('end_date') ? Carbon::createFromFormat("Y-m-d", $request->get('end_date')) : Carbon::today()->addMonth();
+
+        $parameters = $vacationService->getUpcomingVacations($startDate, $endDate);
+
+        $typeMapping = [
+            Vacation::TYPE_VACATIONS     => 'V',
+            Vacation::TYPE_SICK_DAYS     => 'SD',
+            Vacation::TYPE_PERSONAL_DAYS => 'PD',
+        ];
+
+        return view('vacations/upcoming-vacations', ['typeMapping' => $typeMapping], $parameters);
+    }
+
     public function updateVacation(int $id, UpdateVacationRequest $request, VacationService $vacationService): JsonResponse
     {
-        $startDate = Carbon::createFromFormat(DATE_W3C, $request->get('start_date'))->startOfDay();
-        $endDate = Carbon::createFromFormat(DATE_W3C, $request->get('end_date'))->endOfDay(); //TODO do we need it ?
+        $startDate = Carbon::createFromFormat("Y-m-d", $request->get('start_date'));
+        $endDate = Carbon::createFromFormat("Y-m-d", $request->get('end_date'));
 
         $vacationDTO = $vacationService->updateVacation(
             $id,
-            $request->get('user_id'),
             $startDate,
             $endDate,
             $request->get('type')

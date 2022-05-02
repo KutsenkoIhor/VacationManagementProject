@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Interfaces;
 
 use App\DTO\Vacation\VacationDTO;
-use App\Models\Vacation;
 use Carbon\Carbon;
 
 interface VacationRepositoryInterface
@@ -20,9 +19,9 @@ interface VacationRepositoryInterface
     public function getVacations(): array;
     public function getVacation(int $id): VacationDTO;
     public function getVacationsByUserId(int $id): array;
+    public function getUpcomingVacations(Carbon $startDate, Carbon $endDate): array;
     public function updateVacation(
         int $id,
-        int $userId,
         Carbon $startDate,
         Carbon $endDate,
         int $numberOfDays,

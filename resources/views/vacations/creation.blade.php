@@ -61,6 +61,6 @@
         </div>
     </div>
 </div>
-<script src="{{asset('https://unpkg.com/flowbite@1.4.2/dist/datepicker.js')}}"></script>
+<script src="{{asset('https://unpkg.com/flowbite@1.4.2/dist/datepicker.js')}}"></script> {{-- TODO: src --}}
 </body>
 </html>

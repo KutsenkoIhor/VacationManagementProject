@@ -10,6 +10,7 @@ use App\Interfaces\VacationRepositoryInterface;
 use App\Models\Vacation;
 use Carbon\Carbon;
 
+
 class VacationRepository implements VacationRepositoryInterface
 {
     private VacationFactory $vacationFactory;
@@ -55,9 +56,16 @@ class VacationRepository implements VacationRepositoryInterface
         return $this->vacationFactory->makeDTOFromModelCollection(Vacation::where('user_id', $id)->get());
     }
 
+    public function getUpcomingVacations(Carbon $startDate, Carbon $endDate): array
+    {
+        return $this->vacationFactory->makeDTOFromModelCollection(Vacation::whereBetween('start_date', [$startDate, $endDate])
+            ->orWhereBetween('end_date', [$startDate,  $endDate])
+            ->with('user') //TODO think about performance
+            ->get());
+    }
+
     public function updateVacation(
         int $id,
-        int $userId, //TODO rm user Id. Vacation can't be assigned to another user
         Carbon $startDate,
         Carbon $endDate,
         int $numberOfDays,
@@ -66,7 +74,6 @@ class VacationRepository implements VacationRepositoryInterface
 
         $vacation = Vacation::findOrFail($id);
 
-        $vacation->user_id = $userId;
         $vacation->start_date = $startDate;
         $vacation->end_date = $endDate;
         $vacation->number_of_days = $numberOfDays;

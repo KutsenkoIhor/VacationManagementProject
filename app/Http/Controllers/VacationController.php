@@ -33,7 +33,7 @@ class VacationController extends Controller
             $request->get('type')
         );
 
-        return redirect('/vacationList/'.$userId);
+        return redirect('/vacations/' . $userId);
     }
 
     public function getVacations(VacationService $vacationService): JsonResponse
@@ -52,11 +52,9 @@ class VacationController extends Controller
         ]);
     }
 
-    public function getVacationsByUserId(
-        int $userId,
-        VacationService $vacationService
-    ): Application|Factory|View {
-        $vacations = $vacationService->getVacationsByUserId($userId);
+    public function getVacationsByUserId(VacationService $vacationService): Application|Factory|View
+    {
+        $vacations = $vacationService->getVacationsByUserId(Auth::id());
 
         return view('vacations/vacation_list', ['vacations' => $vacations]);
     }
@@ -66,7 +64,7 @@ class VacationController extends Controller
         $startDate = $request->get('start_date') ? Carbon::createFromFormat("Y-m-d", $request->get('start_date')) : Carbon::now();
         $endDate = $request->get('end_date') ? Carbon::createFromFormat("Y-m-d", $request->get('end_date')) : Carbon::today()->addMonth();
 
-        $parameters = $vacationService->getUpcomingVacations($startDate, $endDate);
+        $parameters = $vacationService->getUpcomingVacations(clone $startDate, clone $endDate);
 
         $typeMapping = [
             Vacation::TYPE_VACATIONS     => 'V',
@@ -74,7 +72,14 @@ class VacationController extends Controller
             Vacation::TYPE_PERSONAL_DAYS => 'PD',
         ];
 
-        return view('vacations/upcoming-vacations', ['typeMapping' => $typeMapping], $parameters);
+        //TODO:: add styles to css
+        $typeMappingStyles = [
+            Vacation::TYPE_VACATIONS     => 'bg-purple-100',
+            Vacation::TYPE_SICK_DAYS     => 'bg-rose-50',
+            Vacation::TYPE_PERSONAL_DAYS => 'bg-blue-100',
+        ];
+
+        return view('vacations/upcoming-vacations', ['typeMapping' => $typeMapping, 'typeMappingStyles' => $typeMappingStyles, 'startDate' => $startDate, 'endDate' => $endDate], $parameters);
     }
 
     public function updateVacation(int $id, UpdateVacationRequest $request, VacationService $vacationService): JsonResponse

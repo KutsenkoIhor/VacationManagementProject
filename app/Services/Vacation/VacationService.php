@@ -65,7 +65,7 @@ class VacationService
 
             $dates = [];
             for ($i = $vacationInterval->getStartDate(); $i <= $vacationInterval->getEndDate(); $i = $i->addDay()) {
-                $dates[$i->format('M.d,Y')] = $vacationInterval->getType(); //TODO move date format to a config
+                $dates[$i->format(config('vacation.date_format'))] = $vacationInterval->getType();
             }
 
             if (array_key_exists($vacationInterval->getUserId(), $userDates)) {
@@ -74,13 +74,13 @@ class VacationService
                 $userDates[$vacationInterval->getUserId()] = $dates;
             }
 
-            $users[$vacationInterval->getUserId()] = $vacationInterval->user; //put user model to be able to access it in blade
+            $users[$vacationInterval->getUserId()] = $vacationInterval->getUser(); //put user model to be able to access it in blade
         }
 
         $columns = [];
 
         for ($i = $startDate; $i <= $endDate; $i = $i->addDay()) {
-            $columns[] = $i->format('M.d,Y'); //TODO:: date format with space. Also move to config
+            $columns[] = $i->format(config('vacation.date_format'));
         }
 
         return ['users' => $users, 'columns' => $columns, 'userDates' => $userDates];

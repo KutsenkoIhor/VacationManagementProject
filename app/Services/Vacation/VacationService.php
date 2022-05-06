@@ -50,9 +50,44 @@ class VacationService
         return $this->vacationRepository->getVacationsByUserId($id);
     }
 
+    public function getUpcomingVacations(Carbon $startDate, Carbon $endDate): array
+    {
+        $vacationIntervals = $this->vacationRepository->getUpcomingVacations($startDate, $endDate);
+
+        $userDates = [];
+        $users = [];
+
+        foreach ($vacationIntervals as $vacationInterval) {
+
+            if ($vacationInterval->getStatus() != Vacation::STATUS_APPROVED) {
+                continue; //TODO filter in DB query instead of filtering in PHP
+            }
+
+            $dates = [];
+            for ($i = $vacationInterval->getStartDate(); $i <= $vacationInterval->getEndDate(); $i = $i->addDay()) {
+                $dates[$i->format(config('vacation.date_format'))] = $vacationInterval->getType();
+            }
+
+            if (array_key_exists($vacationInterval->getUserId(), $userDates)) {
+                $userDates[$vacationInterval->getUserId()] = array_merge($userDates[$vacationInterval->getUserId()], $dates);
+            } else {
+                $userDates[$vacationInterval->getUserId()] = $dates;
+            }
+
+            $users[$vacationInterval->getUserId()] = $vacationInterval->getUser(); //put user model to be able to access it in blade
+        }
+
+        $columns = [];
+
+        for ($i = $startDate; $i <= $endDate; $i = $i->addDay()) {
+            $columns[] = $i->format(config('vacation.date_format'));
+        }
+
+        return ['users' => $users, 'columns' => $columns, 'userDates' => $userDates];
+    }
+
     public function updateVacation(
         int $id,
-        int $userId,
         Carbon $startDate,
         Carbon $endDate,
         string $type
@@ -62,7 +97,6 @@ class VacationService
 
         return $this->vacationRepository->updateVacation(
             $id,
-            $userId,
             $startDate,
             $endDate,
             $numberOfDays,

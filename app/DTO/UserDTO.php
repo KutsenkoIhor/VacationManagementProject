@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\DTO;
 
-class UsersDTO
+class UserDTO
 {
     private int $id;
     private int|null $countryId;

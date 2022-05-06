@@ -32,10 +32,6 @@ Route::name('page.')->group(function () {
         return view('pages.vacationsHistoryPage');
     })->middleware('auth')->name('vacationsHistory');
 
-    Route::get('/listOfEmployees', function () {
-        return view('pages.listOfEmployeesPage');
-    })->middleware('auth')->name('listOfEmployees');
-
     Route::get('/overviewAllUserInVacation', function () {
         return view('pages.overviewAllUserInVacationPage');
     })->middleware('auth')->name('overviewAllUserInVacation');
@@ -57,13 +53,14 @@ Route::name('page.')->group(function () {
     })->middleware('auth')->name('settingsPage');
 });
 
+Route::prefix('vacations')->name('vacations.')->middleware('auth')->group(function () {
+    Route::post('/', [VacationController::class, 'createVacation'])->name('create');
+    Route::get('/', function () {
+        return view('vacations/creation');
+    })->name('create.form');
 
+    Route::get('/upcoming', [VacationController::class, 'getUpcomingVacations'])->name('upcoming');
 
+    Route::get('/history', [VacationController::class, 'getVacationsByUserId'])->name('list');
+});
 
-
-Route::get('/createVacation', function () {
-    return view('vacations/creation');
-})->middleware('auth')->name('createVacation');
-
-Route::post('/vacations', [VacationController::class, 'createVacation'])->middleware('auth');
-Route::get('/vacationList/{userId}', [VacationController::class, 'getVacationsByUserId'])->middleware('auth');

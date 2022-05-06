@@ -2,9 +2,9 @@
 
 namespace App\Repositories\Interfaces;
 
-use App\DTO\UsersDTO;
+use App\DTO\UserDTO;
 
 interface HomePageRepositoryInterface
 {
-    public function getUserParameters (int $userId): UsersDTO;
+    public function getUserParameters (int $userId): UserDTO;
 }

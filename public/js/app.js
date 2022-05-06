@@ -2164,6 +2164,8 @@ module.exports = {
 
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
+__webpack_require__(/*! ./listOfAllEmployees */ "./resources/js/listOfAllEmployees.js");
+
 /***/ }),
 
 /***/ "./resources/js/bootstrap.js":
@@ -2194,6 +2196,164 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 //     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
 //     forceTLS: true
 // });
+
+/***/ }),
+
+/***/ "./resources/js/listOfAllEmployees.js":
+/*!********************************************!*\
+  !*** ./resources/js/listOfAllEmployees.js ***!
+  \********************************************/
+/***/ (() => {
+
+//-----------------------------------------/listOfAllEmployees/-----------------------------------------
+if (window.location.pathname === '/listOfAllEmployees') {
+  var saveUser = function saveUser() {
+    var elementCountry = document.getElementById("list_country_admin");
+    var country = elementCountry.options[elementCountry.selectedIndex].value;
+    var elementCity = document.getElementById("list_city_admin");
+    var city = elementCity.options[elementCity.selectedIndex].value;
+    var email = document.getElementById("create_email").value;
+    var firstName = document.getElementById("create_first_name").value;
+    var lastName = document.getElementById("create_last_name").value;
+    var vacationDays = document.getElementById("Vacation_days_list_admin").value;
+    var sickDays = document.getElementById("Sick_days_list_admin").value;
+    var personalDays = document.getElementById("Personal_days_list_admin").value;
+    var checkboxes = document.getElementsByClassName('create_checkbox');
+    var checkboxesChecked = []; // можно в массиве их хранить, если нужно использовать
+
+    for (var index = 0; index < checkboxes.length; index++) {
+      if (checkboxes[index].checked) {
+        checkboxesChecked.push(checkboxes[index].value); // положим в массив выбранный
+      }
+    } // console.log(checkboxesChecked);
+
+
+    $.ajax({
+      method: "POST",
+      url: "/listOfAllEmployees/saveUser",
+      dataType: "json",
+      data: {
+        "country": country,
+        "city": city,
+        "email": email,
+        "firstName": firstName,
+        "lastName": lastName,
+        "vacationDays": vacationDays,
+        "sickDays": sickDays,
+        "personalDays": personalDays,
+        "roles": checkboxesChecked
+      },
+      success: function success(data) {
+        console.log('success');
+        console.log(data);
+      },
+      error: function error(er) {
+        if (er.status === 422) {
+          console.log(er['responseJSON']);
+          console.log(er.responseJSON);
+        } // console.log("erro")
+        // console.log(er);
+
+      }
+    }); // console.log("finish");
+  };
+
+  var addEmployee = function addEmployee() {
+    //---ajax request---
+    var arr = $.ajax({
+      url: "/listOfAllEmployees/addUser",
+
+      /* Куда пойдет запрос */
+      method: 'POST',
+
+      /* Метод передачи (post или get) */
+      dataType: 'json',
+
+      /* Тип данных в ответе (xml, json, script, html). */
+      async: false,
+      data: {},
+
+      /* Параметры передаваемые в запросе. */
+      global: true,
+      success: function success(response) {
+        return response;
+      }
+    }).responseJSON;
+    var elementCountry = document.getElementById("list_country_admin");
+    getListOfCities(elementCountry);
+    elementCountry.addEventListener('change', function (e) {
+      e.preventDefault();
+      getListOfCities(elementCountry);
+    });
+
+    function getListOfCities(elementCountry) {
+      var element = document.getElementById("list_city_admin"); //---Delete all items in the list---
+
+      var opts = element.options;
+
+      while (opts.length > 0) {
+        opts[opts.length - 1] = null;
+      }
+
+      var country = elementCountry.options[elementCountry.selectedIndex].value;
+
+      for (var i in arr['CountriesAndCities']) {
+        if (country === i) {
+          for (var y in arr['CountriesAndCities'][i]) {
+            //---Create new list items---
+            var oOpt1st = document.createElement('OPTION');
+            oOpt1st.value = arr['CountriesAndCities'][i][y];
+            oOpt1st.text = arr['CountriesAndCities'][i][y];
+            element.appendChild(oOpt1st);
+          }
+        }
+      }
+    }
+
+    var elementRole = document.getElementById("role_list_admin");
+    getListOfDays(elementRole);
+    elementRole.addEventListener('change', function (e) {
+      e.preventDefault();
+      getListOfDays(elementRole);
+    });
+
+    function getListOfDays(elementRole) {
+      var role = elementRole.options[elementRole.selectedIndex].value;
+
+      for (var i in arr['roles']) {
+        if (role === arr['roles'][i]) {
+          var _role = arr['roles'][i];
+          document.getElementById("Vacation_days_list_admin").value = arr[_role]["vacations"];
+          document.getElementById("Sick_days_list_admin").value = arr[_role]["personal_days"];
+          document.getElementById("Personal_days_list_admin").value = arr[_role]["sick_days"];
+        }
+      }
+    }
+  };
+
+  var openPopUpAddEmployee = document.getElementById("add_pop_up_employee");
+  var closePopUpAddEmployee = document.getElementById("close_pop_up_employee");
+  var popUpAddEmployee = document.getElementById("pop_up_employee");
+  var saveEmployee = document.getElementById("save_pop_up_employee");
+  $.ajaxSetup({
+    headers: {
+      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+  });
+  openPopUpAddEmployee.addEventListener('click', function (e) {
+    e.preventDefault();
+    popUpAddEmployee.classList.add('active');
+    addEmployee();
+  });
+  closePopUpAddEmployee.addEventListener('click', function (e) {
+    e.preventDefault();
+    popUpAddEmployee.classList.remove('active');
+  });
+  saveEmployee.addEventListener('click', function (e) {
+    e.preventDefault();
+    saveUser();
+  });
+}
 
 /***/ }),
 

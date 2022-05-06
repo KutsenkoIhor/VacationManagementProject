@@ -1,5 +1,5 @@
 const openPopUp = document.getElementById("user-menu-button");
-const closePopUp = document.getElementById("user-menu-item-2");
+// const closePopUp = document.getElementById("user-menu-item-2");
 const popUp = document.getElementById("pop_up_menu");
 
 const buttonHome = document.getElementById("button_home");

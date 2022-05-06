@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\HomePageController;
+use App\Http\Controllers\ListOfAllEmployees;
 use App\Http\Controllers\SocialController;
 use App\Http\Controllers\VacationController;
 use Illuminate\Support\Facades\Route;
@@ -40,9 +41,18 @@ Route::name('page.')->group(function () {
         return view('pages.overviewAllUserInVacationPage');
     })->middleware('auth')->name('overviewAllUserInVacation');
 
-    Route::get('/listOfAllEmployees', function () {
-        return view('pages.listOfAllEmployeesPage');
-    })->middleware('auth')->name('listOfAllEmployees');
+//    Route::get('/listOfAllEmployees', function () {
+//        return view('pages.listOfAllEmployeesPage');
+//    })->middleware('auth')->name('listOfAllEmployees');
+
+    Route::get('/listOfAllEmployees', [ListOfAllEmployees::class, 'getRoles'])
+        ->middleware('auth')->name('listOfAllEmployees');
+
+    Route::post('/listOfAllEmployees/addUser', [ListOfAllEmployees::class, 'addUser'])
+        ->middleware('auth');
+    Route::post('/listOfAllEmployees/saveUser', [ListOfAllEmployees::class, 'saveUser'])
+        ->middleware('auth');
+
 
     Route::get('/publicHoliday', function () {
         return view('pages.publicHolidayPage');

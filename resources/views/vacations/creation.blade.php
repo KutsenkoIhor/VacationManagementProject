@@ -1,5 +1,9 @@
 @extends('templates.mainPageTemplate')
 
+@section('custom_styles')
+    <link rel="stylesheet" href="{{asset('https://unpkg.com/flowbite@1.4.2/dist/flowbite.min.css')}}"/>
+@endsection
+
 @section('content')
 
     <div class="hidden sm:block" aria-hidden="true">

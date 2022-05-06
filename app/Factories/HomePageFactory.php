@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Factories;
 
-use App\DTO\UsersDTO;
+use App\DTO\UserDTO;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 
@@ -12,11 +12,11 @@ class HomePageFactory
 {
     /**
      * @param User $parameter
-     * @return UsersDTO
+     * @return UserDTO
      */
-    public function makeDTOFromModel(User $parameter): UsersDTO
+    public function makeDTOFromModel(User $parameter): UserDTO
     {
-        return new UsersDTO(
+        return new UserDTO(
             $parameter->id,
             $parameter->country_id,
             $parameter->city_id,
@@ -29,9 +29,9 @@ class HomePageFactory
 
     /**
      * @param Collection $userParameters
-     * @return UsersDTO|array
+     * @return UserDTO|array
      */
-    public function makeDTOFromModelCollection(Collection $userParameters): UsersDTO|array
+    public function makeDTOFromModelCollection(Collection $userParameters): UserDTO|array
     {
         $userParameterDTOs = [];
 

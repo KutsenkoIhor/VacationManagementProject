@@ -20,6 +20,6 @@
     },
     "dependencies": {
         "@tailwindcss/line-clamp": "^0.3.1",
-        "flowbite": "^1.4.2"
+        "flowbite": "^1.4.4"
     }
 }

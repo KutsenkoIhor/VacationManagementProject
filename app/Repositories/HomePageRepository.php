@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Repositories;
 
-use App\DTO\UsersDTO;
+use App\DTO\UserDTO;
 use App\Factories\HomePageFactory;
 use App\Models\User;
 use App\Repositories\Interfaces\HomePageRepositoryInterface;
@@ -23,9 +23,9 @@ class HomePageRepository implements HomePageRepositoryInterface
 
     /**
      * @param int $userId
-     * @return UsersDTO
+     * @return UserDTO
      */
-    public function getUserParameters (int $userId): UsersDTO
+    public function getUserParameters (int $userId): UserDTO
     {
         return $this->homePageFactory->makeDTOFromModelCollection(User::where('id', $userId)->get());
     }

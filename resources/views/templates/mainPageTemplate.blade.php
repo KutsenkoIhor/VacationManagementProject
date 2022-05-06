@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    <link rel="stylesheet" href="{{asset('https://unpkg.com/flowbite@1.4.2/dist/flowbite.min.css')}}"/>
+    @yield('custom_styles')
     <title>Vacation Management</title>
     <link rel="shortcut icon" href="{{"/image/vacation.svg"}}" type="image/svg">
 </head>

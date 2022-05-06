@@ -1,5 +1,9 @@
 @extends('templates.mainPageTemplate')
 
+@section('custom_styles')
+    <link rel="stylesheet" href="{{asset('https://unpkg.com/flowbite@1.4.2/dist/flowbite.min.css')}}"/>
+@endsection
+
 @section('content')
 
     <div class="px-4 sm:px-6 lg:px-8">

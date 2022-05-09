@@ -178,6 +178,10 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         \App\Providers\VacationRepositoryServiceProvider::class,
+        Spatie\Permission\PermissionServiceProvider::class,
+        App\Providers\CountriesRepositoryServiceProvider::class,
+        App\Providers\CitiesRepositoryServiceProvider::class,
+        App\Providers\RolesRepositoryServiceProvider::class,
 
     ],
 

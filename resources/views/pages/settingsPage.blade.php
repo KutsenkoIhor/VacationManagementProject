@@ -1,6 +1,10 @@
 @extends('templates.mainPageTemplate')
 
 @section('content')
+    <p><a href="{{route('countries.index')}}" target="_blank">Countries</a> </p>
+    <p><a href="{{route('cities.index')}}" target="_blank">Cities</a> </p>
+    <p><a href="{{route('roles.index')}}" target="_blank">Roles</a> </p>
+
     <pre>
         USER:
             System Administrator

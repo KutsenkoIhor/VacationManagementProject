@@ -2,40 +2,69 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\SaveNewUserRequest;
 use App\Models\Cities;
 use App\Models\Countries;
 use App\Models\Roles;
-use Illuminate\Http\Request;
+use App\Models\User;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\DB;
 
 class ListOfAllEmployees extends Controller
 {
-    public function saveUser(Request $request)
+    public function saveUser(SaveNewUserRequest $request): JsonResponse
     {
         $data = [];
-        $data['country'] = $request->input('country');
-        $data['city'] = $request->input('city');
-        $data['email'] = $request->input('email');
-        $data['firstName'] = $request->input('firstName');
-        $data['lastName"'] = $request->input('lastName');
-        $data['vacationDays'] = $request->input('vacationDays');
-        $data['sickDays'] = $request->input('sickDays');
-        $data['personalDays'] = $request->input('personalDays');
-        $data['arrRoles'] = $request->input('roles');
+        $data['country'] = $request->get('country');
+        $data['city'] = $request->get('city');
+        $data['email'] = $request->get('email');
+        $data['firstName'] = $request->get('firstName');
+        $data['lastName"'] = $request->get('lastName');
+        $data['vacationDays'] = $request->get('vacationDays');
+        $data['sickDays'] = $request->get('sickDays');
+        $data['personalDays'] = $request->get('personalDays');
+        $data['arrRoles'] = $request->get('roles');
+
+
+        $countryID = Countries::select('id')
+            -> where('title', $request->get('country'))
+            ->get();
+        $data['countryID'] = $countryID;
 
 
 
-        $validated = $request->validate([
-            'firstName' => 'min:5|max:2',
-            'country' => 'max:3',
-        ]);
+//        $cityId = Cities::where('title', $request->get('city'))->get();
+        $cityId = Cities::where([
+                ['title', $request->get('city')],
+                ['country_id', $countryID],
+                ])->get();
 
-//        print_r($request);
-//        $arrX = [1, 3, 4, 5];
+        $data['cityId'] = $cityId;
+
+
+
+
+        DB::transaction(function ($request){
+
+        });
+////
+//            $countryID = Countries::select('id')
+//                -> where('title', $request->get('country'))
+//                ->first();
+////
+////            dd($countryID);
+//////            $cityID = User::where('email', $email)->first();
+////
+//////            User::create([
+//////                'first_name' => $request->get('firstName'),
+//////                'last_name' => $request->get('lastName'),
+//////                'email' => $request->get('email'),
+//////            ]);
+
+
+
         return response()->json($data);
-//        return view('test', ['arrX ' => $arrX ]);
 
-//        dd([1, 3, 4, 5]);
-//        dd($request);
 
     }
 

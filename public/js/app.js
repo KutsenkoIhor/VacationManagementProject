@@ -2207,10 +2207,24 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 //-----------------------------------------/listOfAllEmployees/-----------------------------------------
 if (window.location.pathname === '/listOfAllEmployees') {
+  var clearAfterSave = function clearAfterSave() {
+    //clear Errors
+    elementErrorEmail.classList.remove('active');
+    elementErrorFirstName.classList.remove('active');
+    elementErrorLastName.classList.remove('active');
+    elementErrorVacationDays.classList.remove('active');
+    elementErrorSickDays.classList.remove('active');
+    elementErrorPersonalDays.classList.remove('active');
+    elementErrorRoles.classList.remove('active'); //clear Forms
+
+    document.getElementById("create_email").value = "";
+    document.getElementById("create_first_name").value = "";
+    document.getElementById("create_last_name").value = "";
+  };
+
   var saveUser = function saveUser() {
-    var elementCountry = document.getElementById("list_country_admin");
+    //---get form values
     var country = elementCountry.options[elementCountry.selectedIndex].value;
-    var elementCity = document.getElementById("list_city_admin");
     var city = elementCity.options[elementCity.selectedIndex].value;
     var email = document.getElementById("create_email").value;
     var firstName = document.getElementById("create_first_name").value;
@@ -2218,15 +2232,13 @@ if (window.location.pathname === '/listOfAllEmployees') {
     var vacationDays = document.getElementById("Vacation_days_list_admin").value;
     var sickDays = document.getElementById("Sick_days_list_admin").value;
     var personalDays = document.getElementById("Personal_days_list_admin").value;
-    var checkboxes = document.getElementsByClassName('create_checkbox');
-    var checkboxesChecked = []; // можно в массиве их хранить, если нужно использовать
+    var checkboxesChecked = [];
 
     for (var index = 0; index < checkboxes.length; index++) {
       if (checkboxes[index].checked) {
-        checkboxesChecked.push(checkboxes[index].value); // положим в массив выбранный
+        checkboxesChecked.push(checkboxes[index].value);
       }
-    } // console.log(checkboxesChecked);
-
+    }
 
     $.ajax({
       method: "POST",
@@ -2244,18 +2256,96 @@ if (window.location.pathname === '/listOfAllEmployees') {
         "roles": checkboxesChecked
       },
       success: function success(data) {
-        console.log('success');
+        pushNotifications(firstName, lastName);
+        clearAfterSave();
         console.log(data);
       },
       error: function error(er) {
         if (er.status === 422) {
-          console.log(er['responseJSON']);
-          console.log(er.responseJSON);
-        } // console.log("erro")
-        // console.log(er);
-
+          validate(er);
+          console.log(er['responseJSON']['errors']);
+        }
       }
-    }); // console.log("finish");
+    });
+
+    function pushNotifications(firstName, lastName) {
+      elementTextPushNotification.textContent = firstName + " " + lastName + " added successfully";
+      elementPushNotification.classList.add('active');
+      setTimeout(function () {
+        elementPushNotification.classList.remove('active');
+      }, 3700);
+    }
+
+    function validate(er) {
+      if (er['responseJSON']['errors']['email']) {
+        elementErrorEmail.classList.add('active');
+        elementErrorEmail.textContent = er['responseJSON']['errors']['email'][0];
+      } else {
+        elementErrorEmail.classList.remove('active');
+      }
+
+      if (er['responseJSON']['errors']['firstName']) {
+        elementErrorFirstName.classList.add('active');
+        elementErrorFirstName.textContent = er['responseJSON']['errors']['firstName'][0];
+      } else {
+        elementErrorFirstName.classList.remove('active');
+      }
+
+      if (er['responseJSON']['errors']['lastName']) {
+        elementErrorLastName.classList.add('active');
+        elementErrorLastName.textContent = er['responseJSON']['errors']['lastName'][0];
+      } else {
+        elementErrorLastName.classList.remove('active');
+      }
+
+      if (er['responseJSON']['errors']['vacationDays']) {
+        elementErrorVacationDays.classList.add('active');
+        elementErrorVacationDays.textContent = er['responseJSON']['errors']['vacationDays'][0];
+      } else {
+        elementErrorVacationDays.classList.remove('active');
+      }
+
+      if (er['responseJSON']['errors']['sickDays']) {
+        elementErrorSickDays.classList.add('active');
+        elementErrorSickDays.textContent = er['responseJSON']['errors']['sickDays'][0];
+      } else {
+        elementErrorSickDays.classList.remove('active');
+      }
+
+      if (er['responseJSON']['errors']['personalDays']) {
+        elementErrorPersonalDays.classList.add('active');
+        elementErrorPersonalDays.textContent = er['responseJSON']['errors']['personalDays'][0];
+      } else {
+        elementErrorPersonalDays.classList.remove('active');
+      }
+
+      if (er['responseJSON']['errors']['roles']) {
+        elementErrorRoles.classList.add('active');
+        elementErrorRoles.textContent = er['responseJSON']['errors']['roles'][0];
+      } else {
+        elementErrorRoles.classList.remove('active');
+      }
+    }
+  };
+
+  var checkCheckBox = function checkCheckBox() {
+    var _loop = function _loop(i) {
+      var role = checkboxes[i]['value'];
+      var idBoxCheckBox = role + "_box";
+      var idCheckBox = role + "_checkbox";
+
+      if (idBoxCheckBox !== 'undefined_box') {
+        var elementBoxCheckBox = document.getElementById(idBoxCheckBox);
+        elementBoxCheckBox.addEventListener('click', function (e) {
+          e.preventDefault();
+          document.getElementById(idCheckBox).checked = !document.getElementById(idCheckBox).checked;
+        });
+      }
+    };
+
+    for (var i in checkboxes) {
+      _loop(i);
+    }
   };
 
   var addEmployee = function addEmployee() {
@@ -2279,7 +2369,6 @@ if (window.location.pathname === '/listOfAllEmployees') {
         return response;
       }
     }).responseJSON;
-    var elementCountry = document.getElementById("list_country_admin");
     getListOfCities(elementCountry);
     elementCountry.addEventListener('change', function (e) {
       e.preventDefault();
@@ -2310,7 +2399,6 @@ if (window.location.pathname === '/listOfAllEmployees') {
       }
     }
 
-    var elementRole = document.getElementById("role_list_admin");
     getListOfDays(elementRole);
     elementRole.addEventListener('change', function (e) {
       e.preventDefault();
@@ -2335,6 +2423,19 @@ if (window.location.pathname === '/listOfAllEmployees') {
   var closePopUpAddEmployee = document.getElementById("close_pop_up_employee");
   var popUpAddEmployee = document.getElementById("pop_up_employee");
   var saveEmployee = document.getElementById("save_pop_up_employee");
+  var elementErrorRoles = document.getElementById("roles_error");
+  var elementErrorEmail = document.getElementById("email-error");
+  var elementErrorLastName = document.getElementById("last_name_error");
+  var elementErrorFirstName = document.getElementById("first_name_error");
+  var elementErrorVacationDays = document.getElementById("vacation_days_error");
+  var elementErrorSickDays = document.getElementById("sick_days_error");
+  var elementErrorPersonalDays = document.getElementById("personal_days_error");
+  var elementCountry = document.getElementById("list_country_admin");
+  var elementCity = document.getElementById("list_city_admin");
+  var checkboxes = document.getElementsByClassName('create_checkbox');
+  var elementRole = document.getElementById("role_list_admin");
+  var elementPushNotification = document.getElementById("push-notifications");
+  var elementTextPushNotification = document.getElementById("push-notifications-text");
   $.ajaxSetup({
     headers: {
       'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -2348,11 +2449,13 @@ if (window.location.pathname === '/listOfAllEmployees') {
   closePopUpAddEmployee.addEventListener('click', function (e) {
     e.preventDefault();
     popUpAddEmployee.classList.remove('active');
+    clearAfterSave();
   });
   saveEmployee.addEventListener('click', function (e) {
     e.preventDefault();
     saveUser();
   });
+  checkCheckBox();
 }
 
 /***/ }),

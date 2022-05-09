@@ -4,16 +4,32 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-
+    <link rel="stylesheet" href="{{asset('https://unpkg.com/flowbite@1.4.2/dist/flowbite.min.css')}}"/>
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <script src="{{asset('js/jquery.js')}}"></script>
-    <link rel="stylesheet" href="{{asset('https://unpkg.com/flowbite@1.4.2/dist/flowbite.min.css')}}"/>
+{{--    <link rel="stylesheet" href="{{asset('https://unpkg.com/flowbite@1.4.2/dist/flowbite.min.css')}}"/>--}}
     <title>Vacation Management</title>
     <link rel="shortcut icon" href="{{"/image/vacation.svg"}}" type="image/svg">
 </head>
 
 <body>
+
 <div class="min-h-full">
+
+    {{--    Push Notifications--}}
+    <div class="push-notifications push-notifications push-notifications-block" id="push-notifications">
+        <div class=" bg-gray-50 inline-block push-notifications-container shadow-xl  sm:p-4 rounded-lg">
+            <div class="mx-auto flex items-center justify-center h-14 w-14 rounded-full bg-green-200">
+                <svg class="h-6 w-6 text-green-900" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                </svg>
+            </div>
+            <div class="mt-3 text-center sm:mt-3">
+                <h3 class="text-lg leading-6 font-medium text-gray-900" id="push-notifications-text"></h3>
+            </div>
+        </div>
+    </div>
+
 
     <!-- mobile, show/hide -->
     <div class="fixed inset-0 flex z-40 lg:hidden" role="dialog" aria-modal="true">

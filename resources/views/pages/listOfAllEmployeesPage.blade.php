@@ -1,6 +1,8 @@
 @extends('templates.mainPageTemplate')
 
 @section('content')
+
+
 {{--Modal window--}}
     <div id="pop_up_employee" class="pop_up pop_up_employee">
         <div class="pop_up_container">
@@ -17,10 +19,11 @@
                                                 <div class="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
 
                                                     <div class="sm:col-span-2">
-                                                        <label for="create_email" class="block text-sm font-medium text-gray-700"> Email address </label>
+                                                        <label for="create_email" class="block text-sm font-medium text-gray-700"> Email</label>
                                                         <div class="mt-1">
                                                             <input id="create_email" name="email" type="email" autocomplete="email" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
                                                         </div>
+                                                        <p class="mt-2 text-sm text-red-600 show_error" id="email-error"></p>
                                                     </div>
 
                                                     <br>
@@ -33,6 +36,7 @@
                                                         <div class="mt-1">
                                                             <input type="text" name="create_first_name" id="create_first_name" autocomplete="given-name" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
                                                         </div>
+                                                        <p class="mt-2 text-sm text-red-600 show_error" id="first_name_error"></p>
                                                     </div>
 
                                                     <br>
@@ -42,6 +46,7 @@
                                                         <div class="mt-1">
                                                             <input type="text" name="create_last_name" id="create_last_name" autocomplete="family-name" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
                                                         </div>
+                                                        <p class="mt-2 text-sm text-red-600 show_error" id="last_name_error"></p>
                                                     </div>
 
 
@@ -83,6 +88,7 @@
                                                         <div class="mt-1">
                                                             <input type="text" name="Vacation_days_list_admin" id="Vacation_days_list_admin" autocomplete="family-name" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
                                                         </div>
+                                                        <p class="mt-2 text-sm text-red-600 show_error" id="vacation_days_error"></p>
                                                     </div>
 
                                                     <div class="sm:col-span-1">
@@ -90,6 +96,7 @@
                                                         <div class="mt-1">
                                                             <input type="text" name="Sick_days_list_admin" id="Sick_days_list_admin" autocomplete="family-name" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
                                                         </div>
+                                                        <p class="mt-2 text-sm text-red-600 show_error" id="sick_days_error"></p>
                                                     </div>
 
                                                     <div class="sm:col-span-1">
@@ -97,6 +104,7 @@
                                                         <div class="mt-1">
                                                             <input type="text" name="Personal_days_list_admin" id="Personal_days_list_admin" autocomplete="family-name" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
                                                         </div>
+                                                        <p class="mt-2 text-sm text-red-600 show_error" id="personal_days_error"></p>
                                                     </div>
 
                                                     <div class="sm:col-span-6 pt-3">
@@ -106,19 +114,20 @@
                                                     </div>
 
                                                     @foreach ($arrRolee['arr']['roles'] as $role)
-                                                        <div class="sm:col-span-2">
-                                                            <div class="pr-2 pl-2 rounded-lg bg-white overflow-hidden shadow">
-                                                                <div class="relative flex items-start py-4">
+                                                        <div class="sm:col-span-2 ">
+                                                            <div id = "{{$role . "_box"}}"  class=" arr-check-box pr-2 pl-2 rounded-lg bg-white overflow-hidden shadow hover:bg-gray-50">
+                                                                <div class="relative flex items-start py-4 ">
                                                                     <div class="min-w-0 flex-1 text-sm">
-                                                                        <label for="{{$role}}" class="font-medium text-gray-700 select-none">{{$role}}</label>
+                                                                        <label for="{{$role . "_checkbox"}}" class="font-medium text-gray-700 select-none">{{$role}}</label>
                                                                     </div>
-                                                                    <div class="ml-3 flex items-center h-5">
-                                                                        <input id="{{$role}}" name="{{$role}}" type="checkbox" value="{{$role}}" class=" create_checkbox focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded">
+                                                                    <div class="ml-3 flex items-center h-5 ">
+                                                                        <input id="{{$role . "_checkbox"}}"  name="my-checkBox" type="checkbox" value="{{$role}}" class=" create_checkbox focus:ring-indigo-500 h-5 w-5 text-indigo-600 border-gray-300 rounded">
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     @endforeach
+                                                    <p class="mt-2 text-sm text-red-600 show_error" id="roles_error">Select at least one role.</p>
 
                                                 </div>
                                                 <div class="pt-5">

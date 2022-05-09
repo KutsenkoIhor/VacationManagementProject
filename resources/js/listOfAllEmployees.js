@@ -4,12 +4,27 @@ if(window.location.pathname === '/listOfAllEmployees'){
     const closePopUpAddEmployee = document.getElementById("close_pop_up_employee");
     const popUpAddEmployee = document.getElementById("pop_up_employee");
     const saveEmployee = document.getElementById("save_pop_up_employee");
+    const elementErrorRoles = document.getElementById("roles_error");
+    const elementErrorEmail = document.getElementById("email-error");
+    const elementErrorLastName = document.getElementById("last_name_error");
+    const elementErrorFirstName = document.getElementById("first_name_error");
+    const elementErrorVacationDays = document.getElementById("vacation_days_error");
+    const elementErrorSickDays = document.getElementById("sick_days_error");
+    const elementErrorPersonalDays = document.getElementById("personal_days_error");
+    const elementCountry = document.getElementById("list_country_admin");
+    const elementCity = document.getElementById("list_city_admin");
+    const checkboxes = document.getElementsByClassName('create_checkbox');
+    const elementRole = document.getElementById("role_list_admin");
+    const elementPushNotification = document.getElementById("push-notifications");
+    const elementTextPushNotification =document.getElementById("push-notifications-text");
+
 
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
+
 
     openPopUpAddEmployee.addEventListener('click', function (e){
         e.preventDefault();
@@ -20,6 +35,7 @@ if(window.location.pathname === '/listOfAllEmployees'){
     closePopUpAddEmployee.addEventListener('click', function (e){
         e.preventDefault();
         popUpAddEmployee.classList.remove('active');
+        clearAfterSave();
     })
 
     saveEmployee.addEventListener('click', function (e){
@@ -27,14 +43,27 @@ if(window.location.pathname === '/listOfAllEmployees'){
         saveUser();
     })
 
+    function clearAfterSave()
+    {
+        //clear Errors
+        elementErrorEmail.classList.remove('active');
+        elementErrorFirstName.classList.remove('active');
+        elementErrorLastName.classList.remove('active');
+        elementErrorVacationDays.classList.remove('active');
+        elementErrorSickDays.classList.remove('active');
+        elementErrorPersonalDays.classList.remove('active');
+        elementErrorRoles.classList.remove('active');
+        //clear Forms
+        document.getElementById("create_email").value = "";
+        document.getElementById("create_first_name").value = "";
+        document.getElementById("create_last_name").value = "";
+    }
+
     function saveUser()
     {
-        const elementCountry = document.getElementById("list_country_admin");
-        const country = elementCountry.options[elementCountry.selectedIndex].value;
-
-        const elementCity = document.getElementById("list_city_admin");
-        const city = elementCity.options[elementCity.selectedIndex].value;
-
+        //---get form values
+        let country = elementCountry.options[elementCountry.selectedIndex].value;
+        let city = elementCity.options[elementCity.selectedIndex].value;
         let email = document.getElementById("create_email").value;
         let firstName = document.getElementById("create_first_name").value;
         let lastName = document.getElementById("create_last_name").value;
@@ -42,20 +71,12 @@ if(window.location.pathname === '/listOfAllEmployees'){
         let sickDays = document.getElementById("Sick_days_list_admin").value;
         let personalDays = document.getElementById("Personal_days_list_admin").value;
 
-        var checkboxes = document.getElementsByClassName('create_checkbox')
-        var checkboxesChecked = []; // можно в массиве их хранить, если нужно использовать
-        for (var index = 0; index < checkboxes.length; index++) {
+        let checkboxesChecked = [];
+        for (let index = 0; index < checkboxes.length; index++) {
             if (checkboxes[index].checked) {
-                checkboxesChecked.push(checkboxes[index].value); // положим в массив выбранный
+                checkboxesChecked.push(checkboxes[index].value);
             }
         }
-
-
-
-
-        // console.log(checkboxesChecked);
-
-
 
         $.ajax({
             method: "POST",
@@ -74,19 +95,94 @@ if(window.location.pathname === '/listOfAllEmployees'){
 
             },
             success: function(data) {
-                console.log('success')
+                pushNotifications(firstName, lastName)
+                clearAfterSave()
                 console.log(data);
             },
             error: function(er) {
                 if (er.status === 422) {
-                    console.log(er['responseJSON']);
-                    console.log(er.responseJSON);
+                    validate(er);
+                    console.log(er['responseJSON']['errors']);
                 }
-                // console.log("erro")
-                // console.log(er);
             }
         });
-        // console.log("finish");
+
+        function pushNotifications(firstName, lastName)
+        {
+
+            elementTextPushNotification.textContent = firstName + " " + lastName + " added successfully";
+            elementPushNotification.classList.add('active');
+            setTimeout(function() {
+                elementPushNotification.classList.remove('active');
+            }, 3700);
+        }
+
+
+
+        function validate(er)
+        {
+            if (er['responseJSON']['errors']['email']){
+                elementErrorEmail.classList.add('active');
+                elementErrorEmail.textContent = er['responseJSON']['errors']['email'][0];
+            } else {
+                elementErrorEmail.classList.remove('active');
+            }
+            if (er['responseJSON']['errors']['firstName']){
+                elementErrorFirstName.classList.add('active');
+                elementErrorFirstName.textContent = er['responseJSON']['errors']['firstName'][0];
+            } else {
+                elementErrorFirstName.classList.remove('active');
+            }
+            if (er['responseJSON']['errors']['lastName']){
+                elementErrorLastName.classList.add('active');
+                elementErrorLastName.textContent = er['responseJSON']['errors']['lastName'][0];
+            } else {
+                elementErrorLastName.classList.remove('active');
+            }
+            if (er['responseJSON']['errors']['vacationDays']){
+                elementErrorVacationDays.classList.add('active');
+                elementErrorVacationDays.textContent = er['responseJSON']['errors']['vacationDays'][0];
+            } else {
+                elementErrorVacationDays.classList.remove('active');
+            }
+            if (er['responseJSON']['errors']['sickDays']){
+                elementErrorSickDays.classList.add('active');
+                elementErrorSickDays.textContent = er['responseJSON']['errors']['sickDays'][0];
+            } else {
+                elementErrorSickDays.classList.remove('active');
+            }
+            if (er['responseJSON']['errors']['personalDays']){
+                elementErrorPersonalDays.classList.add('active');
+                elementErrorPersonalDays.textContent = er['responseJSON']['errors']['personalDays'][0];
+            } else {
+                elementErrorPersonalDays.classList.remove('active');
+            }
+            if (er['responseJSON']['errors']['roles']){
+                elementErrorRoles.classList.add('active')
+                elementErrorRoles.textContent = er['responseJSON']['errors']['roles'][0];
+            } else {
+                elementErrorRoles.classList.remove('active')
+            }
+        }
+    }
+
+
+
+    checkCheckBox()
+
+    function checkCheckBox() {
+        for (let i in checkboxes) {
+            let role = checkboxes[i]['value']
+            let idBoxCheckBox = role + "_box";
+            let idCheckBox = role + "_checkbox";
+            if (idBoxCheckBox !== 'undefined_box') {
+                let elementBoxCheckBox = document.getElementById(idBoxCheckBox);
+                elementBoxCheckBox.addEventListener('click', function (e){
+                    e.preventDefault();
+                    document.getElementById(idCheckBox).checked = !document.getElementById(idCheckBox).checked;
+                });
+            }
+        }
     }
 
     function addEmployee()
@@ -105,7 +201,6 @@ if(window.location.pathname === '/listOfAllEmployees'){
         }).responseJSON;
 
 
-        const elementCountry = document.getElementById("list_country_admin")
         getListOfCities(elementCountry)
         elementCountry.addEventListener('change', function (e){
             e.preventDefault();
@@ -115,7 +210,7 @@ if(window.location.pathname === '/listOfAllEmployees'){
 
         function getListOfCities(elementCountry)
         {
-            const element = document.getElementById("list_city_admin");
+            let element = document.getElementById("list_city_admin");
             //---Delete all items in the list---
             const opts = element.options;
             while(opts.length > 0) {
@@ -135,7 +230,7 @@ if(window.location.pathname === '/listOfAllEmployees'){
             }
         }
 
-        const elementRole = document.getElementById("role_list_admin");
+
         getListOfDays(elementRole)
         elementRole.addEventListener('change', function (e){
             e.preventDefault();
@@ -144,7 +239,7 @@ if(window.location.pathname === '/listOfAllEmployees'){
 
         function getListOfDays(elementRole)
         {
-            const role = elementRole.options[elementRole.selectedIndex].value;
+            let role = elementRole.options[elementRole.selectedIndex].value;
             for (const i in arr['roles']) {
                 if (role === arr['roles'][i]) {
                     const role = arr['roles'][i];

@@ -28,8 +28,10 @@ class SocialController extends Controller
         if (Auth::check()) {
             return redirect(route('page.homePage'));
         }
+
         $user = Socialite::driver('google')->stateless()->user()->user;
         $isUser = $this->socialRepository->searchEmail($user["email"]);
+
         if ($isUser) {
             Auth::login($isUser);
         } else {
@@ -38,6 +40,7 @@ class SocialController extends Controller
                 $user["family_name"],
                 $user["email"],
                 $user["picture"]);
+
             Auth::login($createUser);
         }
         return redirect(route('page.homePage'));

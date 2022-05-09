@@ -33,7 +33,7 @@ class VacationController extends Controller
             $request->get('type')
         );
 
-        return redirect('/vacations/' . $userId);
+        return redirect('/vacations/history');
     }
 
     public function getVacations(VacationService $vacationService): JsonResponse
@@ -75,7 +75,7 @@ class VacationController extends Controller
         //TODO:: add styles to css
         $typeMappingStyles = [
             Vacation::TYPE_VACATIONS     => 'bg-purple-100',
-            Vacation::TYPE_SICK_DAYS     => 'bg-rose-50',
+            Vacation::TYPE_SICK_DAYS     => 'bg-red-50',
             Vacation::TYPE_PERSONAL_DAYS => 'bg-blue-100',
         ];
 

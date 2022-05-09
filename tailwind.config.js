@@ -3,20 +3,19 @@ module.exports = {
     content: [
         "./resources/**/*.blade.php",
         "./resources/**/*.js",
-        "./resources/**/*.vue",
+        "./resources/**/*.vue"
     ],
     theme: {
         extend: {
             colors: {
-                sky: colors.sky,
-                teal: colors.teal,
+                grey: colors.grey,
                 cyan: colors.cyan,
-                rose: colors.rose,
             },
         },
     },
     plugins: [
-        require('@tailwindcss/forms'),
-        require('@tailwindcss/line-clamp'),
+        require('@tailwindcss/forms')
     ],
 }
+
+

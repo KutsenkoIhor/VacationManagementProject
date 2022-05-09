@@ -9,14 +9,27 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 
+/**
+ * @property int $id
+ * @property int|null $country_id
+ * @property int|null $city_id
+ * @property string|null $first_name
+ * @property string|null $last_name
+ * @property string $email
+ * @property string|null $google_avatar
+ */
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable, HasRoles;
 
+
+
     /**
      * The attributes that are mass assignable.
      *
+     *
      * @var array<int, string>
+     *
      */
     protected $fillable = [
         'first_name',

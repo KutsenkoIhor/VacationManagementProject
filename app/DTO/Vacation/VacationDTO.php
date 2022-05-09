@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\DTO\Vacation;
 
+use App\DTO\UserDTO;
 use Carbon\Carbon;
 
 class VacationDTO implements \JsonSerializable
@@ -13,14 +14,25 @@ class VacationDTO implements \JsonSerializable
     private Carbon $startDate;
     private Carbon $endDate;
     private string $type;
+    private string $status;
+    private UserDTO $user;
 
-    public function __construct(int $id, int $userId, Carbon $startDate, Carbon $endDate, string $type)
-    {
+    public function __construct(
+        int $id,
+        int $userId,
+        Carbon $startDate,
+        Carbon $endDate,
+        string $type,
+        string $status,
+        UserDTO $user
+    ) {
         $this->id = $id;
         $this->userId = $userId;
         $this->startDate = $startDate;
         $this->endDate = $endDate;
         $this->type = $type;
+        $this->status = $status;
+        $this->user = $user;
     }
 
     public function getId(): int
@@ -48,6 +60,16 @@ class VacationDTO implements \JsonSerializable
         return $this->type;
     }
 
+    public function getStatus(): string
+    {
+        return $this->status;
+    }
+
+    public function getUser(): UserDTO
+    {
+        return $this->user;
+    }
+
     public function jsonSerialize(): array
     {
         return [
@@ -55,7 +77,9 @@ class VacationDTO implements \JsonSerializable
             'user_id'    => $this->getUserId(),
             'start_date' => $this->getStartDate(),
             'end_date'   => $this->getEndDate(),
-            'type'       => $this->getType()
+            'type'       => $this->getType(),
+            'status'     => $this->getStatus(),
+            'user'       => $this->getUser()
         ];
     }
 }

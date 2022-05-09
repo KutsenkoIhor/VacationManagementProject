@@ -19,10 +19,7 @@ class CreateVacationRequest extends FormRequest
     {
         return [
             '_token'  => 'required|string',
-//            'user_id'        => 'required|exists:users,id',
 //            'start_date'     => 'required|date|after_or_equal:now', //TODO fix
-//            'start_date'     => 'required|date_format:"Y-m-d\TH:i:sP"',
-//            'end_date'       => 'required|date_format:"Y-m-d\TH:i:sP"|after:start_date',
             'start_date'     => 'required|date_format:"Y-m-d"',
             'end_date'       => 'required|date_format:"Y-m-d"|after:start_date',
             'type'           => [

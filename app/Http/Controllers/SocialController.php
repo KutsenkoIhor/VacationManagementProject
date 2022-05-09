@@ -20,13 +20,13 @@ class SocialController extends Controller
 
     public function googleRedirect(): Redirector|RedirectResponse|Application
     {
-        return Auth::check() ? redirect(route('dashboard')) : Socialite::driver('google')->redirect();
+        return Auth::check() ? redirect(route('page.homePage')) : Socialite::driver('google')->redirect();
     }
 
     public function loginWithGoogle(): Redirector|RedirectResponse|Application
     {
         if (Auth::check()) {
-            return redirect(route('dashboard'));
+            return redirect(route('page.homePage'));
         }
 
         $user = Socialite::driver('google')->stateless()->user()->user;
@@ -44,7 +44,6 @@ class SocialController extends Controller
             $createUser->assignRole('employee');
             Auth::login($createUser);
         }
-
-        return redirect(route('dashboard'));
+        return redirect(route('page.homePage'));
     }
 }

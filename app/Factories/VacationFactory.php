@@ -10,6 +10,13 @@ use Illuminate\Database\Eloquent\Collection;
 
 class VacationFactory
 {
+    private HomePageFactory $userDTOFactory;
+
+    public function __construct(HomePageFactory $userDTOFactory)
+    {
+        $this->userDTOFactory = $userDTOFactory;
+    }
+
     public function makeDTOFromModel(Vacation $vacation): VacationDTO
     {
         return new VacationDTO(
@@ -17,7 +24,9 @@ class VacationFactory
             $vacation->user_id,
             $vacation->start_date,
             $vacation->end_date,
-            $vacation->type
+            $vacation->type,
+            $vacation->status,
+            $this->userDTOFactory->makeDTOFromModel($vacation->user)
         );
     }
 

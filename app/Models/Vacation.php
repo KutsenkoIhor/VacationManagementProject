@@ -6,7 +6,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Carbon\Carbon;;
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * @property int $id
@@ -18,6 +19,7 @@ use Carbon\Carbon;;
  * @property string $status
  * @property Carbon $created_at
  * @property Carbon $updated_at
+ * @property $user
  */
 
 class Vacation extends Model
@@ -43,4 +45,9 @@ class Vacation extends Model
         'start_date'    => 'datetime:Y-m-d',
         'end_date'      => 'datetime:Y-m-d',
     ];
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
 }

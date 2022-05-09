@@ -41,7 +41,6 @@ class SocialController extends Controller
                 $user["email"],
                 $user["picture"]);
 
-            $createUser->assignRole('employee');
             Auth::login($createUser);
         }
         return redirect(route('page.homePage'));

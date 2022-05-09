@@ -26,7 +26,7 @@ class CountriesRepository implements CountriesRepositoryInterface
         Country::create($request->all());
     }
 
-    public function update($id, $request)
+    public function update(int $id, $request): void
     {
         $country = Country::findOrFail($id);
         $country->update($request->all());

@@ -9,6 +9,6 @@ interface CountriesRepositoryInterface
     public function all();
     public function getById($id);
     public function add($request);
-    public function update($id, $request);
+    public function update(int $id, $request);
     public function delete($id);
 }

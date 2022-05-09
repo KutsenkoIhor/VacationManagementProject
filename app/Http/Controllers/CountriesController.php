@@ -47,7 +47,7 @@ class CountriesController extends Controller
 
     public function editCountry($id, EditCountryRequest $request)
     {
-        $this->countriesRepository->update($id, $request);
+        $this->countriesRepository->update((int) $id, $request);
 
         return redirect(route('countries.index'))->with('status', 'Country edited!');
     }

@@ -8,7 +8,7 @@ use App\DTO\UserDTO;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 
-class HomePageFactory
+class UserFactory
 {
     /**
      * @param User $parameter

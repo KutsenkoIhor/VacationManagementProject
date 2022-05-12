@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Interfaces;
 
-use App\DTO\Vacation\VacationDTO;
+use App\DTO\VacationDTO;
 use Carbon\Carbon;
 
 interface VacationRepositoryInterface

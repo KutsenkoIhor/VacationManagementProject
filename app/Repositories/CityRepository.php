@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace App\Repositories\Location;
+namespace App\Repositories;
 
+use App\Interfaces\CityRepositoryInterface;
 use App\Models\City;
 use App\Models\Country;
-use App\Repositories\Interfaces\CitiesRepositoryInterface;
 
 
-class CitiesRepository implements CitiesRepositoryInterface
+class CityRepository implements CityRepositoryInterface
 {
     public function all(): object
     {
@@ -45,5 +45,13 @@ class CitiesRepository implements CitiesRepositoryInterface
     public function getCountries()
     {
         return Country::all();
+    }
+
+    public function searchByCountryIdAndCity(int $countryID, string $city): City
+    {
+         return City::where([
+            ['title', $city],
+            ['country_id', $countryID],
+        ])->first();
     }
 }

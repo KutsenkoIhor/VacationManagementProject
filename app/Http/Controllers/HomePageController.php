@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Repositories\Interfaces\HomePageRepositoryInterface;
+use App\Interfaces\UserRepositoryInterface;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -14,14 +14,14 @@ use Illuminate\Support\Facades\Auth;
 
 class HomePageController extends Controller
 {
-    private HomePageRepositoryInterface $homePageRepository;
+    private UserRepositoryInterface $userRepository;
 
     /**
-     * @param HomePageRepositoryInterface $homePageRepository
+     * @param UserRepositoryInterface $userRepository
      */
-    public function __construct(HomePageRepositoryInterface $homePageRepository)
+    public function __construct(UserRepositoryInterface $userRepository)
     {
-        $this->homePageRepository = $homePageRepository;
+        $this->userRepository = $userRepository;
     }
 
     /**
@@ -30,7 +30,7 @@ class HomePageController extends Controller
     public function getUserParametersByUserId(): Application|Factory|View
     {
         $userId = Auth::id();
-        $userParameters = $this->homePageRepository->getUserParameters($userId);
+        $userParameters = $this->userRepository->getUserParameters($userId);
         return view('pages.homePage', ['userParameters' => $userParameters]);
     }
 

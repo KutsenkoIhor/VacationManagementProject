@@ -2,8 +2,8 @@
 
 namespace App\Providers;
 
+use App\Interfaces\RoleRepositoryInterface;
 use App\Repositories\RoleRepository;
-use App\Repositories\Interfaces\RoleRepositoryInterface;
 use Illuminate\Support\ServiceProvider;
 
 class RolesRepositoryServiceProvider extends ServiceProvider

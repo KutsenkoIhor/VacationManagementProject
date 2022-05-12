@@ -2,9 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Repositories\Interfaces;
+namespace App\Interfaces;
 
-interface CitiesRepositoryInterface
+use App\Models\City;
+
+interface CityRepositoryInterface
 {
     public function all();
     public function getById(int $id);
@@ -13,4 +15,5 @@ interface CitiesRepositoryInterface
     public function delete($id);
     public function getCountry(int $country_id);
     public function getCountries();
+    public function searchByCountryIdAndCity(int $countryID, string $city): City;
 }

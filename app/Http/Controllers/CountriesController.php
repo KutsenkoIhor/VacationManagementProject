@@ -6,13 +6,13 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\AddCountryRequest;
 use App\Http\Requests\EditCountryRequest;
-use App\Repositories\Interfaces\CountriesRepositoryInterface;
+use App\Interfaces\CountryRepositoryInterface;
 
 class CountriesController extends Controller
 {
     private $countriesRepository;
 
-    public function __construct(CountriesRepositoryInterface $countriesRepository)
+    public function __construct(CountryRepositoryInterface $countriesRepository)
     {
         $this->countriesRepository = $countriesRepository;
     }

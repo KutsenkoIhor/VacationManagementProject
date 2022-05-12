@@ -200,6 +200,8 @@ if(window.location.pathname === '/listOfAllEmployees'){
             }
         }).responseJSON;
 
+        // console.log(arr)
+
 
         getListOfCities(elementCountry)
         elementCountry.addEventListener('change', function (e){

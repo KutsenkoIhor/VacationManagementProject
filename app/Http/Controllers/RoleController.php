@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\EditRoleRequest;
-use App\Repositories\Interfaces\RoleRepositoryInterface;
-use Illuminate\Http\Request;
 use App\Http\Requests\AddRoleRequest;
+use App\Http\Requests\EditRoleRequest;
+use App\Interfaces\RoleRepositoryInterface;
 
 class RoleController extends Controller
 {

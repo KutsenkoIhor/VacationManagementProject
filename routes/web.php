@@ -3,7 +3,8 @@
 use App\Http\Controllers\CitiesController;
 use App\Http\Controllers\CountriesController;
 use App\Http\Controllers\HomePageController;
-use App\Http\Controllers\ListOfAllEmployees;
+use App\Http\Controllers\ListEmployeesController;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SocialController;
 use App\Http\Controllers\VacationController;
 use Illuminate\Support\Facades\Route;
@@ -43,13 +44,17 @@ Route::name('page.')->group(function () {
 //        return view('pages.listOfAllEmployeesPage');
 //    })->middleware('auth')->name('listOfAllEmployees');
 
-    Route::get('/listOfAllEmployees', [ListOfAllEmployees::class, 'getRoles'])
-        ->middleware('auth')->name('listOfAllEmployees');
-
-    Route::post('/listOfAllEmployees/addUser', [ListOfAllEmployees::class, 'addUser'])
-        ->middleware('auth');
-    Route::post('/listOfAllEmployees/saveUser', [ListOfAllEmployees::class, 'saveUser'])
-        ->middleware('auth');
+    Route::prefix('/listOfAllEmployees')->middleware('auth')->group(function () {
+        Route::get('/', [ListEmployeesController::class, 'listEmployees'])->name('listOfAllEmployees');
+        Route::post('/addUser', [ListEmployeesController::class, 'addUser']);
+        Route::post('/saveUser', [ListEmployeesController::class, 'saveUser']);
+    });
+//    Route::get('/listOfAllEmployees', [ListOfAllEmployees::class, 'getRoles'])
+//        ->middleware('auth')->name('listOfAllEmployees');
+//    Route::post('/listOfAllEmployees/addUser', [ListOfAllEmployees::class, 'addUser'])
+//        ->middleware('auth');
+//    Route::post('/listOfAllEmployees/saveUser', [ListOfAllEmployees::class, 'saveUser'])
+//        ->middleware('auth');
 
 
     Route::get('/publicHoliday', function () {
@@ -96,4 +101,4 @@ Route::middleware(['auth'])->group(function () {
 });
 
 //Roles
-Route::resource('/roles', \App\Http\Controllers\RoleController::class)->middleware('role:System Admin');
+Route::resource('/roles', RoleController::class)->middleware('role:System Admin');

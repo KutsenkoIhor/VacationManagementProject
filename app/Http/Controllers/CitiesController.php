@@ -6,13 +6,13 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\AddCityRequest;
 use App\Http\Requests\EditCityRequest;
-use App\Repositories\Interfaces\CitiesRepositoryInterface;
+use App\Interfaces\CityRepositoryInterface;
 
 class CitiesController extends Controller
 {
     private $citiesRepository;
 
-    public function __construct(CitiesRepositoryInterface $citiesRepository)
+    public function __construct(CityRepositoryInterface $citiesRepository)
     {
         $this->citiesRepository = $citiesRepository;
     }

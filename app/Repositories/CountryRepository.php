@@ -2,15 +2,18 @@
 
 declare(strict_types=1);
 
-namespace App\Repositories\Location;
+namespace App\Repositories;
 
-use App\Models\Country;
+use App\Factories\CountryFactory;
+use App\Interfaces\CountryRepositoryInterface;
 use App\Models\City;
-use App\Repositories\Interfaces\CountriesRepositoryInterface;
+use App\Models\Country;
+use Illuminate\Database\Eloquent\Collection;
 
 
-class CountriesRepository implements CountriesRepositoryInterface
+class CountryRepository implements CountryRepositoryInterface
 {
+
     public function all()
     {
         return Country::all();
@@ -41,4 +44,17 @@ class CountriesRepository implements CountriesRepositoryInterface
         Country::findOrFail($id)->delete();
     }
 
+    /**
+     * @param string $colum
+     * @return Collection
+     */
+    public function orderBy(string $colum): Collection
+    {
+        return Country::orderBy($colum)->get();
+    }
+
+    public function searchByCountry(string $country): Country
+    {
+        return Country::where('title', $country)->first();
+    }
 }

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Repositories\Interfaces\SocialRepositoryInterface;
+use App\Interfaces\UserRepositoryInterface;
 use Illuminate\Console\Application;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Redirector;
@@ -11,11 +11,11 @@ use Laravel\Socialite\Facades\Socialite;
 
 class SocialController extends Controller
 {
-    private SocialRepositoryInterface $socialRepository;
+    private UserRepositoryInterface $userRepository;
 
-    public function __construct(SocialRepositoryInterface $socialRepository)
+    public function __construct(UserRepositoryInterface $userRepository)
     {
-        $this->socialRepository = $socialRepository;
+        $this->userRepository = $userRepository;
     }
 
     public function googleRedirect(): Redirector|RedirectResponse|Application
@@ -30,17 +30,21 @@ class SocialController extends Controller
         }
 
         $user = Socialite::driver('google')->stateless()->user()->user;
-        $isUser = $this->socialRepository->searchEmail($user["email"]);
+        $isUser = $this->userRepository->searchEmail($user["email"]);
 
         if ($isUser) {
             Auth::login($isUser);
         } else {
-            $createUser = $this->socialRepository->createUser(
+            $createUser = $this->userRepository->createUser(
                 $user["given_name"],
                 $user["family_name"],
                 $user["email"],
-                $user["picture"]);
+                $user["picture"],
+                null,
+                null,
+            );
 
+//            $User->assignRole('System Admin');//----
             Auth::login($createUser);
         }
         return redirect(route('page.homePage'));

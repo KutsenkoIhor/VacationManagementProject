@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Repositories\Vacation;
+namespace App\Repositories;
 
-use App\DTO\Vacation\VacationDTO;
+use App\DTO\VacationDTO;
 use App\Factories\VacationFactory;
 use App\Interfaces\VacationRepositoryInterface;
 use App\Models\Vacation;

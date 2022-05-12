@@ -2,9 +2,9 @@
 
 namespace App\Providers;
 
+use App\Interfaces\CityRepositoryInterface;
+use App\Repositories\CityRepository;
 use Illuminate\Support\ServiceProvider;
-use App\Repositories\Interfaces\CitiesRepositoryInterface;
-use App\Repositories\Location\CitiesRepository;
 
 class CitiesRepositoryServiceProvider extends ServiceProvider
 {
@@ -16,8 +16,8 @@ class CitiesRepositoryServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->bind(
-            CitiesRepositoryInterface::class,
-            CitiesRepository::class
+            CityRepositoryInterface::class,
+            CityRepository::class
         );
     }
 

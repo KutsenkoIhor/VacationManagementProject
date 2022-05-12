@@ -188,7 +188,7 @@
                                 <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">lindsay.walton@example.com</td>
                                 <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">Lindsay</td>
                                 <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">Walton</td>
-                                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">Admin</td>
+                                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">System Admin, PM, HR, Employee</td>
                                 <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">Ukrain</td>
                                 <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">Kiev</td>
                                 <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">17</td>

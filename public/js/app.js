@@ -2368,7 +2368,8 @@ if (window.location.pathname === '/listOfAllEmployees') {
       success: function success(response) {
         return response;
       }
-    }).responseJSON;
+    }).responseJSON; // console.log(arr)
+
     getListOfCities(elementCountry);
     elementCountry.addEventListener('change', function (e) {
       e.preventDefault();

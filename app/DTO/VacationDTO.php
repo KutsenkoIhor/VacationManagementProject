@@ -2,9 +2,8 @@
 
 declare(strict_types=1);
 
-namespace App\DTO\Vacation;
+namespace App\DTO;
 
-use App\DTO\UserDTO;
 use Carbon\Carbon;
 
 class VacationDTO implements \JsonSerializable

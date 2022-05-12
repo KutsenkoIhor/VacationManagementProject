@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services\Vacation;
 
-use App\DTO\Vacation\VacationDTO;
+use App\DTO\VacationDTO;
 use App\Interfaces\VacationRepositoryInterface;
 use App\Models\Vacation;
 use Carbon\Carbon;

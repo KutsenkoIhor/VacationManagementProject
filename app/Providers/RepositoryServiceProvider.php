@@ -2,10 +2,10 @@
 
 namespace App\Providers;
 
-use App\Repositories\Interfaces\HomePageRepositoryInterface;
-use App\Repositories\Interfaces\SocialRepositoryInterface;
-use App\Repositories\HomePageRepository;
-use App\Repositories\SocialRepository;
+use App\Interfaces\UserRepositoryInterface;
+use App\Interfaces\VacationDaysPerYearRepositoryInterface;
+use App\Repositories\UserRepository;
+use App\Repositories\VacationDaysPerYearRepository;
 use Illuminate\Support\ServiceProvider;
 
 class RepositoryServiceProvider extends ServiceProvider
@@ -18,13 +18,13 @@ class RepositoryServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->bind(
-            SocialRepositoryInterface::class,
-            SocialRepository::class
+            UserRepositoryInterface::class,
+            UserRepository::class
         );
 
         $this->app->bind(
-            HomePageRepositoryInterface::class,
-            HomePageRepository::class
+            VacationDaysPerYearRepositoryInterface::class,
+            VacationDaysPerYearRepository::class
         );
     }
 

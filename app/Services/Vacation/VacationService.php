@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Services\Vacation;
 
 use App\DTO\Vacation\VacationDTO;
-use App\Interfaces\VacationRepositoryInterface;
 use App\Models\Vacation;
+use App\Repositories\Interfaces\VacationRepositoryInterface;
 use Carbon\Carbon;
 
 class VacationService
@@ -84,6 +84,16 @@ class VacationService
         }
 
         return ['users' => $users, 'columns' => $columns, 'userDates' => $userDates];
+    }
+
+    public function getVacationsWithStatusNew(): array
+    {
+        return $this->vacationRepository->getVacationsWithStatusNew();
+    }
+
+    public function changeStatus(int $id, string $status)
+    {
+        return $this->vacationRepository->changeStatus($id, $status);
     }
 
     public function updateVacation(

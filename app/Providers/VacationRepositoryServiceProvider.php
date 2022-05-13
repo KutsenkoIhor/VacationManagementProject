@@ -4,7 +4,7 @@ namespace App\Providers;
 
 use App\Factories\HomePageFactory;
 use App\Factories\VacationFactory;
-use App\Interfaces\VacationRepositoryInterface;
+use App\Repositories\Interfaces\VacationRepositoryInterface;
 use App\Repositories\Vacation\VacationRepository;
 use App\Services\Vacation\VacationService;
 use Illuminate\Support\ServiceProvider;

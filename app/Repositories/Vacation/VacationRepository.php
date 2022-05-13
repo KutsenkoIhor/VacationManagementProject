@@ -6,8 +6,8 @@ namespace App\Repositories\Vacation;
 
 use App\DTO\Vacation\VacationDTO;
 use App\Factories\VacationFactory;
-use App\Interfaces\VacationRepositoryInterface;
 use App\Models\Vacation;
+use App\Repositories\Interfaces\VacationRepositoryInterface;
 use Carbon\Carbon;
 
 
@@ -62,6 +62,24 @@ class VacationRepository implements VacationRepositoryInterface
             ->orWhereBetween('end_date', [$startDate,  $endDate])
             ->with('user') //TODO think about performance
             ->get());
+    }
+
+    public function getVacationsWithStatusNew(): array
+    {
+        return $this->vacationFactory->makeDTOFromModelCollection(Vacation::where('status', Vacation::STATUS_NEW)
+            ->with('user') //TODO think about performance
+            ->get());
+    }
+
+    public function changeStatus(int $id, string $status): VacationDTO
+    {
+        $vacation = Vacation::findOrFail($id);
+
+        $vacation->status = $status;
+
+        $vacation->save();
+
+        return $this->vacationFactory->makeDTOFromModel($vacation);
     }
 
     public function updateVacation(

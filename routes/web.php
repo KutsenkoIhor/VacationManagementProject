@@ -62,5 +62,7 @@ Route::prefix('vacations')->name('vacations.')->middleware('auth')->group(functi
     Route::get('/upcoming', [VacationController::class, 'getUpcomingVacations'])->name('upcoming');
 
     Route::get('/history', [VacationController::class, 'getVacationsByUserId'])->name('list');
+
+    Route::get('/list', [VacationController::class, 'getVacationsWithStatusNew'])->name('listWithStatus');
 });
 

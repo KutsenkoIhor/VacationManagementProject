@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ChangeVacationStatusRequest;
 use App\Http\Requests\CreateVacationRequest;
 use App\Http\Requests\UpdateVacationRequest;
 use App\Http\Requests\UpcomingVacationsRequest;
@@ -80,6 +81,20 @@ class VacationController extends Controller
         ];
 
         return view('vacations/upcoming-vacations', ['typeMapping' => $typeMapping, 'typeMappingStyles' => $typeMappingStyles, 'startDate' => $startDate, 'endDate' => $endDate], $parameters);
+    }
+
+    public function getVacationsWithStatusNew(VacationService $vacationService): Application|Factory|View
+    {
+        $vacations = $vacationService->getVacationsWithStatusNew();
+
+        return view('vacations/vacation_status', ['vacations' => $vacations]);
+    }
+
+    public function changeStatus(int $id, ChangeVacationStatusRequest $request, VacationService $vacationService): Application|Factory|View
+    {
+        $vacations = $vacationService->changeStatus($id, $request->get('status'));
+
+        return view('/vacations/vacation_status', ['vacations' => $vacations]);
     }
 
     public function updateVacation(int $id, UpdateVacationRequest $request, VacationService $vacationService): JsonResponse

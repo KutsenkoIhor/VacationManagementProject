@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <script src="{{ asset('js/jquery.js') }}"></script>
     @yield('custom_styles')
     <title>Vacation Management</title>
     <link rel="shortcut icon" href="{{"/image/vacation.svg"}}" type="image/svg">
@@ -238,6 +239,17 @@
                                   d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
                         </svg>
                         Vacations history (1234)
+                    </a>
+
+                    <a href="{{ route('vacations.listWithStatus') }}"
+                       class="text-gray-100 hover:text-white hover:bg-gray-700 group flex items-center px-2 py-2 text-sm leading-6 font-medium rounded-md">
+                        <!-- Heroicon name: outline/clock -->
+                        <svg class="mr-4 flex-shrink-0 h-6 w-6 text-gray-100" xmlns="http://www.w3.org/2000/svg"
+                             fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        Vacation Status
                     </a>
 
                     <a href="{{route('vacations.upcoming')}}"

@@ -8,7 +8,7 @@ use App\Models\Vacation;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class ChangeVacationStatusRequest extends FormRequest
+class CreateVacationApprovalRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -18,7 +18,8 @@ class ChangeVacationStatusRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'status' => [
+//            'number_of_days' => 'required|integer',
+            'status'         => [
                 'required',
                 Rule::in([Vacation::STATUS_APPROVED, Vacation::STATUS_DENIED])
             ]

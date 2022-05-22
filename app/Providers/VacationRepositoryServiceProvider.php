@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Factories\HomePageFactory;
 use App\Factories\VacationFactory;
+use App\Repositories\Interfaces\VacationApprovalRepositoryInterface;
 use App\Repositories\Interfaces\VacationRepositoryInterface;
 use App\Repositories\Vacation\VacationRepository;
 use App\Services\Vacation\VacationService;
@@ -25,7 +26,10 @@ class VacationRepositoryServiceProvider extends ServiceProvider
 
         //Services
         $this->app->singleton(VacationService::class, function ($app) {
-            return new VacationService($app->make(VacationRepositoryInterface::class));
+            return new VacationService(
+                $app->make(VacationRepositoryInterface::class),
+                $app->make(VacationApprovalRepositoryInterface::class)
+            );
         });
     }
 

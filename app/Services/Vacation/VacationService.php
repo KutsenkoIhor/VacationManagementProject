@@ -4,18 +4,23 @@ declare(strict_types=1);
 
 namespace App\Services\Vacation;
 
-use App\DTO\Vacation\VacationDTO;
+use App\DTO\VacationApprovalDTO;
+use App\DTO\VacationDTO;
+use App\Events\CreateVacationApprovalEvent;
 use App\Models\Vacation;
+use App\Repositories\Interfaces\VacationApprovalRepositoryInterface;
 use App\Repositories\Interfaces\VacationRepositoryInterface;
 use Carbon\Carbon;
 
 class VacationService
 {
     private VacationRepositoryInterface $vacationRepository;
+    private VacationApprovalRepositoryInterface $vacationApprovalRepositoryInterface;
 
-    public function __construct(VacationRepositoryInterface $vacationRepository)
+    public function __construct(VacationRepositoryInterface $vacationRepository, $vacationApprovalRepositoryInterface)
     {
         $this->vacationRepository = $vacationRepository;
+        $this->vacationApprovalRepositoryInterface = $vacationApprovalRepositoryInterface;
     }
 
     public function createVacation(
@@ -86,14 +91,18 @@ class VacationService
         return ['users' => $users, 'columns' => $columns, 'userDates' => $userDates];
     }
 
-    public function getVacationsWithStatusNew(): array
+    public function getVacationRequests(int $userId): array
     {
-        return $this->vacationRepository->getVacationsWithStatusNew();
+        return $this->vacationRepository->getVacationRequests();
     }
 
-    public function changeStatus(int $id, string $status)
+    public function createVacationApproval(int $vacationId, int $userId, int $numberOfDays, string $status): VacationApprovalDTO
     {
-        return $this->vacationRepository->changeStatus($id, $status);
+        $vacationApprovalDTO = $this->vacationApprovalRepositoryInterface->createVacationApproval($vacationId, $userId, $numberOfDays, $status);
+
+        event(new CreateVacationApprovalEvent($vacationApprovalDTO->getVacationId()));
+
+        return $vacationApprovalDTO;
     }
 
     public function updateVacation(

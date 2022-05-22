@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ChangeVacationStatusRequest;
 use App\Http\Requests\CreateVacationRequest;
 use App\Http\Requests\UpdateVacationRequest;
 use App\Http\Requests\UpcomingVacationsRequest;
@@ -85,16 +84,9 @@ class VacationController extends Controller
 
     public function getVacationsWithStatusNew(VacationService $vacationService): Application|Factory|View
     {
-        $vacations = $vacationService->getVacationsWithStatusNew();
+        $vacations = $vacationService->getVacationRequests();
 
         return view('vacations/vacation_status', ['vacations' => $vacations]);
-    }
-
-    public function changeStatus(int $id, ChangeVacationStatusRequest $request, VacationService $vacationService): Application|Factory|View
-    {
-        $vacations = $vacationService->changeStatus($id, $request->get('status'));
-
-        return view('/vacations/vacation_status', ['vacations' => $vacations]);
     }
 
     public function updateVacation(int $id, UpdateVacationRequest $request, VacationService $vacationService): JsonResponse

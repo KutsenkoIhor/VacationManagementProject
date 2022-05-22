@@ -2,9 +2,8 @@
 
 declare(strict_types=1);
 
-namespace App\DTO\Vacation;
+namespace App\DTO;
 
-use App\DTO\UserDTO;
 use Carbon\Carbon;
 
 class VacationDTO implements \JsonSerializable
@@ -13,6 +12,7 @@ class VacationDTO implements \JsonSerializable
     private int $userId;
     private Carbon $startDate;
     private Carbon $endDate;
+    private int $numberOfDays;
     private string $type;
     private string $status;
     private UserDTO $user;
@@ -22,6 +22,7 @@ class VacationDTO implements \JsonSerializable
         int $userId,
         Carbon $startDate,
         Carbon $endDate,
+        int $numberOfDays,
         string $type,
         string $status,
         UserDTO $user
@@ -30,6 +31,7 @@ class VacationDTO implements \JsonSerializable
         $this->userId = $userId;
         $this->startDate = $startDate;
         $this->endDate = $endDate;
+        $this->numberOfDays = $numberOfDays;
         $this->type = $type;
         $this->status = $status;
         $this->user = $user;
@@ -55,6 +57,11 @@ class VacationDTO implements \JsonSerializable
         return $this->endDate;
     }
 
+    public function getNumberOfDays(): int
+    {
+        return $this->numberOfDays;
+    }
+
     public function getType(): string
     {
         return $this->type;
@@ -73,13 +80,14 @@ class VacationDTO implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return [
-            'id'         => $this->getId(),
-            'user_id'    => $this->getUserId(),
-            'start_date' => $this->getStartDate(),
-            'end_date'   => $this->getEndDate(),
-            'type'       => $this->getType(),
-            'status'     => $this->getStatus(),
-            'user'       => $this->getUser()
+            'id'             => $this->getId(),
+            'user_id'        => $this->getUserId(),
+            'start_date'     => $this->getStartDate(),
+            'end_date'       => $this->getEndDate(),
+            'number_of_days' => $this->getNumberOfDays(),
+            'type'           => $this->getType(),
+            'status'         => $this->getStatus(),
+            'user'           => $this->getUser()
         ];
     }
 }

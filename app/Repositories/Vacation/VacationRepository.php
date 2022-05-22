@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Repositories\Vacation;
 
-use App\DTO\Vacation\VacationDTO;
+use App\DTO\VacationDTO;
 use App\Factories\VacationFactory;
 use App\Models\Vacation;
 use App\Repositories\Interfaces\VacationRepositoryInterface;
@@ -64,14 +64,17 @@ class VacationRepository implements VacationRepositoryInterface
             ->get());
     }
 
-    public function getVacationsWithStatusNew(): array
+    public function getVacationRequests(int $userId): array
     {
-        return $this->vacationFactory->makeDTOFromModelCollection(Vacation::where('status', Vacation::STATUS_NEW)
+        $vacations = Vacation::where('status', Vacation::STATUS_NEW)
             ->with('user') //TODO think about performance
-            ->get());
+            ->get();
+
+
+        return $this->vacationFactory->makeDTOFromModelCollection();
     }
 
-    public function changeStatus(int $id, string $status): VacationDTO
+    public function updateVacationStatus(int $id, string $status): VacationDTO
     {
         $vacation = Vacation::findOrFail($id);
 
@@ -81,6 +84,7 @@ class VacationRepository implements VacationRepositoryInterface
 
         return $this->vacationFactory->makeDTOFromModel($vacation);
     }
+
 
     public function updateVacation(
         int $id,

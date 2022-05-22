@@ -29,6 +29,7 @@ class Vacation extends Model
     public const STATUS_NEW = 'NEW';
     public const STATUS_APPROVED = 'APPROVED';
     public const STATUS_DENIED = 'DENIED';
+    public const STATUS_CANCELLED = 'CANCELLED';
 
     public const TYPE_VACATIONS = 'VACATIONS';
     public const TYPE_PERSONAL_DAYS = 'PERSONAL_DAYS';

@@ -163,6 +163,7 @@ return [
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
+        App\Providers\FactoryServiceProvider::class,
         App\Providers\RepositoryServiceProvider::class,
 
         /*
@@ -177,8 +178,6 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-        \App\Providers\VacationRepositoryServiceProvider::class,
-        \App\Providers\VacationApprovalRepositoryServiceProvider::class,
         Spatie\Permission\PermissionServiceProvider::class,
         App\Providers\CountriesRepositoryServiceProvider::class,
         App\Providers\CitiesRepositoryServiceProvider::class,

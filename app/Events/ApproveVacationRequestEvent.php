@@ -8,19 +8,19 @@ use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class CreateVacationApprovalEvent
+class ApproveVacationRequestEvent
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public int $vacationId;
+    public int $vacationRequestId;
 
-    public function __construct(int $vacationId)
+    public function __construct(int $vacationRequestId)
     {
-        $this->vacationId = $vacationId;
+        $this->vacationRequestId = $vacationRequestId;
     }
 
-    public function getVacationId(): int
+    public function getVacationRequestId(): int
     {
-        return $this->vacationId;
+        return $this->vacationRequestId;
     }
 }

@@ -40,22 +40,22 @@
                                 </tr>
                                 </thead>
                                 <tbody class="divide-y divide-gray-200 bg-white">
-                                @foreach($vacations as $vacation)
+                                @foreach($vacationRequests as $vacationRequest)
                                     <tr>
-                                        <td class="whitespace-nowrap py-4 pl-4 pr-4 text-sm text-center text-gray-900 sm:pl-6">{{ $vacation->getUser()->getFirstName()  }} {{ $vacation->getUser()->getLastName() }}</td>
-                                        <td class="whitespace-nowrap p-4 text-sm text-center text-gray-600">{{ $vacation->getType() }}</td>
-                                        <td class="whitespace-nowrap p-4 text-sm text-center text-gray-600">{{ $vacation->getStartDate()->format('Y-m-d') }}</td>
-                                        <td class="whitespace-nowrap p-4 text-sm text-center text-gray-600">{{ $vacation->getEndDate()->format('Y-m-d') }}</td>
-                                        <td class="whitespace-nowrap p-4 text-sm text-center text-gray-600">{{ $vacation->getNumberOfDays() }}</td>
+                                        <td class="whitespace-nowrap py-4 pl-4 pr-4 text-sm text-center text-gray-900 sm:pl-6">{{ $vacationRequest->getUser()->getFirstName()  }} {{ $vacationRequest->getUser()->getLastName() }}</td>
+                                        <td class="whitespace-nowrap p-4 text-sm text-center text-gray-600">{{ $vacationRequest->getType() }}</td>
+                                        <td class="whitespace-nowrap p-4 text-sm text-center text-gray-600">{{ $vacationRequest->getStartDate()->format('Y-m-d') }}</td>
+                                        <td class="whitespace-nowrap p-4 text-sm text-center text-gray-600">{{ $vacationRequest->getEndDate()->format('Y-m-d') }}</td>
+                                        <td class="whitespace-nowrap p-4 text-sm text-center text-gray-600">{{ $vacationRequest->getNumberOfDays() }}</td>
                                         <td class="whitespace-nowrap py-4 pl-4 pr-4 text-center text-sm text-gray-600 sm:pr-6">
                                             <form method="POST">
-                                                <button type="button" vacation-id="{{$vacation->getId()}}"
+                                                <button type="button" vacation-request-id="{{$vacationRequest->getId()}}"
                                                         class="changeStatusButton inline-flex rounded-full bg-green-100 px-2 text-sm leading-5 text-green-900"
-                                                        value="APPROVED">Approve
+                                                        value="1">Approve
                                                 </button>
-                                                <button type="button" vacation-id="{{$vacation->getId()}}"
+                                                <button type="button" vacation-request-id="{{$vacationRequest->getId()}}"
                                                         class="changeStatusButton inline-flex rounded-full bg-red-100 px-2 text-sm leading-5 text-red-900"
-                                                        value="DENIED">Deny
+                                                        value="0">Deny
                                                 </button>
                                             </form>
                                         </td>
@@ -73,10 +73,10 @@
             $(document).ready(function () {
                 $(".changeStatusButton").click(function () {
                     const data = {};
-                    const vacation_id = $(this).attr("vacation-id");
-                    data.status = $(this).val();
+                    const vacation_request_id = $(this).attr("vacation-request-id");
+                    data.is_approved = $(this).val();
                     $.ajax({
-                        url: '/api/vacations/' + vacation_id + '/createVacationApproval',
+                        url: '/api/vacations/' + vacation_request_id + '/createVacationRequestApproval',
                         type: 'POST',
                         data: data,
                         success: function () {

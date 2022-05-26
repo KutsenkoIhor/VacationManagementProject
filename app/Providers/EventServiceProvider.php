@@ -2,8 +2,13 @@
 
 namespace App\Providers;
 
-use App\Events\CreateVacationApprovalEvent;
-use App\Listeners\CheckVacationRequestsListener;
+use App\Events\ApproveVacationRequestEvent;
+use App\Events\CreateVacationRequestApprovalEvent;
+use App\Events\DenyVacationRequestEvent;
+use App\Listeners\ApproveVacationRequestListener;
+use App\Listeners\CheckVacationRequestListener;
+use App\Listeners\CreateVacationListener;
+use App\Listeners\DenyVacationRequestListener;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -19,9 +24,16 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
-        CreateVacationApprovalEvent::class => [
-            CheckVacationRequestsListener::class,
+        CreateVacationRequestApprovalEvent::class => [
+            CheckVacationRequestListener::class,
         ],
+        DenyVacationRequestEvent::class => [
+            DenyVacationRequestListener::class,
+        ],
+        ApproveVacationRequestEvent::class => [
+            ApproveVacationRequestListener::class,
+            CreateVacationListener::class
+        ]
     ];
 
     /**

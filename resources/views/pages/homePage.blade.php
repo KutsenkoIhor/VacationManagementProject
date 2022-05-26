@@ -36,7 +36,7 @@
                             @hasrole('Employee')
                             <div class="mt-5 flex justify-center sm:mt-0">
                                 <a href="{{route('vacations.create.form')}}"
-                                   class="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">
+                                   class="items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-indigo-800 bg-indigo-100 hover:bg-indigo-200 text-center bg-indigo-100 hover:bg-indigo-200 text-center">
                                     Create vacation </a>
                             </div>
                             @endhasrole

@@ -31,7 +31,11 @@
                                     </th>
                                     <th scope="col"
                                         class="py-3.5 pl-4 pr-4 text-center text-xs font-medium uppercase text-gray-700 sm:pr-6">
-                                        Status
+                                        Created At
+                                    </th>
+                                    <th scope="col"
+                                        class="py-3.5 pl-4 pr-4 text-center text-xs font-medium uppercase text-gray-700 sm:pr-6">
+                                        Is_approved
                                     </th>
                                 </tr>
                                 </thead>
@@ -42,9 +46,10 @@
                                         <td class="whitespace-nowrap p-4 text-sm text-center text-gray-600">{{ $vacation->getEndDate()->format('Y-m-d') }}</td>
                                         <td class="whitespace-nowrap p-4 text-sm text-center text-gray-600">{{ $vacation->getType() }}</td>
                                         <td class="whitespace-nowrap p-4 text-sm text-center text-gray-600">{{ $vacation->getNumberOfDays() }}</td>
+                                        <td class="whitespace-nowrap p-4 text-sm text-center text-gray-600">{{ $vacation->getCreatedAt() }}</td>
                                         <td class="whitespace-nowrap p-4 text-sm text-center text-gray-600">
                                     <span
-                                        class="inline-flex rounded-full bg-indigo-100 px-2 text-xs font-semibold leading-5 text-indigo-800">{{ $vacation->getStatus() }}
+                                        class="inline-flex rounded-full bg-indigo-100 px-2 text-xs font-semibold leading-5 text-indigo-800">{{ $vacation->isApproved() }}
                                     </span>
                                         </td>
                                     </tr>

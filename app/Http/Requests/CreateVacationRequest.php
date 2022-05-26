@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Requests;
 
 use App\Models\Vacation;
+use App\Models\VacationRequest;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -24,7 +25,7 @@ class CreateVacationRequest extends FormRequest
             'end_date'       => 'required|date_format:"Y-m-d"|after:start_date',
             'type'           => [
                 'required',
-                Rule::in([Vacation::TYPE_VACATIONS, Vacation::TYPE_PERSONAL_DAYS, Vacation::TYPE_SICK_DAYS])
+                Rule::in([VacationRequest::TYPE_VACATIONS, VacationRequest::TYPE_PERSONAL_DAYS, VacationRequest::TYPE_SICK_DAYS])
             ]
         ];
     }

@@ -3,8 +3,10 @@
 namespace App\Providers;
 
 use App\Interfaces\UserRepositoryInterface;
+use App\Interfaces\VacationDaysLeftInterface;
 use App\Interfaces\VacationDaysPerYearRepositoryInterface;
 use App\Repositories\UserRepository;
+use App\Repositories\VacationDaysLeftRepository;
 use App\Repositories\VacationDaysPerYearRepository;
 use Illuminate\Support\ServiceProvider;
 
@@ -25,6 +27,11 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(
             VacationDaysPerYearRepositoryInterface::class,
             VacationDaysPerYearRepository::class
+        );
+
+        $this->app->bind(
+            VacationDaysLeftInterface::class,
+            VacationDaysLeftRepository::class
         );
     }
 

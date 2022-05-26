@@ -10,6 +10,14 @@
     display: block;
 }
 
+.show_block{
+    display: none;
+}
+
+.show_block.active{
+    display: block;
+}
+
 .push-notifications{
     transform: translateY(-200px);
     transition: .8s ease-in-out;
@@ -21,7 +29,7 @@
 
 .push-notifications-block{
     position: fixed;
-    z-index: 3;
+    z-index: 30;
     height: auto;
     left: 50%;
     margin-left:-138px
@@ -52,7 +60,7 @@
     left: 0;
     top: 0;
     background-color: transparent;
-    z-index: 2;
+    z-index: 25;
 }
 
 .pop_up_container {
@@ -69,5 +77,23 @@
     border-radius: 10px;
     position: relative;
 }
+/*{{--Elasticsearch--}}*/
+.absoluteCenter {
 
+    position: absolute;
+    /*position: fixed;*/
+    /*padding-left: 50%;*/
+    /*left: 50%;*/
+    /*margin-left: auto;*/
+
+    width: 500px; /* Need a specific value to work */
+}
+
+.pl-50proc {
+    padding-left: 50%;
+}
+
+.pr-250px {
+    margin-right: 500px;
+}
 

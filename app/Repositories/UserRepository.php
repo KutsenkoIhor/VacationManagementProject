@@ -6,6 +6,7 @@ use App\DTO\UserDTO;
 use App\Factories\UserFactory;
 use App\Interfaces\UserRepositoryInterface;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Collection;
 
 class UserRepository implements UserRepositoryInterface
 {
@@ -17,6 +18,22 @@ class UserRepository implements UserRepositoryInterface
     public function __construct(UserFactory $homePageFactory)
     {
         $this->homePageFactory = $homePageFactory;
+    }
+
+    /**
+     * @return object
+     */
+    public function all(): object
+    {
+        return User::all()->sortByDesc('updated_at');
+    }
+
+    /**
+     * @return object
+     */
+    public function allPagination(): object
+    {
+        return User::orderBy('updated_at', 'DESC')->paginate(10);
     }
 
     /**
@@ -56,5 +73,13 @@ class UserRepository implements UserRepositoryInterface
             'country_id' => $countryId,
             'city_id' => $cityId,
         ]);
+    }
+
+    /**
+     * @param int $userId
+     */
+    public function getUserModelById (int $userId): User
+    {
+        return User::where('id', $userId)->first();
     }
 }

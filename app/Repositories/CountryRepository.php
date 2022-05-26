@@ -57,4 +57,9 @@ class CountryRepository implements CountryRepositoryInterface
     {
         return Country::where('title', $country)->first();
     }
+
+    public function searchCountryById(int $countryId): string|null
+    {
+        return Country::where('id', $countryId)->first()->title;
+    }
 }

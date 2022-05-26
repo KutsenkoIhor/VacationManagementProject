@@ -2207,129 +2207,199 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 //-----------------------------------------/listOfAllEmployees/-----------------------------------------
 if (window.location.pathname === '/listOfAllEmployees') {
-  var clearAfterSave = function clearAfterSave() {
-    //clear Errors
-    elementErrorEmail.classList.remove('active');
-    elementErrorFirstName.classList.remove('active');
-    elementErrorLastName.classList.remove('active');
-    elementErrorVacationDays.classList.remove('active');
-    elementErrorSickDays.classList.remove('active');
-    elementErrorPersonalDays.classList.remove('active');
-    elementErrorRoles.classList.remove('active'); //clear Forms
+  var checkClick = function checkClick() {
+    firstPage.addEventListener('click', function (e) {
+      e.preventDefault();
+      createEmployeeDataTable("1");
+    });
+    previousPage.addEventListener('click', function (e) {
+      e.preventDefault();
 
-    document.getElementById("create_email").value = "";
-    document.getElementById("create_first_name").value = "";
-    document.getElementById("create_last_name").value = "";
-  };
-
-  var saveUser = function saveUser() {
-    //---get form values
-    var country = elementCountry.options[elementCountry.selectedIndex].value;
-    var city = elementCity.options[elementCity.selectedIndex].value;
-    var email = document.getElementById("create_email").value;
-    var firstName = document.getElementById("create_first_name").value;
-    var lastName = document.getElementById("create_last_name").value;
-    var vacationDays = document.getElementById("Vacation_days_list_admin").value;
-    var sickDays = document.getElementById("Sick_days_list_admin").value;
-    var personalDays = document.getElementById("Personal_days_list_admin").value;
-    var checkboxesChecked = [];
-
-    for (var index = 0; index < checkboxes.length; index++) {
-      if (checkboxes[index].checked) {
-        checkboxesChecked.push(checkboxes[index].value);
-      }
-    }
-
-    $.ajax({
-      method: "POST",
-      url: "/listOfAllEmployees/saveUser",
-      dataType: "json",
-      data: {
-        "country": country,
-        "city": city,
-        "email": email,
-        "firstName": firstName,
-        "lastName": lastName,
-        "vacationDays": vacationDays,
-        "sickDays": sickDays,
-        "personalDays": personalDays,
-        "roles": checkboxesChecked
-      },
-      success: function success(data) {
-        pushNotifications(firstName, lastName);
-        clearAfterSave();
-        console.log(data);
-      },
-      error: function error(er) {
-        if (er.status === 422) {
-          validate(er);
-          console.log(er['responseJSON']['errors']);
-        }
+      if (currentPageNumber > 1) {
+        createEmployeeDataTable(currentPageNumber - 1);
+      } else {
+        createEmployeeDataTable("1");
       }
     });
+    nextPage.addEventListener('click', function (e) {
+      e.preventDefault();
 
-    function pushNotifications(firstName, lastName) {
-      elementTextPushNotification.textContent = firstName + " " + lastName + " added successfully";
-      elementPushNotification.classList.add('active');
-      setTimeout(function () {
-        elementPushNotification.classList.remove('active');
-      }, 3700);
+      if (currentPageNumber < lastPageNumber) {
+        createEmployeeDataTable(currentPageNumber + 1);
+      } else {
+        createEmployeeDataTable(currentPageNumber);
+      }
+    });
+    lastPage.addEventListener('click', function (e) {
+      e.preventDefault();
+      createEmployeeDataTable(lastPageNumber);
+    });
+    openPopUpAddEmployee.addEventListener('click', function (e) {
+      e.preventDefault();
+      popUpAddEmployee.classList.add('active');
+      addEmployee();
+    });
+    closePopUpAddEmployee.addEventListener('click', function (e) {
+      e.preventDefault();
+      popUpAddEmployee.classList.remove('active');
+      clearAfterSave();
+    });
+    saveEmployee.addEventListener('click', function (e) {
+      e.preventDefault();
+      saveUser();
+    }); // checkButtonsHistoryVacationUser()
+    // checkButtonsEditUser()
+    // checkButtonsDeleteUser()
+
+    checkCheckBox();
+    closingElasticsearch();
+    sendInputElasticsearch();
+  };
+
+  var elasticsearch = function elasticsearch(data) {
+    var arr = [];
+
+    for (var i in data) {
+      arr['email_' + i] = data[i]['email'];
+      arr['name__' + i] = data[i]['name'];
     }
 
-    function validate(er) {
-      if (er['responseJSON']['errors']['email']) {
-        elementErrorEmail.classList.add('active');
-        elementErrorEmail.textContent = er['responseJSON']['errors']['email'][0];
+    elementElasticsearch.oninput = function () {
+      var globalListElasticsearchUsers = [];
+      elementElasticsearchOptionsList.innerHTML = '';
+      var val = this.value.trim();
+
+      if (val !== '') {
+        var iter = 0;
+        var strSearchUser = null;
+
+        for (var y in arr) {
+          var str = arr[y].toLowerCase();
+          var inputStr = val.toLowerCase();
+
+          if (str.search(inputStr) !== -1) {
+            strSearchUser = arr[y];
+            iter++;
+            globalListElasticsearchUsers.length = 0;
+            globalListElasticsearchUsers[y] = arr[y];
+
+            if (iter < 6) {
+              var li = document.createElement('li');
+              li.textContent = arr[y];
+              li.classList.add('cursor-default', 'select-none', 'px-4', 'py-2', 'hover:bg-gray-50');
+              li.id = y;
+              li.value = y;
+              elementElasticsearchOptionsList.appendChild(li);
+              elementElasticsearchOptionsList.classList.add("active");
+              elementElasticsearchNotFound.classList.remove("active");
+            }
+          }
+        }
+
+        if (!strSearchUser) {
+          elementElasticsearchOptionsList.classList.remove("active");
+          elementElasticsearchNotFound.classList.add("active");
+        }
       } else {
-        elementErrorEmail.classList.remove('active');
+        elementElasticsearchOptionsList.classList.remove("active");
+        elementElasticsearchNotFound.classList.remove("active");
       }
 
-      if (er['responseJSON']['errors']['firstName']) {
-        elementErrorFirstName.classList.add('active');
-        elementErrorFirstName.textContent = er['responseJSON']['errors']['firstName'][0];
-      } else {
-        elementErrorFirstName.classList.remove('active');
-      }
+      checkClickElasticsearchList();
+      dataaa = globalListElasticsearchUsers;
+    };
+  };
 
-      if (er['responseJSON']['errors']['lastName']) {
-        elementErrorLastName.classList.add('active');
-        elementErrorLastName.textContent = er['responseJSON']['errors']['lastName'][0];
-      } else {
-        elementErrorLastName.classList.remove('active');
+  var sendInputElasticsearch = function sendInputElasticsearch() {
+    elementElasticsearch.addEventListener('keypress', function (e) {
+      if (e.which === 13) {
+        e.preventDefault();
+        console.log(dataaa);
+        console.log(elementElasticsearch.value);
+        elementElasticsearchOptionsList.classList.remove("active");
       }
+    });
+  };
 
-      if (er['responseJSON']['errors']['vacationDays']) {
-        elementErrorVacationDays.classList.add('active');
-        elementErrorVacationDays.textContent = er['responseJSON']['errors']['vacationDays'][0];
-      } else {
-        elementErrorVacationDays.classList.remove('active');
+  var closingElasticsearch = function closingElasticsearch() {
+    $(document).click(function (e) {
+      if (!$(e.target).closest('.box-elasticsearchUser').length) {
+        elementElasticsearchOptionsList.classList.remove("active");
+        elementElasticsearchNotFound.classList.remove("active");
       }
+    });
+  };
 
-      if (er['responseJSON']['errors']['sickDays']) {
-        elementErrorSickDays.classList.add('active');
-        elementErrorSickDays.textContent = er['responseJSON']['errors']['sickDays'][0];
-      } else {
-        elementErrorSickDays.classList.remove('active');
-      }
+  var checkButtonsHistoryVacationUser = function checkButtonsHistoryVacationUser(checkButtonsHistoryVacation) {
+    for (var i in checkButtonsHistoryVacation) {
+      var idButton = "button-historyVacations-" + checkButtonsHistoryVacation[i]['value'];
 
-      if (er['responseJSON']['errors']['personalDays']) {
-        elementErrorPersonalDays.classList.add('active');
-        elementErrorPersonalDays.textContent = er['responseJSON']['errors']['personalDays'][0];
-      } else {
-        elementErrorPersonalDays.classList.remove('active');
+      if (idButton !== 'button-historyVacations-undefined') {
+        var elementButtonHistoryVacation = document.getElementById(idButton);
+        elementButtonHistoryVacation.addEventListener('click', function (e) {
+          e.preventDefault();
+        });
       }
+    }
+  };
 
-      if (er['responseJSON']['errors']['roles']) {
-        elementErrorRoles.classList.add('active');
-        elementErrorRoles.textContent = er['responseJSON']['errors']['roles'][0];
-      } else {
-        elementErrorRoles.classList.remove('active');
+  var checkButtonsEditUser = function checkButtonsEditUser(checkButtonsEdit) {
+    var _loop = function _loop(i) {
+      var idButton = "button-edit-" + checkButtonsEdit[i]['value'];
+
+      if (idButton !== 'button-edit-undefined') {
+        var elementButtonEdit = document.getElementById(idButton);
+        elementButtonEdit.addEventListener('click', function (e) {
+          e.preventDefault();
+          editUser(checkButtonsEdit[i]['value']);
+        });
       }
+    };
+
+    for (var i in checkButtonsEdit) {
+      _loop(i);
+    }
+  };
+
+  var checkButtonsDeleteUser = function checkButtonsDeleteUser(checkButtonsDelete) {
+    var _loop2 = function _loop2(i) {
+      var idButton = "button-delete-" + checkButtonsDelete[i]['value'];
+
+      if (idButton !== 'button-delete-undefined') {
+        var elementButtonDelete = document.getElementById(idButton);
+        elementButtonDelete.addEventListener('click', function (e) {
+          e.preventDefault();
+          deleteUser(checkButtonsDelete[i]['value']);
+        });
+      }
+    };
+
+    for (var i in checkButtonsDelete) {
+      _loop2(i);
+    }
+  };
+
+  var checkClickElasticsearchList = function checkClickElasticsearchList() {
+    var _loop3 = function _loop3(i) {
+      var idElasticsearchListUser = elementListElasticsearch[0]['childNodes'][i]['id'] + "";
+
+      if (idElasticsearchListUser !== 'undefined') {
+        // console.log(elementListElasticsearch[0]['childNodes'][i]["textContent"])
+        var elementListElasticsearchUser = document.getElementById(idElasticsearchListUser);
+        elementListElasticsearchUser.addEventListener('click', function (e) {
+          e.preventDefault();
+          elementElasticsearch.value = elementListElasticsearch[0]['childNodes'][i]["textContent"]; // console.log(idElasticsearchListUser)
+        });
+      }
+    };
+
+    for (var i in elementListElasticsearch[0]['childNodes']) {
+      _loop3(i);
     }
   };
 
   var checkCheckBox = function checkCheckBox() {
-    var _loop = function _loop(i) {
+    var _loop4 = function _loop4(i) {
       var role = checkboxes[i]['value'];
       var idBoxCheckBox = role + "_box";
       var idCheckBox = role + "_checkbox";
@@ -2344,8 +2414,62 @@ if (window.location.pathname === '/listOfAllEmployees') {
     };
 
     for (var i in checkboxes) {
-      _loop(i);
+      _loop4(i);
     }
+  };
+
+  var paginationHandler = function paginationHandler(paginationData) {
+    currentPageNumber = paginationData['current_page'];
+    lastPageNumber = paginationData['last_page'];
+    textNumberPage.innerText = currentPageNumber + " / " + lastPageNumber;
+  };
+
+  var createEmployeeDataTable = function createEmployeeDataTable() {
+    var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
+    var url = "/listOfAllEmployees/createEmployeeDataTable?page=" + page;
+    console.log(page);
+    $.ajax({
+      method: "GET",
+      url: url,
+      dataType: "html",
+      success: function success(data) {
+        var block = document.getElementById('1234567');
+        block.innerHTML = data;
+        var checkButtonsHistoryVacation = document.getElementsByClassName('button-historyVacations-user');
+        var checkButtonsEdit = document.getElementsByClassName('button-edit-user');
+        var checkButtonsDelete = document.getElementsByClassName('button-delete-user');
+        checkButtonsHistoryVacationUser(checkButtonsHistoryVacation);
+        checkButtonsEditUser(checkButtonsEdit);
+        checkButtonsDeleteUser(checkButtonsDelete);
+      }
+    });
+    $.ajax({
+      method: "POST",
+      url: url,
+      dataType: "json",
+      success: function success(data) {
+        elasticsearch(data['dataForElasticsearch']);
+        paginationHandler(data['userModel']); // lastPageNumber = paginationData['last_page'];
+        // sendInputElasticsearch(data['dataForElasticsearch'])
+        // console.log(data)
+        // console.log(data['dataForElasticsearch']);
+      }
+    });
+  };
+
+  var clearAfterSave = function clearAfterSave() {
+    //clear Errors
+    elementErrorEmail.classList.remove('active');
+    elementErrorFirstName.classList.remove('active');
+    elementErrorLastName.classList.remove('active');
+    elementErrorVacationDays.classList.remove('active');
+    elementErrorSickDays.classList.remove('active');
+    elementErrorPersonalDays.classList.remove('active');
+    elementErrorRoles.classList.remove('active'); //clear Forms
+
+    document.getElementById("create_email").value = "";
+    document.getElementById("create_first_name").value = "";
+    document.getElementById("create_last_name").value = "";
   };
 
   var addEmployee = function addEmployee() {
@@ -2420,6 +2544,160 @@ if (window.location.pathname === '/listOfAllEmployees') {
     }
   };
 
+  var saveUser = function saveUser() {
+    //---get form values
+    var country = elementCountry.options[elementCountry.selectedIndex].value;
+    var city = elementCity.options[elementCity.selectedIndex].value;
+    var email = document.getElementById("create_email").value;
+    var firstName = document.getElementById("create_first_name").value;
+    var lastName = document.getElementById("create_last_name").value;
+    var vacationDays = document.getElementById("Vacation_days_list_admin").value;
+    var sickDays = document.getElementById("Sick_days_list_admin").value;
+    var personalDays = document.getElementById("Personal_days_list_admin").value;
+    var checkboxesChecked = [];
+
+    for (var index = 0; index < checkboxes.length; index++) {
+      if (checkboxes[index].checked) {
+        checkboxesChecked.push(checkboxes[index].value);
+      }
+    }
+
+    $.ajax({
+      method: "POST",
+      url: "/listOfAllEmployees/saveUser",
+      dataType: "json",
+      data: {
+        "country": country,
+        "city": city,
+        "email": email,
+        "firstName": firstName,
+        "lastName": lastName,
+        "vacationDays": vacationDays,
+        "sickDays": sickDays,
+        "personalDays": personalDays,
+        "roles": checkboxesChecked
+      },
+      success: function success(data) {
+        pushNotifications(firstName, lastName);
+        clearAfterSave();
+        console.log(data);
+        createEmployeeDataTable();
+      },
+      error: function error(er) {
+        if (er.status === 422) {
+          validate(er);
+          console.log(er['responseJSON']['errors']);
+        }
+      }
+    });
+
+    function pushNotifications(firstName, lastName) {
+      elementTextPushNotification.textContent = firstName + " " + lastName + " added successfully";
+      elementPushNotification.classList.add('active');
+      setTimeout(function () {
+        elementPushNotification.classList.remove('active');
+      }, 3700);
+    }
+
+    function validate(er) {
+      if (er['responseJSON']['errors']['email']) {
+        elementErrorEmail.classList.add('active');
+        elementErrorEmail.textContent = er['responseJSON']['errors']['email'][0];
+      } else {
+        elementErrorEmail.classList.remove('active');
+      }
+
+      if (er['responseJSON']['errors']['firstName']) {
+        elementErrorFirstName.classList.add('active');
+        elementErrorFirstName.textContent = er['responseJSON']['errors']['firstName'][0];
+      } else {
+        elementErrorFirstName.classList.remove('active');
+      }
+
+      if (er['responseJSON']['errors']['lastName']) {
+        elementErrorLastName.classList.add('active');
+        elementErrorLastName.textContent = er['responseJSON']['errors']['lastName'][0];
+      } else {
+        elementErrorLastName.classList.remove('active');
+      }
+
+      if (er['responseJSON']['errors']['vacationDays']) {
+        elementErrorVacationDays.classList.add('active');
+        elementErrorVacationDays.textContent = er['responseJSON']['errors']['vacationDays'][0];
+      } else {
+        elementErrorVacationDays.classList.remove('active');
+      }
+
+      if (er['responseJSON']['errors']['sickDays']) {
+        elementErrorSickDays.classList.add('active');
+        elementErrorSickDays.textContent = er['responseJSON']['errors']['sickDays'][0];
+      } else {
+        elementErrorSickDays.classList.remove('active');
+      }
+
+      if (er['responseJSON']['errors']['personalDays']) {
+        elementErrorPersonalDays.classList.add('active');
+        elementErrorPersonalDays.textContent = er['responseJSON']['errors']['personalDays'][0];
+      } else {
+        elementErrorPersonalDays.classList.remove('active');
+      }
+
+      if (er['responseJSON']['errors']['roles']) {
+        elementErrorRoles.classList.add('active');
+        elementErrorRoles.textContent = er['responseJSON']['errors']['roles'][0];
+      } else {
+        elementErrorRoles.classList.remove('active');
+      }
+    }
+  };
+
+  var deleteUser = function deleteUser(userId) {
+    $.ajax({
+      method: "POST",
+      url: "/listOfAllEmployees/deleteUser",
+      dataType: "json",
+      data: {
+        "userId": userId
+      },
+      success: function success(data) {
+        console.log(data);
+        createEmployeeDataTable(currentPageNumber);
+      },
+      error: function error(er) {
+        console.log(er['responseJSON']['errors']);
+      }
+    });
+  };
+
+  var editUser = function editUser(userId) {
+    var modalWindowEditUser = document.getElementById('pop_up_edit_user');
+    var buttonCloseModalWindowEditUser = document.getElementById("close-modal-window-edit-user");
+    modalWindowEditUser.classList.add('active');
+    buttonCloseModalWindowEditUser.addEventListener('click', function (e) {
+      e.preventDefault();
+      modalWindowEditUser.classList.remove('active');
+    });
+    $.ajax({
+      method: "POST",
+      url: "/listOfAllEmployees/editUser",
+      dataType: "json",
+      data: {
+        "userId": userId
+      },
+      success: function success(data) {
+        fillingEmployeeDetailsForEditing(data);
+        console.log(data);
+      },
+      error: function error(er) {
+        console.log(er);
+      }
+    });
+
+    function fillingEmployeeDetailsForEditing(data) {
+      var elementEditEmail = document.getElementById('edit_email');
+    }
+  };
+
   var openPopUpAddEmployee = document.getElementById("add_pop_up_employee");
   var closePopUpAddEmployee = document.getElementById("close_pop_up_employee");
   var popUpAddEmployee = document.getElementById("pop_up_employee");
@@ -2434,29 +2712,29 @@ if (window.location.pathname === '/listOfAllEmployees') {
   var elementCountry = document.getElementById("list_country_admin");
   var elementCity = document.getElementById("list_city_admin");
   var checkboxes = document.getElementsByClassName('create_checkbox');
+  var checkboxesEditUser = document.getElementsByClassName('create_checkbox_edit_user');
   var elementRole = document.getElementById("role_list_admin");
   var elementPushNotification = document.getElementById("push-notifications");
   var elementTextPushNotification = document.getElementById("push-notifications-text");
+  var elementElasticsearch = document.getElementById("elasticsearchListUser");
+  var elementElasticsearchOptionsList = document.getElementById("elasticsearchOptionsList");
+  var elementElasticsearchNotFound = document.getElementById("elasticsearchNotFound");
+  var elementListElasticsearch = document.getElementsByClassName('elasticsearchOptionsListUser');
+  var firstPage = document.getElementById("first-page-table-user");
+  var previousPage = document.getElementById("previous-page-table-user");
+  var nextPage = document.getElementById("next-page-table-user");
+  var lastPage = document.getElementById("last-page-table-user");
+  var textNumberPage = document.getElementById("text-number-page");
+  var currentPageNumber;
+  var lastPageNumber;
+  dataaa = [];
   $.ajaxSetup({
     headers: {
       'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
     }
   });
-  openPopUpAddEmployee.addEventListener('click', function (e) {
-    e.preventDefault();
-    popUpAddEmployee.classList.add('active');
-    addEmployee();
-  });
-  closePopUpAddEmployee.addEventListener('click', function (e) {
-    e.preventDefault();
-    popUpAddEmployee.classList.remove('active');
-    clearAfterSave();
-  });
-  saveEmployee.addEventListener('click', function (e) {
-    e.preventDefault();
-    saveUser();
-  });
-  checkCheckBox();
+  createEmployeeDataTable();
+  checkClick();
 }
 
 /***/ }),

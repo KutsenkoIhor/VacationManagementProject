@@ -18,5 +18,6 @@ interface CountryRepositoryInterface
     public function delete($id);
     public function orderBy(string $colum): Collection;
     public function searchByCountry(string $country): Country;
+    public function searchCountryById(int $countryId): string|null;
 
 }

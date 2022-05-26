@@ -48,6 +48,10 @@ Route::name('page.')->group(function () {
         Route::get('/', [ListEmployeesController::class, 'listEmployees'])->name('listOfAllEmployees');
         Route::post('/addUser', [ListEmployeesController::class, 'addUser']);
         Route::post('/saveUser', [ListEmployeesController::class, 'saveUser']);
+        Route::post('/deleteUser', [ListEmployeesController::class, 'deleteUser']);
+        Route::post('/editUser', [ListEmployeesController::class, 'getInformationUserForEdit']);
+        Route::get('/createEmployeeDataTable', [ListEmployeesController::class, 'getEmployeeDataTable']);
+        Route::post('/createEmployeeDataTable', [ListEmployeesController::class, 'getPaginateData']);
     });
 //    Route::get('/listOfAllEmployees', [ListOfAllEmployees::class, 'getRoles'])
 //        ->middleware('auth')->name('listOfAllEmployees');

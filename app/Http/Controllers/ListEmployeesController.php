@@ -2,48 +2,33 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\deleteUserRequest;
 use App\Http\Requests\SaveNewUserRequest;
-use App\Interfaces\CityRepositoryInterface;
 use App\Interfaces\CountryRepositoryInterface;
 use App\Interfaces\RoleRepositoryInterface;
-use App\Models\City;
-use App\Models\Country;
-use App\Models\Role;
-use App\Repositories\UserRepository;
-use App\Repositories\VacationDaysPerYearRepository;
 use App\Services\ListEmployeesService;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
 
 class ListEmployeesController extends Controller
 {
     private CountryRepositoryInterface $countryRepository;
     private RoleRepositoryInterface $roleRepository;
     private ListEmployeesService $listEmployeesService;
-    private CityRepositoryInterface $cityRepository;
-    private UserRepository $userRepository;
-    private VacationDaysPerYearRepository $vacationDaysPerYearRepository;
 
 
     public function __construct(
         CountryRepositoryInterface $countryRepository,
         RoleRepositoryInterface $roleRepository,
         ListEmployeesService $listEmployeesService,
-        CityRepositoryInterface $cityRepository,
-        UserRepository $userRepository,
-        VacationDaysPerYearRepository $vacationDaysPerYearRepository,
     )
-
     {
         $this->countryRepository = $countryRepository;
         $this->roleRepository = $roleRepository;
         $this->listEmployeesService = $listEmployeesService;
-        $this->cityRepository = $cityRepository;
-        $this->userRepository = $userRepository;
-        $this->vacationDaysPerYearRepository = $vacationDaysPerYearRepository;
     }
 
     public function listEmployees(): Factory|View|Application
@@ -51,9 +36,30 @@ class ListEmployeesController extends Controller
         $dataCountries = $this->countryRepository->orderBy('title');
         $dataRole = $this->roleRepository->all();
 
-        $arrData = $this->listEmployeesService->createListEmployees($dataCountries, $dataRole);
+        $arrData = $this->listEmployeesService->modalWindow($dataCountries, $dataRole);
+//        $arrData['user parameters'] = $this->listEmployeesService->listEmployeesInformation();
+//        dd($arrData);
+        return view('pages.listOfAllEmployeesPage', ['arrData' => $arrData]);
+    }
 
-        return view('pages.listOfAllEmployeesPage', ['arrRolee' => $arrData]);
+    public function getEmployeeDataTable(): Factory|View|Application
+    {
+        $x = $this->listEmployeesService->listEmployeesInformation();
+        $arrData['user parameters'] = $x['userInfo'];
+
+        return view('listEmployees.tableListEmployees', ['arrData' => $arrData]);
+//        return view('pages.listOfAllEmployeesPage', ['arrData' => $arrData]);
+    }
+
+    public function getPaginateData(): JsonResponse
+    {
+        $x = $this->listEmployeesService->listEmployeesInformation();
+        $dataForElasticsearch = $this->listEmployeesService->dataForElasticsearch();
+        $arr['userModel'] = $x['userModel'];
+        $arr['dataForElasticsearch'] = $dataForElasticsearch;
+//        $arr = [$x['userModel'], $dataForElasticsearch];
+        return response()->json($arr);
+
     }
 
     public function addUser(): JsonResponse
@@ -66,33 +72,21 @@ class ListEmployeesController extends Controller
 
     public function saveUser(SaveNewUserRequest $request): JsonResponse
     {
-        $collectionCountry = $this->countryRepository->searchByCountry($request->get('country'));
-        $idCountry = $this->listEmployeesService->takeIdCountry($collectionCountry);
-
-        $collectionCity = $this->cityRepository->searchByCountryIdAndCity($idCountry, $request->get('city'));
-        $idCity = $this->listEmployeesService->takeIdCity($collectionCity);
-
-        DB::transaction(function () use ($request, $idCountry, $idCity) {
-            $modelUser = $this->userRepository->createUser(
-                $request->get('firstName'),
-                $request->get('lastName'),
-                $request->get('email'),
-                null,
-                $idCountry,
-                $idCity,
-            );
-
-            foreach ($request->get('roles') as $role) {
-                $modelUser->assignRole($role);
-            }
-
-            $idUser = $modelUser["id"];
-
-            $this->vacationDaysPerYearRepository->create($idUser, $request->get('vacationDays'), $request->get('personalDays'), $request->get('sickDays'));
-        });
-
+        $idCountry = $this->listEmployeesService->takeIdCountry($request);
+        $idCity = $this->listEmployeesService->takeIdCity($idCountry, $request);
 
         return $this->listEmployeesService->saveUser($request, $idCountry, $idCity);
-
     }
+
+    public function deleteUser(deleteUserRequest $request): JsonResponse
+    {
+        return $this->listEmployeesService->deleteUser($request->get('userId'));
+    }
+
+    public function getInformationUserForEdit(Request $request): JsonResponse
+    {
+        $employeeInformation = $this->listEmployeesService->employeeInformationById($request->get('userId'));
+        return response()->json($employeeInformation);
+    }
+
 }

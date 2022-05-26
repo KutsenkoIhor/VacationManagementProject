@@ -44,7 +44,6 @@ class SocialController extends Controller
                 null,
             );
 
-//            $User->assignRole('System Admin');//----
             Auth::login($createUser);
         }
         return redirect(route('page.homePage'));

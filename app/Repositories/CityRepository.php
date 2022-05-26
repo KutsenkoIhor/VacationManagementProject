@@ -54,4 +54,9 @@ class CityRepository implements CityRepositoryInterface
             ['country_id', $countryID],
         ])->first();
     }
+
+    public function searchCityById(int $cityId): string|null
+    {
+        return City::where('id', $cityId)->first()->title;
+    }
 }

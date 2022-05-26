@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -59,4 +58,44 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function vacationDaysLeft(): object
+    {
+        return $this->hasOne(VacationDaysLeft::class);
+    }
+
+    public function vacationDaysPerYear(): object
+    {
+        return $this->hasOne(VacationDaysPerYear::class);
+    }
+
+    public function vacations(): object
+    {
+        return $this->hasOne(Vacation::class);
+    }
+
+    public function cityHr(): object
+    {
+        return $this->hasOne(CityHr::class, 'hr_id');
+    }
+
+    public function employeeHrForeignKeyEmployee(): object
+    {
+        return $this->hasOne(EmployeeHr::class, 'employee_id');
+    }
+
+    public function employeeHrForeignKeyHr(): object
+    {
+        return $this->hasOne(EmployeeHr::class, 'hr_id');
+    }
+
+    public function employeePmForeignKeyEmployee(): object
+    {
+        return $this->hasOne(EmployeePm::class, 'employee_id');
+    }
+
+    public function employeePmForeignKeyPm(): object
+    {
+        return $this->hasOne(EmployeePm::class, 'pm_id');
+    }
 }

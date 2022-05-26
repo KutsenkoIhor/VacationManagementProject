@@ -16,4 +16,5 @@ interface CityRepositoryInterface
     public function getCountry(int $country_id);
     public function getCountries();
     public function searchByCountryIdAndCity(int $countryID, string $city): City;
+    public function searchCityById(int $cityId): string|null;
 }

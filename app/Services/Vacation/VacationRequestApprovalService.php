@@ -51,7 +51,7 @@ class VacationRequestApprovalService
             return;
         }
 
-        if ($approveCount == 1) {
+        if ($approveCount == 2) {
             event(new ApproveVacationRequestEvent($vacationRequestId));
         }
 

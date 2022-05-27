@@ -25,7 +25,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class VacationRequestApproval extends Model
 {
     use HasFactory;
-    use SoftDeletes;
 
     protected $casts = [
         'is_approved' => 'bool'

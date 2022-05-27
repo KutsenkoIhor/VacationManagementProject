@@ -4,7 +4,7 @@
 
     <div class="sm:flex sm:items-center">
         <div class="sm:flex-auto">
-            <p class="mt-2 text-lg text-gray-800">A list of all your vacations</p>
+            <p class="mt-2 text-lg text-gray-800">A list of all your vacation requests.</p>
 
             <div class="mt-3 flex flex-col">
                 <div class="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -40,16 +40,16 @@
                                 </tr>
                                 </thead>
                                 <tbody class="divide-y divide-gray-200 bg-white">
-                                @foreach($vacations as $vacation)
+                                @foreach($vacationRequests as $vacationRequest)
                                     <tr>
-                                        <td class="whitespace-nowrap py-4 pl-4 pr-4 text-sm text-center text-gray-600 sm:pl-6">{{ $vacation->getStartDate()->format('Y-m-d') }}</td>
-                                        <td class="whitespace-nowrap p-4 text-sm text-center text-gray-600">{{ $vacation->getEndDate()->format('Y-m-d') }}</td>
-                                        <td class="whitespace-nowrap p-4 text-sm text-center text-gray-600">{{ $vacation->getType() }}</td>
-                                        <td class="whitespace-nowrap p-4 text-sm text-center text-gray-600">{{ $vacation->getNumberOfDays() }}</td>
-                                        <td class="whitespace-nowrap p-4 text-sm text-center text-gray-600">{{ $vacation->getCreatedAt() }}</td>
+                                        <td class="whitespace-nowrap py-4 pl-4 pr-4 text-sm text-center text-gray-600 sm:pl-6">{{ $vacationRequest->getStartDate()->format('Y-m-d') }}</td>
+                                        <td class="whitespace-nowrap p-4 text-sm text-center text-gray-600">{{ $vacationRequest->getEndDate()->format('Y-m-d') }}</td>
+                                        <td class="whitespace-nowrap p-4 text-sm text-center text-gray-600">{{ $vacationRequest->getType() }}</td>
+                                        <td class="whitespace-nowrap p-4 text-sm text-center text-gray-600">{{ $vacationRequest->getNumberOfDays() }}</td>
+                                        <td class="whitespace-nowrap p-4 text-sm text-center text-gray-600">{{ $vacationRequest->getCreatedAt() }}</td>
                                         <td class="whitespace-nowrap p-4 text-sm text-center text-gray-600">
                                     <span
-                                        class="inline-flex rounded-full bg-indigo-100 px-2 text-xs font-semibold leading-5 text-indigo-800">{{ $vacation->isApproved() }}
+                                        class="inline-flex rounded-full bg-indigo-100 px-2 text-xs font-semibold leading-5 text-indigo-800">{{ $vacationRequest->isApproved() }}
                                     </span>
                                         </td>
                                     </tr>

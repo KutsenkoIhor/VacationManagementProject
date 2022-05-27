@@ -24,6 +24,8 @@ return new class extends Migration
 
             $table->foreign('vacation_request_id')->references('id')->on('vacation_requests');
             $table->foreign('user_id')->references('id')->on('users');
+
+            $table->unique(['vacation_request_id', 'user_id']);
         });
     }
 

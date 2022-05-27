@@ -27,7 +27,6 @@ class VacationFactory
             $vacation->end_date,
             $vacation->number_of_days,
             $vacation->type,
-            $vacation->status,
             $vacation->created_at,
             $vacation->updated_at,
             $this->user->makeDTOFromModel($vacation->user),

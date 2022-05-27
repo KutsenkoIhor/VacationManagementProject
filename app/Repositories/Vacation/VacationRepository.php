@@ -39,10 +39,12 @@ class VacationRepository implements VacationRepositoryInterface
 
     public function getUpcomingVacations(Carbon $startDate, Carbon $endDate): array
     {
-        return $this->vacationFactory->makeDTOFromModelCollection(Vacation::whereBetween('start_date', [$startDate, $endDate])
-            ->orWhereBetween('end_date', [$startDate,  $endDate])
-            ->with('user') //TODO think about performance
-            ->get());
+        return $this->vacationFactory->makeDTOFromModelCollection(
+            Vacation::whereBetween('start_date', [$startDate, $endDate])
+                ->orWhereBetween('end_date', [$startDate,  $endDate])
+                ->with('user') //TODO think about performance
+                ->get()
+        );
     }
 
 }

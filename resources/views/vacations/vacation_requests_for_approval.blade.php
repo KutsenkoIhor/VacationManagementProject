@@ -76,7 +76,7 @@
                     const vacation_request_id = $(this).attr("vacation-request-id");
                     data.is_approved = $(this).val();
                     $.ajax({
-                        url: '/api/vacations/' + vacation_request_id + '/createVacationRequestApproval',
+                        url: '/api/vacationRequests/' + vacation_request_id + '/createVacationRequestApproval',
                         type: 'POST',
                         data: data,
                         success: function () {

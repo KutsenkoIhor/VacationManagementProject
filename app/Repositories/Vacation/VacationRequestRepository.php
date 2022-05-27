@@ -28,18 +28,18 @@ class VacationRequestRepository implements VacationRequestRepositoryInterface
         int $numberOfDays,
         string $type
     ): VacationRequestDTO {
-        $vacation = new VacationRequest();
+        $vacationRequest = new VacationRequest();
 
-        $vacation->user_id = $userId;
-        $vacation->start_date = $startDate;
-        $vacation->end_date = $endDate;
-        $vacation->number_of_days = $numberOfDays;
-        $vacation->type = $type;
-        $vacation->is_approved = null;
+        $vacationRequest->user_id = $userId;
+        $vacationRequest->start_date = $startDate;
+        $vacationRequest->end_date = $endDate;
+        $vacationRequest->number_of_days = $numberOfDays;
+        $vacationRequest->type = $type;
+        $vacationRequest->is_approved = null;
 
-        $vacation->save();
+        $vacationRequest->save();
 
-        return $this->vacationRequestFactory->makeDTOFromModel($vacation);
+        return $this->vacationRequestFactory->makeDTOFromModel($vacationRequest);
     }
 
     public function getVacationRequestsByUserId(int $userId): array

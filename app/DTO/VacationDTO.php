@@ -13,20 +13,18 @@ class VacationDTO implements \JsonSerializable
     private Carbon $endDate;
     private int $numberOfDays;
     private string $type;
-    private string $status;
     private Carbon $createdAt;
     private Carbon $updatedAt;
     private UserDTO $user;
     private VacationRequestDTO $vacationRequest;
 
-    public function __construct(int $id, Carbon $startDate, Carbon $endDate, int $numberOfDays, string $type, string $status, Carbon $createdAt, Carbon $updatedAt, UserDTO $user, VacationRequestDTO $vacationRequest)
+    public function __construct(int $id, Carbon $startDate, Carbon $endDate, int $numberOfDays, string $type, Carbon $createdAt, Carbon $updatedAt, UserDTO $user, VacationRequestDTO $vacationRequest)
     {
         $this->id = $id;
         $this->startDate = $startDate;
         $this->endDate = $endDate;
         $this->numberOfDays = $numberOfDays;
         $this->type = $type;
-        $this->status = $status;
         $this->createdAt = $createdAt;
         $this->updatedAt = $updatedAt;
         $this->user = $user;
@@ -58,11 +56,6 @@ class VacationDTO implements \JsonSerializable
         return $this->type;
     }
 
-    public function getStatus(): string
-    {
-        return $this->status;
-    }
-
     public function getCreatedAt(): Carbon
     {
         return $this->createdAt;
@@ -91,7 +84,6 @@ class VacationDTO implements \JsonSerializable
             'end_date'         => $this->getEndDate(),
             'number_of_days'   => $this->getNumberOfDays(),
             'type'             => $this->getType(),
-            'status'           => $this->getStatus(),
             'created_at'       => $this->getCreatedAt(),
             'updated_at'       => $this->getUpdatedAt(),
             'user'             => $this->getUser(),

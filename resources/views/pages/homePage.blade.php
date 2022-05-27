@@ -37,7 +37,7 @@
                             <div class="mt-5 flex justify-center sm:mt-0">
                                 <a href="{{route('vacations.create.form')}}"
                                    class="items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-indigo-800 bg-indigo-100 hover:bg-indigo-200 text-center bg-indigo-100 hover:bg-indigo-200 text-center">
-                                    Create vacation </a>
+                                    Create vacation request</a>
                             </div>
                             @endhasrole
                         </div>

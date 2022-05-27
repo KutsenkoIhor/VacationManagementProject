@@ -13,6 +13,6 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-Route::prefix('vacations')->name('vacations.')->middleware('auth')->group(function () {
+Route::prefix('vacationRequests')->name('vacationRequests.')->middleware('auth')->group(function () {
     Route::post('/{id}/createVacationRequestApproval', [VacationRequestApprovalController::class, 'createVacationRequestApproval'])->name('createVacationRequestApproval');
 });

@@ -13,7 +13,6 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
 
@@ -46,14 +45,15 @@ class VacationRequestController  extends Controller
             $request->get('type')
         );
 
-        return redirect('/vacations/history');
+        return redirect('/vacations/requestHistory');
     }
 
-    public function getVacationRequestsByUserId(): array
+    public function getVacationRequestsByUserId(): Application|Factory|View
     {
         $userId = Auth::id();
+        $vacationRequests = $this->vacationRequestService->getVacationRequestsByUserId($userId);
 
-        return $this->vacationRequestService->getVacationRequestsByUserId($userId);
+        return view('vacations/vacation_request_history', ['vacationRequests' => $vacationRequests]);
     }
 
     public function getVacationRequestsForApproval(): Factory|View|Application
@@ -61,6 +61,6 @@ class VacationRequestController  extends Controller
         $userId = Auth::id();
         $vacationRequests = $this->vacationRequestService->getVacationRequestsForApproval($userId);
 
-        return view('vacations/vacation_status', ['vacationRequests' => $vacationRequests]);
+        return view('vacations/vacation_requests_for_approval', ['vacationRequests' => $vacationRequests]);
     }
 }

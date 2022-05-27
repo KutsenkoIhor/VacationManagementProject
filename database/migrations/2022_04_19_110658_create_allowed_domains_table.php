@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('allowed_domains', function (Blueprint $table) {
             $table->id();
-            $table->string('domain');
+            $table->string('name');
         });
     }
 

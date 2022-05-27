@@ -286,7 +286,7 @@
                         Manage HRs and PMs (4)
                     </a>
 
-                    <a href="{{route('page.settingsPage')}}"
+                    <a href="{{route('countries.index')}}"
                        class="text-gray-100 hover:text-white hover:bg-gray-700 group flex items-center px-2 py-2 text-sm leading-6 font-medium rounded-md">
                         <!-- Heroicon name: outline/document-report -->
                         <svg class="mr-4 flex-shrink-0 h-6 w-6 text-gray-100" xmlns="http://www.w3.org/2000/svg"
@@ -333,6 +333,7 @@
     <div class="lg:pl-64 flex flex-col flex-1">
         <main class="pb-8 pt-1">
             <div class="lg:px-3">
+                @yield('nav')
                 @yield('content')
             </div>
         </main>

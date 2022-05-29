@@ -4,9 +4,8 @@ namespace App\Repositories;
 
 use App\DTO\UserDTO;
 use App\Factories\UserFactory;
-use App\Interfaces\UserRepositoryInterface;
 use App\Models\User;
-use Illuminate\Database\Eloquent\Collection;
+use App\Repositories\Interfaces\UserRepositoryInterface;
 
 class UserRepository implements UserRepositoryInterface
 {
@@ -31,9 +30,52 @@ class UserRepository implements UserRepositoryInterface
     /**
      * @return object
      */
-    public function allPagination(): object
+    public function allPagination(
+        array $role,
+        string|int|null $countryId,
+        string|int|null $cityId,
+    ): object {
+        $queryBuilder = User::query();
+
+        if ($role !== []) {
+            $queryBuilder->whereIn('id', $role);
+        }
+//        dd($queryBuilder);
+        if ($countryId !== 'All') {
+            $queryBuilder->where('country_id', $countryId);
+//            dd($queryBuilder->get());
+//            dd($queryBuilder->orderBy('updated_at', 'DESC')->paginate(5));
+        }
+        if ($cityId !== 'All') {
+            $queryBuilder->where('city_id', $cityId);
+        }
+
+        $z =  $queryBuilder->orderBy('updated_at', 'DESC')->paginate(5);
+
+//        dd($z);
+        return $z;
+
+
+    }
+
+
+//    public function allPaginations (): object
+//    {
+//        dd(User::orderBy('updated_at', 'DESC')->paginate(5));
+//        return User::orderBy('updated_at', 'DESC')->paginate(5);
+//    }
+//        return User::where('country_id', '1')->where('country_id', '1')->orderBy('updated_at', 'DESC')->paginate(5);
+//        return User::orderBy('updated_at', 'DESC')->paginate(5);
+
+
+
+    /**
+     * @param $arrIdUserElasticsearch
+     * @return object
+     */
+    public function Elasticsearchpagination($arrIdUserElasticsearch): object
     {
-        return User::orderBy('updated_at', 'DESC')->paginate(10);
+        return User::whereIn('id', $arrIdUserElasticsearch)->orderBy('updated_at', 'DESC')->paginate(5);
     }
 
     /**
@@ -76,7 +118,24 @@ class UserRepository implements UserRepositoryInterface
     }
 
     /**
+     * @param string|null $firstName
+     * @param string|null $lastName
+     * @param string|null $userEmail
+     * @param int|null $countryId
+     * @param int|null $cityId
+     * @return object
+     */
+    public function updateOrCreate(string|null $firstName, string|null $lastName, string|null $userEmail, int|null $countryId, int|null $cityId): object
+    {
+        return User::updateOrCreate(
+            ['email' => $userEmail],
+            ['first_name'=> $firstName, 'last_name' => $lastName, 'country_id' => $countryId, 'city_id' => $cityId,]
+        );
+    }
+
+    /**
      * @param int $userId
+     * @return User
      */
     public function getUserModelById (int $userId): User
     {

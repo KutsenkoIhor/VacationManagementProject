@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace App\Repositories;
 
-use App\Factories\CountryFactory;
-use App\Interfaces\CountryRepositoryInterface;
 use App\Models\City;
 use App\Models\Country;
+use App\Repositories\Interfaces\CountryRepositoryInterface;
 use Illuminate\Database\Eloquent\Collection;
 
 
@@ -61,5 +60,10 @@ class CountryRepository implements CountryRepositoryInterface
     public function searchCountryById(int $countryId): string|null
     {
         return Country::where('id', $countryId)->first()->title;
+    }
+
+    public function searchIdByCountry(string $country): int|null
+    {
+        return Country::where('title', $country)->first()->id;
     }
 }

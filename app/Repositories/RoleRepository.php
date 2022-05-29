@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Repositories;
 
-use App\Interfaces\RoleRepositoryInterface;
+use App\Repositories\Interfaces\RoleRepositoryInterface;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 

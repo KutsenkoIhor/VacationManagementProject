@@ -11,12 +11,21 @@ if(window.location.pathname === '/listOfAllEmployees'){
     const elementErrorVacationDays = document.getElementById("vacation_days_error");
     const elementErrorSickDays = document.getElementById("sick_days_error");
     const elementErrorPersonalDays = document.getElementById("personal_days_error");
+    const buttonCloseModalWindowEditUser = document.getElementById("close-modal-window-edit-user");
+    const buttonCloseModalWindowVacationHistoryUser = document.getElementById("close-modal-window-history-vacation-user");
+    const elementErrorRolesEdit = document.getElementById("roles_edit_error");
+    const elementErrorEmailEdit = document.getElementById("email-edit_error");
+    const elementErrorLastNameEdit = document.getElementById("last_name_edit_error");
+    const elementErrorFirstNameEdit = document.getElementById("first_name_edit_error");
+    const elementErrorVacationDaysEdit = document.getElementById("vacation_days_edit_error");
+    const elementErrorSickDaysEdit = document.getElementById("sick_days_edit_error");
+    const elementErrorPersonalDaysEdit = document.getElementById("personal_days_edit_error");
+    const modalWindowEditUser = document.getElementById('pop_up_edit_user');
+    const modalWindowVacationHistory = document.getElementById("pop_up_viewing_user's_vacation_history");
     const elementCountry = document.getElementById("list_country_admin");
     const elementCity = document.getElementById("list_city_admin");
     const checkboxes = document.getElementsByClassName('create_checkbox');
     const checkboxesEditUser = document.getElementsByClassName('create_checkbox_edit_user');
-
-
     const elementRole = document.getElementById("role_list_admin");
     const elementPushNotification = document.getElementById("push-notifications");
     const elementTextPushNotification = document.getElementById("push-notifications-text");
@@ -29,11 +38,17 @@ if(window.location.pathname === '/listOfAllEmployees'){
     const nextPage = document.getElementById("next-page-table-user");
     const lastPage = document.getElementById("last-page-table-user");
     const textNumberPage = document.getElementById("text-number-page");
+    const updateEmployee = document.getElementById("update_pop_up_employee");
+
+    const elementRoleSort = document.getElementById("list_roles_sort");
+    const elementCountrySort = document.getElementById("list_countries_sort");
+    const elementCitySort = document.getElementById("list_cities_sort");
+
 
 
     var currentPageNumber;
     var lastPageNumber;
-    dataaa = [];
+    arrUserelasticsearch = {};
 
 
     $.ajaxSetup({
@@ -94,13 +109,84 @@ if(window.location.pathname === '/listOfAllEmployees'){
             saveUser();
         })
 
-        // checkButtonsHistoryVacationUser()
-        // checkButtonsEditUser()
-        // checkButtonsDeleteUser()
+        buttonCloseModalWindowEditUser.addEventListener('click', function (e){
+            e.preventDefault();
+            modalWindowEditUser.classList.remove('active');
+            clearErrorModalWindowEditUser();
+        })
+
+        buttonCloseModalWindowVacationHistoryUser.addEventListener('click', function (e){
+            e.preventDefault();
+            modalWindowVacationHistory.classList.remove('active');
+        })
+
+        updateEmployee.addEventListener('click', function (e){
+            e.preventDefault();
+            updateUser();
+        })
+
+        elementRoleSort.addEventListener('change', function (e){
+            e.preventDefault();
+            createEmployeeDataTable()
+            // console.log(elementRoleSort.options[elementRoleSort.selectedIndex].value)
+        });
+
+        elementCountrySort.addEventListener('change', function (e){
+            e.preventDefault();
+            getListOfCitiesSort(elementCountrySort)
+            createEmployeeDataTable()
+            // console.log(elementCountrySort.options[elementCountrySort.selectedIndex].value)
+        });
+
+        elementCitySort.addEventListener('change', function (e){
+            e.preventDefault();
+            createEmployeeDataTable()
+            // console.log(elementCitySort.options[elementCitySort.selectedIndex].value)
+        });
+
         checkCheckBox()
         closingElasticsearch()
         sendInputElasticsearch()
+        checkCheckBoxEdit()
 
+    }
+
+    function getListOfCitiesSort(elementCountrySort)
+    {
+        let arr = $.ajax({
+            url: "/listOfAllEmployees/addUser",       /* Куда пойдет запрос */
+            method: 'POST',             /* Метод передачи (post или get) */
+            dataType: 'json',          /* Тип данных в ответе (xml, json, script, html). */
+            async: false,
+            data: {},      /* Параметры передаваемые в запросе. */
+            global: true,
+            success: function (response) {
+                return response;
+            }
+        }).responseJSON;
+
+        // let element = document.getElementById("list_city_admin");
+        //---Delete all items in the list---
+        const opts = elementCitySort.options;
+        while(opts.length > 0) {
+            opts[opts.length - 1] = null;
+        }
+        const country = elementCountrySort.options[elementCountrySort.selectedIndex].value;
+        const oOpt1st = document.createElement('OPTION');
+        oOpt1st.value = 'All';
+        oOpt1st.text = 'All';
+        elementCitySort.appendChild(oOpt1st);
+        for( const i in arr['CountriesAndCities']){
+            if (country === i) {
+                for (const y in arr['CountriesAndCities'][i]){
+                    //---Create new list items---
+                    const oOpt1st = document.createElement('OPTION');
+                    oOpt1st.value = arr['CountriesAndCities'][i][y];
+                    oOpt1st.text = arr['CountriesAndCities'][i][y];
+                    elementCitySort.appendChild(oOpt1st);
+                }
+            }
+        }
     }
 
     function elasticsearch(data)
@@ -147,7 +233,11 @@ if(window.location.pathname === '/listOfAllEmployees'){
                 elementElasticsearchNotFound.classList.remove("active")
             }
             checkClickElasticsearchList()
-            dataaa = globalListElasticsearchUsers;
+            arrUserelasticsearch = {};
+            for (let z in globalListElasticsearchUsers) {
+                arrUserelasticsearch[z] = globalListElasticsearchUsers[z]
+            }
+            // dataaa = globalListElasticsearchUsers;
         }
     }
 
@@ -156,9 +246,11 @@ if(window.location.pathname === '/listOfAllEmployees'){
         elementElasticsearch.addEventListener('keypress', function (e){
             if(e.which === 13) {
                 e.preventDefault();
-                console.log(dataaa)
-                console.log(elementElasticsearch.value);
+                // console.log(dataaa)
+                // console.log(elementElasticsearch.value);
                 elementElasticsearchOptionsList.classList.remove("active");
+                createEmployeeDataTable(1)
+
             }
         });
     }
@@ -181,6 +273,7 @@ if(window.location.pathname === '/listOfAllEmployees'){
                 let elementButtonHistoryVacation = document.getElementById(idButton);
                 elementButtonHistoryVacation.addEventListener('click', function (e){
                     e.preventDefault();
+                    reviewHistoryVacationUser(checkButtonsHistoryVacation[i]['value'])
                 });
             }
         }
@@ -248,6 +341,22 @@ if(window.location.pathname === '/listOfAllEmployees'){
         }
     }
 
+    function checkCheckBoxEdit()
+    {
+        for (let i in checkboxesEditUser) {
+            let role = checkboxesEditUser[i]['value']
+            let idBoxCheckBox = role + "_box_edit";
+            let idCheckBox = role + "_checkbox_edit";
+            if (idBoxCheckBox !== 'undefined_box_edit') {
+                let elementBoxCheckBoxEdit = document.getElementById(idBoxCheckBox);
+                elementBoxCheckBoxEdit.addEventListener('click', function (e){
+                    e.preventDefault();
+                    document.getElementById(idCheckBox).checked = !document.getElementById(idCheckBox).checked;
+                });
+            }
+        }
+    }
+
     function paginationHandler(paginationData)
     {
         currentPageNumber = paginationData['current_page'];
@@ -258,12 +367,21 @@ if(window.location.pathname === '/listOfAllEmployees'){
     function createEmployeeDataTable(page = 1)
     {
         let url = "/listOfAllEmployees/createEmployeeDataTable?page=" + page
-        console.log(page)
+        console.log(elementRoleSort.options[elementRoleSort.selectedIndex].value)
+        console.log(elementCountrySort.options[elementCountrySort.selectedIndex].value)
+        console.log(elementCitySort.options[elementCitySort.selectedIndex].value)
+        console.log(arrUserelasticsearch)
 
         $.ajax({
             method: "GET",
             url: url,
             dataType: "html",
+            data: {
+                "elasticsearch" : JSON.stringify(arrUserelasticsearch),
+                "roleSort" : elementRoleSort.options[elementRoleSort.selectedIndex].value,
+                "countrySort" : elementCountrySort.options[elementCountrySort.selectedIndex].value,
+                "citySort" : elementCitySort.options[elementCitySort.selectedIndex].value,
+            },
             success: function(data) {
 
                 let block = document.getElementById('1234567');
@@ -282,6 +400,12 @@ if(window.location.pathname === '/listOfAllEmployees'){
             method: "POST",
             url: url,
             dataType: "json",
+            data: {
+                "elasticsearch" : JSON.stringify(arrUserelasticsearch),
+                "roleSort" : elementRoleSort.options[elementRoleSort.selectedIndex].value,
+                "countrySort" : elementCountrySort.options[elementCountrySort.selectedIndex].value,
+                "citySort" : elementCitySort.options[elementCitySort.selectedIndex].value,
+            },
             success: function(data) {
                 elasticsearch(data['dataForElasticsearch'])
                 paginationHandler(data['userModel'])
@@ -507,15 +631,7 @@ if(window.location.pathname === '/listOfAllEmployees'){
 
     function editUser(userId)
     {
-        const modalWindowEditUser = document.getElementById('pop_up_edit_user');
-        const buttonCloseModalWindowEditUser = document.getElementById("close-modal-window-edit-user");
-
         modalWindowEditUser.classList.add('active')
-
-        buttonCloseModalWindowEditUser.addEventListener('click', function (e){
-            e.preventDefault();
-            modalWindowEditUser.classList.remove('active');
-        })
 
         $.ajax({
             method: "POST",
@@ -525,8 +641,8 @@ if(window.location.pathname === '/listOfAllEmployees'){
                 "userId" : userId,
             },
             success: function(data) {
-                fillingEmployeeDetailsForEditing(data)
                 console.log(data);
+                fillingEmployeeDetailsForEditing(data)
             },
             error: function(er) {
                     console.log(er);
@@ -535,11 +651,256 @@ if(window.location.pathname === '/listOfAllEmployees'){
 
         function fillingEmployeeDetailsForEditing(data)
         {
-            const elementEditEmail = document.getElementById('edit_email');
+            document.getElementById('edit_email').value = data['informationUser']['email'];
+            document.getElementById('edit_first_name').value = data['informationUser']['firstName'];
+            document.getElementById('edit_last_name').value = data['informationUser']['lastName'];
+            document.getElementById('list_country_admin_edit').value = data['informationUser']['country'];
+            switcherCityAndCountry(data); // order is very important
+            document.getElementById('list_city_admin_edit').value = data['informationUser']['city'];
+            document.getElementById('edit_role_list_admin_edit').value = data['informationUser']['rolesArr'][0];
+            switchDaysOff(data); // order is very important
+            document.getElementById("Vacation_days_list_admin_edit").value = data['informationUser']['vacation days per year'];
+            document.getElementById("Sick_days_list_admin_edit").value = data['informationUser']['sick days per year'];
+            document.getElementById("Personal_days_list_admin_edit").value = data['informationUser']['personal days per year'];
+            clearCheckBoxEdit()
+            setCheckBoxEdit(data['informationUser']['rolesArr']);
+        }
 
+        function switcherCityAndCountry(data)
+        {
+            let elementCountryEdit = document.getElementById('list_country_admin_edit')
+            getListOfCitiesEdit(elementCountryEdit, data)
+            elementCountryEdit.addEventListener('change', function (e){
+                e.preventDefault();
+                getListOfCitiesEdit(elementCountryEdit, data)
+            });
+
+            function getListOfCitiesEdit(elementCountryEdit, data)
+            {
+                let element = document.getElementById("list_city_admin_edit");
+                //---Delete all items in the list---
+                const opts = element.options;
+                while(opts.length > 0) {
+                    opts[opts.length - 1] = null;
+                }
+
+
+                if (elementCountryEdit.selectedIndex !== -1) {
+                    const country = elementCountryEdit.options[elementCountryEdit.selectedIndex].value;
+                    for( const i in data['roleAndDaysUser']['CountriesAndCities']){
+                        if (country === i) {
+                            for (const y in data['roleAndDaysUser']['CountriesAndCities'][i]){
+                                //---Create new list items---
+                                const oOpt1st = document.createElement('OPTION');
+                                oOpt1st.value = data['roleAndDaysUser']['CountriesAndCities'][i][y];
+                                oOpt1st.text = data['roleAndDaysUser']['CountriesAndCities'][i][y];
+                                element.appendChild(oOpt1st);
+                            }
+                        }
+                    }
+                }
+                // console.log(elementCountryEdit.options[elementCountryEdit.selectedIndex].value)
+                // const country = elementCountryEdit.options[elementCountryEdit.selectedIndex].value;
+                // for( const i in data['roleAndDaysUser']['CountriesAndCities']){
+                //     if (country === i) {
+                //         for (const y in data['roleAndDaysUser']['CountriesAndCities'][i]){
+                //             //---Create new list items---
+                //             const oOpt1st = document.createElement('OPTION');
+                //             oOpt1st.value = data['roleAndDaysUser']['CountriesAndCities'][i][y];
+                //             oOpt1st.text = data['roleAndDaysUser']['CountriesAndCities'][i][y];
+                //             element.appendChild(oOpt1st);
+                //         }
+                //     }
+                // }
+            }
 
         }
 
+        function switchDaysOff(data)
+        {
+            let elementRoleEdit = document.getElementById("edit_role_list_admin_edit");
+            getListOfDaysEdit(elementRoleEdit, data)
+            elementRoleEdit.addEventListener('change', function (e){
+                e.preventDefault();
+                getListOfDaysEdit(elementRoleEdit, data)
+            });
+
+            function getListOfDaysEdit(elementRole, data)
+            {
+                if (elementRole.selectedIndex !== -1) {
+                    let role = elementRole.options[elementRole.selectedIndex].value;
+                    for (const i in data['roleAndDaysUser']['roles']) {
+                        if (role === data['roleAndDaysUser']['roles'][i]) {
+                            const role = data['roleAndDaysUser']['roles'][i];
+                            document.getElementById("Vacation_days_list_admin_edit").value = data['roleAndDaysUser'][role]["vacations"];
+                            document.getElementById("Sick_days_list_admin_edit").value = data['roleAndDaysUser'][role]["personal_days"];
+                            document.getElementById("Personal_days_list_admin_edit").value = data['roleAndDaysUser'][role]["sick_days"];
+                        }
+                    }
+                }
+                // let role = elementRole.options[elementRole.selectedIndex].value;
+                // for (const i in data['roleAndDaysUser']['roles']) {
+                //     if (role === data['roleAndDaysUser']['roles'][i]) {
+                //         const role = data['roleAndDaysUser']['roles'][i];
+                //         document.getElementById("Vacation_days_list_admin_edit").value = data['roleAndDaysUser'][role]["vacations"];
+                //         document.getElementById("Sick_days_list_admin_edit").value = data['roleAndDaysUser'][role]["personal_days"];
+                //         document.getElementById("Personal_days_list_admin_edit").value = data['roleAndDaysUser'][role]["sick_days"];
+                //     }
+                // }
+            }
+        }
+
+        function clearCheckBoxEdit()
+        {
+            for (let i in checkboxesEditUser) {
+                let role = checkboxesEditUser[i]['value']
+                let idBoxCheckBox = role + "_box_edit";
+                let idCheckBox = role + "_checkbox_edit";
+                if (idBoxCheckBox !== 'undefined_box_edit') {
+                    document.getElementById(idCheckBox).checked = false
+                }
+            }
+        }
+
+        function setCheckBoxEdit(roles)
+        {
+            for (let i in checkboxesEditUser) {
+                let role = checkboxesEditUser[i]['value']
+                let idBoxCheckBox = role + "_box_edit";
+                let idCheckBox = role + "_checkbox_edit";
+                if (idBoxCheckBox !== 'undefined_box_edit') {
+                    for (let y in roles) {
+                        if (roles[y] === role) {
+                            document.getElementById(idCheckBox).checked = true
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    function reviewHistoryVacationUser(userId)
+    {
+        modalWindowVacationHistory.classList.add('active')
+        console.log(userId);
+    }
+
+    function updateUser()
+    {
+        let country = document.getElementById('list_country_admin_edit').value;
+        let city = document.getElementById('list_city_admin_edit').value;
+        let email = document.getElementById('edit_email').value;
+        let firstName = document.getElementById('edit_first_name').value;
+        let lastName = document.getElementById('edit_last_name').value;
+        let vacationDays = document.getElementById("Vacation_days_list_admin_edit").value;
+        let sickDays = document.getElementById("Sick_days_list_admin_edit").value;
+        let personalDays = document.getElementById("Personal_days_list_admin_edit").value;
+
+        let checkboxesChecked = [];
+        for (let index = 0; index < checkboxesEditUser.length; index++) {
+            if (checkboxesEditUser[index].checked) {
+                checkboxesChecked.push(checkboxesEditUser[index].value);
+            }
+        }
+
+        $.ajax({
+            method: "POST",
+            url: "/listOfAllEmployees/updateUser",
+            dataType: "json",
+            data: {
+                "country" : country,
+                "city" : city,
+                "email" : email,
+                "firstName" : firstName,
+                "lastName" : lastName,
+                "vacationDays" : vacationDays,
+                "sickDays" : sickDays,
+                "personalDays" : personalDays,
+                "roles" : checkboxesChecked,
+
+            },
+            success: function(data) {
+                pushNotifications(firstName, lastName)
+                createEmployeeDataTable()
+                modalWindowEditUser.classList.remove('active')
+                clearErrorModalWindowEditUser()
+                console.log(data);
+            },
+            error: function(error) {
+                if (error.status === 422) {
+                    validate(error);
+                    console.log(error['responseJSON']['errors']);
+                }
+            }
+        });
+
+        function pushNotifications(firstName, lastName)
+        {
+            elementTextPushNotification.textContent = firstName + " " + lastName + " update successfully";
+            elementPushNotification.classList.add('active');
+            setTimeout(function() {
+                elementPushNotification.classList.remove('active');
+            }, 3700);
+        }
+
+        function validate(error)
+        {
+            if (error['responseJSON']['errors']['email']){
+                elementErrorEmailEdit.classList.add('active');
+                elementErrorEmailEdit.textContent = error['responseJSON']['errors']['email'][0];
+            } else {
+                elementErrorEmailEdit.classList.remove('active');
+            }
+            if (error['responseJSON']['errors']['firstName']){
+                elementErrorFirstNameEdit.classList.add('active');
+                elementErrorFirstNameEdit.textContent = error['responseJSON']['errors']['firstName'][0];
+            } else {
+                elementErrorFirstNameEdit.classList.remove('active');
+            }
+            if (error['responseJSON']['errors']['lastName']){
+                elementErrorLastNameEdit.classList.add('active');
+                elementErrorLastNameEdit.textContent = error['responseJSON']['errors']['lastName'][0];
+            } else {
+                elementErrorLastNameEdit.classList.remove('active');
+            }
+            if (error['responseJSON']['errors']['vacationDays']){
+                elementErrorVacationDaysEdit.classList.add('active');
+                elementErrorVacationDaysEdit.textContent = error['responseJSON']['errors']['vacationDays'][0];
+            } else {
+                elementErrorVacationDaysEdit.classList.remove('active');
+            }
+            if (error['responseJSON']['errors']['sickDays']){
+                elementErrorSickDaysEdit.classList.add('active');
+                elementErrorSickDaysEdit.textContent = error['responseJSON']['errors']['sickDays'][0];
+            } else {
+                elementErrorSickDaysEdit.classList.remove('active');
+            }
+            if (error['responseJSON']['errors']['personalDays']){
+                elementErrorPersonalDaysEdit.classList.add('active');
+                elementErrorPersonalDaysEdit.textContent = error['responseJSON']['errors']['personalDays'][0];
+            } else {
+                elementErrorPersonalDaysEdit.classList.remove('active');
+            }
+            if (error['responseJSON']['errors']['roles']){
+                elementErrorRolesEdit.classList.add('active')
+                elementErrorRolesEdit.textContent = error['responseJSON']['errors']['roles'][0];
+            } else {
+                elementErrorRolesEdit.classList.remove('active')
+            }
+        }
+
+    }
+
+    function clearErrorModalWindowEditUser()
+    {
+        //clear Errors
+        elementErrorEmailEdit.classList.remove('active');
+        elementErrorFirstNameEdit.classList.remove('active');
+        elementErrorLastNameEdit.classList.remove('active');
+        elementErrorVacationDaysEdit.classList.remove('active');
+        elementErrorSickDaysEdit.classList.remove('active');
+        elementErrorPersonalDaysEdit.classList.remove('active');
+        elementErrorRolesEdit.classList.remove('active');
     }
 
 }

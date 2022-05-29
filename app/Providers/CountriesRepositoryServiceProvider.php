@@ -2,8 +2,8 @@
 
 namespace App\Providers;
 
-use App\Interfaces\CountryRepositoryInterface;
 use App\Repositories\CountryRepository;
+use App\Repositories\Interfaces\CountryRepositoryInterface;
 use Illuminate\Support\ServiceProvider;
 
 class CountriesRepositoryServiceProvider extends ServiceProvider

@@ -6,7 +6,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\AddCountryRequest;
 use App\Http\Requests\EditCountryRequest;
-use App\Interfaces\CountryRepositoryInterface;
+use App\Repositories\Interfaces\CountryRepositoryInterface;
 
 class CountriesController extends Controller
 {

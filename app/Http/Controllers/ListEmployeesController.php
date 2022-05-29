@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\deleteUserRequest;
 use App\Http\Requests\SaveNewUserRequest;
-use App\Interfaces\CountryRepositoryInterface;
-use App\Interfaces\RoleRepositoryInterface;
+use App\Http\Requests\UpdateNewUserRequest;
+use App\Repositories\Interfaces\CountryRepositoryInterface;
+use App\Repositories\Interfaces\RoleRepositoryInterface;
 use App\Services\ListEmployeesService;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -42,18 +43,18 @@ class ListEmployeesController extends Controller
         return view('pages.listOfAllEmployeesPage', ['arrData' => $arrData]);
     }
 
-    public function getEmployeeDataTable(): Factory|View|Application
+    public function getEmployeeDataTable(Request $request): Factory|View|Application
     {
-        $x = $this->listEmployeesService->listEmployeesInformation();
+        $x = $this->listEmployeesService->listEmployeesInformation($request);
         $arrData['user parameters'] = $x['userInfo'];
 
         return view('listEmployees.tableListEmployees', ['arrData' => $arrData]);
 //        return view('pages.listOfAllEmployeesPage', ['arrData' => $arrData]);
     }
 
-    public function getPaginateData(): JsonResponse
+    public function getPaginateData(Request $request): JsonResponse
     {
-        $x = $this->listEmployeesService->listEmployeesInformation();
+        $x = $this->listEmployeesService->listEmployeesInformation($request);
         $dataForElasticsearch = $this->listEmployeesService->dataForElasticsearch();
         $arr['userModel'] = $x['userModel'];
         $arr['dataForElasticsearch'] = $dataForElasticsearch;
@@ -67,7 +68,8 @@ class ListEmployeesController extends Controller
         $dataCountriesAndCities = $this->countryRepository->all();
         $dataRole = $this->roleRepository->all();
 
-        return $this->listEmployeesService->addNewUser($dataCountriesAndCities, $dataRole);
+//        return $this->listEmployeesService->addNewUser($dataCountriesAndCities, $dataRole);
+        return response()->json($this->listEmployeesService->addNewUser($dataCountriesAndCities, $dataRole));
     }
 
     public function saveUser(SaveNewUserRequest $request): JsonResponse
@@ -85,8 +87,20 @@ class ListEmployeesController extends Controller
 
     public function getInformationUserForEdit(Request $request): JsonResponse
     {
-        $employeeInformation = $this->listEmployeesService->employeeInformationById($request->get('userId'));
+        $employeeInformation = [];
+        $employeeInformation['informationUser'] = $this->listEmployeesService->employeeInformationById($request->get('userId'));
+        $dataCountriesAndCities = $this->countryRepository->all();
+        $dataRole = $this->roleRepository->all();
+        $employeeInformation['roleAndDaysUser'] = $this->listEmployeesService->addNewUser($dataCountriesAndCities, $dataRole);
+
         return response()->json($employeeInformation);
+    }
+
+    public function updateUser(UpdateNewUserRequest $request): JsonResponse
+    {
+        $idCountry = $this->listEmployeesService->takeIdCountry($request);
+        $idCity = $this->listEmployeesService->takeIdCity($idCountry, $request);
+        return $this->listEmployeesService->updateUser($request, $idCountry, $idCity);
     }
 
 }

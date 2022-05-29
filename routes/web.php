@@ -50,6 +50,7 @@ Route::name('page.')->group(function () {
         Route::post('/saveUser', [ListEmployeesController::class, 'saveUser']);
         Route::post('/deleteUser', [ListEmployeesController::class, 'deleteUser']);
         Route::post('/editUser', [ListEmployeesController::class, 'getInformationUserForEdit']);
+        Route::post('/updateUser', [ListEmployeesController::class, 'updateUser']);
         Route::get('/createEmployeeDataTable', [ListEmployeesController::class, 'getEmployeeDataTable']);
         Route::post('/createEmployeeDataTable', [ListEmployeesController::class, 'getPaginateData']);
     });

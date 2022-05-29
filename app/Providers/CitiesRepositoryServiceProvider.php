@@ -2,8 +2,8 @@
 
 namespace App\Providers;
 
-use App\Interfaces\CityRepositoryInterface;
 use App\Repositories\CityRepository;
+use App\Repositories\Interfaces\CityRepositoryInterface;
 use Illuminate\Support\ServiceProvider;
 
 class CitiesRepositoryServiceProvider extends ServiceProvider

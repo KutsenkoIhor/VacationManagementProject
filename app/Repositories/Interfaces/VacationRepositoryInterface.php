@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Interfaces;
+namespace App\Repositories\Interfaces;
 
 use App\DTO\VacationDTO;
 use Carbon\Carbon;

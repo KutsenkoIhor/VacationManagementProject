@@ -2,8 +2,8 @@
 
 namespace App\Repositories;
 
-use App\Interfaces\VacationDaysLeftInterface;
 use App\Models\VacationDaysLeft;
+use App\Repositories\Interfaces\VacationDaysLeftInterface;
 
 class VacationDaysLeftRepository implements VacationDaysLeftInterface
 {

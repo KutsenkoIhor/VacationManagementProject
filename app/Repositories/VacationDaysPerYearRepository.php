@@ -2,19 +2,17 @@
 
 namespace App\Repositories;
 
-use App\Interfaces\VacationDaysPerYearRepositoryInterface;
 use App\Models\VacationDaysPerYear;
+use App\Repositories\Interfaces\VacationDaysPerYearRepositoryInterface;
 
 class VacationDaysPerYearRepository implements VacationDaysPerYearRepositoryInterface
 {
-    public function create(int $userId, int $vacationsDays, int $personalDays, int $sickDays): void
+    public function updateOrCreate(int $userId, int $vacationsDays, int $personalDays, int $sickDays): void
     {
-        VacationDaysPerYear::create([
-            'user_id' => $userId,
-            'vacations' => $vacationsDays,
-            'personal_days' => $personalDays,
-            'sick_days' => $sickDays,
-        ]);
+        VacationDaysPerYear::updateOrCreate(
+            ['user_id' => $userId,],
+            ['vacations' => $vacationsDays, 'personal_days' => $personalDays, 'sick_days' => $sickDays]
+        );
     }
 
 }

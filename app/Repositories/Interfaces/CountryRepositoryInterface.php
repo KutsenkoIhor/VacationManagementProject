@@ -2,10 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Interfaces;
+namespace App\Repositories\Interfaces;
 
 
-use App\Models\City;
 use App\Models\Country;
 use Illuminate\Database\Eloquent\Collection;
 
@@ -19,5 +18,6 @@ interface CountryRepositoryInterface
     public function orderBy(string $colum): Collection;
     public function searchByCountry(string $country): Country;
     public function searchCountryById(int $countryId): string|null;
+    public function searchIdByCountry(string $country): int|null;
 
 }

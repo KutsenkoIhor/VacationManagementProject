@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\Interfaces\RoleRepositoryInterface;
+use App\Repositories\Interfaces\RoleRepositoryInterface;
 use App\Repositories\RoleRepository;
 use Illuminate\Support\ServiceProvider;
 

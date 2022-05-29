@@ -6,7 +6,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\AddCityRequest;
 use App\Http\Requests\EditCityRequest;
-use App\Interfaces\CityRepositoryInterface;
+use App\Repositories\Interfaces\CityRepositoryInterface;
 
 class CitiesController extends Controller
 {

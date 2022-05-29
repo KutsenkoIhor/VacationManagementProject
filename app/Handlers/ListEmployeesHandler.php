@@ -36,4 +36,16 @@ class ListEmployeesHandler
         return $arrRoles;
     }
 
+    public function getIdFromArrElasticsearch(array $arrElasticsearch): array
+    {
+        $arrIdUserElasticsearch = [];
+        foreach ($arrElasticsearch as $key => $value) {
+            $arrIdUserElasticsearch[] = substr($key, 6);
+
+        }
+//        dd($arrIdUserElasticsearch);
+        return $arrIdUserElasticsearch;
+
+    }
+
 }

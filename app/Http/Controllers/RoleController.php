@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\AddRoleRequest;
 use App\Http\Requests\EditRoleRequest;
-use App\Interfaces\RoleRepositoryInterface;
+use App\Repositories\Interfaces\RoleRepositoryInterface;
 
 class RoleController extends Controller
 {

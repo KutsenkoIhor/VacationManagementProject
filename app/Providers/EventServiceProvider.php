@@ -32,7 +32,8 @@ class EventServiceProvider extends ServiceProvider
         ],
         ApproveVacationRequestEvent::class => [
             ApproveVacationRequestListener::class,
-            CreateVacationListener::class
+            CreateVacationListener::class,
+            //TODO subsctract vacation days for user
         ]
     ];
 

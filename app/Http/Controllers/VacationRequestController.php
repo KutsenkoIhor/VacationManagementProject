@@ -7,6 +7,7 @@ namespace App\Http\Controllers;
 
 
 use App\Http\Requests\CreateVacationRequest;
+use App\Services\Vacation\NumberOfDaysCalculationService;
 use App\Services\Vacation\VacationRequestService;
 use Carbon\Carbon;
 use Illuminate\Contracts\Foundation\Application;
@@ -19,23 +20,32 @@ use Illuminate\Support\Facades\Auth;
 class VacationRequestController  extends Controller
 {
     private VacationRequestService $vacationRequestService;
+    private NumberOfDaysCalculationService $numberOfDaysCalculationService;
 
-    public function __construct(VacationRequestService $vacationRequestService)
-    {
+    public function __construct(
+        VacationRequestService $vacationRequestService,
+        NumberOfDaysCalculationService $numberOfDaysCalculationService
+    ) {
         $this->vacationRequestService = $vacationRequestService;
+        $this->numberOfDaysCalculationService = $numberOfDaysCalculationService;
     }
 
     public function createVacationRequest(
         CreateVacationRequest $request,
         VacationRequestService $vacationRequestService
-    ): Redirector|Application|RedirectResponse
-    {
+    ): Redirector|Application|RedirectResponse {
         $startDate = Carbon::createFromFormat("Y-m-d", $request->get('start_date'));
         $endDate = Carbon::createFromFormat("Y-m-d", $request->get('end_date'));
         $userId = Auth::id();
 
-        //TODO:: CalculationService
-        $numberOfDays = 4;
+        $numberOfDays = $this->numberOfDaysCalculationService->getNumberOfVacationRequestDays(
+            $userId,
+            clone $startDate,
+            clone $endDate,
+            $request->get('type')
+        );
+
+        //TODO validate that user has enough amount of vacations based on type. Vacation_days_left
 
         $vacationRequestService->createVacationRequest(
             $userId,

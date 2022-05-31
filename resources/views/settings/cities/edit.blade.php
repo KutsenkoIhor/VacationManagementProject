@@ -21,15 +21,11 @@
         <div class="mt-2 text-sm text-red-700">{{ $message }}</div>
         @enderror
         <select name="country_id" id="country" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md w-36">
-            <option value="{{$city->country_id}}">{{$countries->where('id', $city->country_id)->first()->title}}</option>
 
             @foreach($countries as $country)
 
-                @if($country->id === $city->country_id)
-                    @continue(1)
-                @endif
 
-                <option value="{{$country->id }}">{{ $country->title }}</option>
+                <option value="{{$country->getId() }}" {{$country->getId() == $city->getCountryId() ? "selected" : ""}}>{{ $country->getTitle() }}</option>
             @endforeach
 
         </select>

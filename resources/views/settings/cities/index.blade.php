@@ -65,7 +65,7 @@
                             <tbody class="bg-white">
                             <tr>
                                 <td class="whitespace-nowrap border-b border-gray-200 py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6 lg:pl-8">{{$city->title}}</td>
-                                <td class="whitespace-nowrap border-b border-gray-200 px-3 py-4 text-sm text-gray-500">{{$city->country}}</td>
+                                <td class="whitespace-nowrap border-b border-gray-200 px-3 py-4 text-sm text-gray-500">{{$city->countryTitle}}</td>
                                 <td class="relative whitespace-nowrap border-b border-gray-200 py-4 pr-4 pl-3 text-right text-sm font-medium sm:pr-6 lg:pr-8">
                                     <div class="sm:flex sm:items-center">
                                         <div class="sm:flex-auto">

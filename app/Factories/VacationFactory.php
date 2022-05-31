@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace App\Factories;
 
-use App\DTO\Vacation\VacationDTO;
+use App\DTO\VacationDTO;
 use App\Models\Vacation;
 use Illuminate\Database\Eloquent\Collection;
 
 class VacationFactory
 {
-    private HomePageFactory $userDTOFactory;
+    private UserFactory $userDTOFactory;
 
-    public function __construct(HomePageFactory $userDTOFactory)
+    public function __construct(UserFactory $userDTOFactory)
     {
         $this->userDTOFactory = $userDTOFactory;
     }

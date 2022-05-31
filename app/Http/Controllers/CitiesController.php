@@ -23,9 +23,9 @@ class CitiesController extends Controller
     public function index()
     {
         $cities = $this->citiesRepository->all();
-        foreach ($cities as $city){
-            $city->country = $this->countriesRepository->getCountryTitle((int) $city->country_id);
-        }
+//        foreach ($cities as $city){
+//            $city->country = $this->countriesRepository->getCountryTitle((int) $city->country_id);
+//        }
 
         return view('settings.cities.index', ['cities' => $cities]);
     }

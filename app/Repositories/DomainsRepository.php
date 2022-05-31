@@ -4,20 +4,29 @@ declare(strict_types=1);
 
 namespace App\Repositories;
 
+use App\DTO\DomainDTO;
+use App\Factories\DomainFactory;
 use App\Models\Domain;
 use App\Repositories\Interfaces\DomainsRepositoryInterface;
 
 
 class DomainsRepository implements DomainsRepositoryInterface
 {
-    public function all(): object
+    private DomainFactory $domainFactory;
+
+    public function __construct(DomainFactory $domainFactory)
     {
-        return Domain::all();
+        $this->domainFactory = $domainFactory;
     }
 
-    public function getById(int $id): object
+    public function all()
     {
-        return Domain::where('id', $id)->first();
+        return $this->domainFactory->makeDTOFromModelCollection(Domain::all());
+    }
+
+    public function getById(int $id): DomainDTO
+    {
+        return $this->domainFactory->makeDTOFromModel(Domain::where('id', $id)->first());
     }
 
     public function store($request): void

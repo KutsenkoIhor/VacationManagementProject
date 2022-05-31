@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Repositories\Location;
 
+use App\DTO\CountryDTO;
+use App\Factories\CountryFactory;
 use App\Models\Country;
 use App\Models\City;
 use App\Repositories\Interfaces\CountriesRepositoryInterface;
@@ -11,19 +13,21 @@ use App\Repositories\Interfaces\CountriesRepositoryInterface;
 
 class CountriesRepository implements CountriesRepositoryInterface
 {
-    public function all(): object
+    private CountryFactory $countryFactory;
+
+    public function __construct(CountryFactory $countryFactory)
     {
-        return Country::paginate(20);
+        $this->countryFactory = $countryFactory;
     }
 
-    public function getById(int $id): object
+    public function all()
     {
-        return Country::findOrFail($id);
+        return $this->countryFactory->makeDTOFromModelCollection(Country::all());
     }
 
-    public function getCountryTitle(int $country_id): string
+    public function getById(int $id): CountryDTO
     {
-        return Country::where('id', $country_id)->first()->title;
+        return $this->countryFactory->makeDTOFromModel(Country::findOrFail($id));
     }
 
     public function add($request): void

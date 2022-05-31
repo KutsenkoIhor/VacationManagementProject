@@ -43,8 +43,12 @@ class RoleRepository implements RoleRepositoryInterface
     {
         $role = Role::where('id', $id)->first();
         $role->update([
-            'name' => $request->name
+            'name' => $request->name,
+            'vacations' => $request->vacations,
+            'personal_days' => $request->personal_days,
+            'sick_days' => $request->sick_days
         ]);
+
         $permissions = Permission::whereIn('id', $request->permissions)->get();
         $role->syncPermissions($permissions);
     }

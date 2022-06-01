@@ -11,7 +11,7 @@ class CityDTO
 
     /**
      * @param int $id
-     * @param int|null $country_id
+     * @param int|null $countryId
      * @param string|null $title
      */
     public function __construct(int $id, int|null $countryId, string|null $title, string|null $countryTitle)
@@ -49,7 +49,7 @@ class CityDTO
     /**
      * @return string|null
      */
-    public function getCity(): string|null
+    public function getTitle(): string|null
     {
         return $this->title;
     }

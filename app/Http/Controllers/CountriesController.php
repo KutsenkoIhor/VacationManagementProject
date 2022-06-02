@@ -21,12 +21,12 @@ class CountriesController extends Controller
     {
         $countries = $this->countriesRepository->all();
 
-        return view('location.countries.index', ['countries' => $countries]);
+        return view('settings.countries.index', ['countries' => $countries]);
     }
 
     public function addCountryForm()
     {
-        return view('location.countries.create');
+        return view('settings.countries.create');
     }
 
     public function addCountry(AddCountryRequest $request)
@@ -36,25 +36,25 @@ class CountriesController extends Controller
         return redirect(route('countries.index'))->with('status', 'Country added!');
     }
 
-    public function editCountryForm($id)
+    public function editCountryForm(int $id)
     {
-        $country = $this->countriesRepository->getById($id);
+        $country = $this->countriesRepository->getById((int)$id);
 
-        return view('location.countries.edit', compact([
+        return view('settings.countries.edit', compact([
             'country'
         ]));
     }
 
-    public function editCountry($id, EditCountryRequest $request)
+    public function editCountry(int $id, EditCountryRequest $request)
     {
         $this->countriesRepository->update((int) $id, $request);
 
         return redirect(route('countries.index'))->with('status', 'Country edited!');
     }
 
-    public function deleteCountry($id)
+    public function deleteCountry(int $id)
     {
-        if ($this->countriesRepository->delete($id) === false){
+        if ($this->countriesRepository->delete((int)$id) === false){
             return redirect(route('countries.index'))->with('status', 'Error! Cities exist!');
         }
 

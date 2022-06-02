@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class AddCountryRequest extends FormRequest
+class EditDomainRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,17 +24,16 @@ class AddCountryRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'required|string|max:255|unique:App\Models\Country',
+            'name' => 'required|string|max:255|unique:allowed_domains,name,' . $this->domain
         ];
     }
 
     public function messages()
     {
         return [
-            'title.required' => 'A Country field is required',
-            'title.string' => 'A Country field must be string',
-            'title.unique' => 'This Country exists',
-            'title.max' => 'The Country name must not be greater than 255 characters',
+            'name.required' => 'A Domain field is required',
+            'name.max' => 'The Domain must not be greater than 255 characters',
+            'name.unique' => 'This Domain exist',
         ];
     }
 }

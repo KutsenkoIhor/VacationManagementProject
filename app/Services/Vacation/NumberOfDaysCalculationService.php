@@ -5,32 +5,79 @@ declare(strict_types=1);
 
 namespace App\Services\Vacation;
 
-use App\Models\User;
+use App\DTO\VacationDaysNumberDTO;
+use App\Repositories\Location\CountryHolidayRepository;
+use App\Repositories\Vacation\VacationRepository;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\DB;
 
 class NumberOfDaysCalculationService
 {
-    public function getNumberOfVacationRequestDays(int $userId, Carbon $startDate, Carbon $endDate, string $type): int
-    {
-        //TODO inject CountryHoliday repository
-        $holidays = DB::table('country_holidays')
-            ->where('country_id', User::findOrFail($userId)->country_id)
-            ->get();
+    private CountryHolidayRepository $countryHolidayRepository;
+    private VacationRepository $vacationRepository;
 
-        $countryHolidays = [];
-        foreach ($holidays as $holiday) {
-            $countryHolidays[] = (new Carbon($holiday->holiday_date))->startOfDay();
-        }
+    public function __construct(
+        CountryHolidayRepository $countryHolidayRepository,
+        VacationRepository $vacationRepository
+    ) {
+        $this->countryHolidayRepository = $countryHolidayRepository;
+        $this->vacationRepository = $vacationRepository;
+    }
 
-        $number = 0;
+    public function getNumberOfVacationRequestDays(
+        int $userId,
+        Carbon $startDate,
+        Carbon $endDate,
+        Carbon $date
+    ): VacationDaysNumberDTO {
+        $countryHolidays = $this->countryHolidayRepository->getCountryHolidayDates($userId);
+        $numberCurrentYear = $numberNextYear = $numberPreviousYear = 0;
+        $nextYear = (clone $date)->addYear()->year;
+        $previousYear = (clone $date)->subYear()->year;
+
         for ($i = $startDate; $i <= $endDate; $i->addDay()) {
             if ($i->isWeekend() || in_array($i->startOfDay(), $countryHolidays)) {
                 continue;
             }
-            $number++;
+
+            if ($i->year === $date->year) {
+                $numberCurrentYear++;
+            } elseif ($i->year === $nextYear) {
+                $numberNextYear++;
+            } elseif ($i->year === $previousYear) {
+                $numberPreviousYear++;
+            } else {
+                throw new \Exception('Invalid start date: ' . $i->format(DATE_W3C));
+            }
         }
 
-        return $number;
+        return new VacationDaysNumberDTO(
+            $numberCurrentYear + $numberNextYear,
+            $numberCurrentYear,
+            $numberNextYear,
+            $numberPreviousYear
+        );
+    }
+
+    public function getNumberOfWorkingDaysByUserIdPerMonth(
+        int $userId
+    ): int {
+        //TODO: include to a list of all employees
+        //TODO: filter for choosing a month
+
+        $daysInMonth = Carbon::now()->daysInMonth;
+
+        $numberOfVacationDays = $this->vacationRepository->getNumberOfVacationDaysByUserIdPerMonth($userId);
+
+        $countryHolidays = $this->countryHolidayRepository->getCountryHolidayDates($userId);
+
+        $numberOfDaysOff = 0;
+
+        for ($i = Carbon::now()->startOfMonth(); $i <= Carbon::now()->endOfMonth(); $i->addDay()) {
+            if ($i->isWeekend() || in_array($i->startOfDay(), $countryHolidays)) {
+                $numberOfDaysOff++;
+            }
+        }
+
+       return $daysInMonth - $numberOfVacationDays - $numberOfDaysOff;
     }
 }

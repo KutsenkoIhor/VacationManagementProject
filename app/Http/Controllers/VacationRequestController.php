@@ -38,22 +38,22 @@ class VacationRequestController  extends Controller
         $endDate = Carbon::createFromFormat("Y-m-d", $request->get('end_date'));
         $userId = Auth::id();
 
-        $numberOfDays = $this->numberOfDaysCalculationService->getNumberOfVacationRequestDays(
+        $vacationDaysNumberDTO = $this->numberOfDaysCalculationService->getNumberOfVacationRequestDays(
             $userId,
             clone $startDate,
             clone $endDate,
-            $request->get('type')
+            clone $startDate,
         );
 
-        //TODO validate that user has enough amount of vacations based on type. Vacation_days_left
+        //TODO: validate amount of vacation request days
 
         $vacationRequestService->createVacationRequest(
-            $userId,
-            $startDate,
-            $endDate,
-            $numberOfDays,
-            $request->get('type')
-        );
+                $userId,
+                $startDate,
+                $endDate,
+                $vacationDaysNumberDTO->getNumberOfDays(),
+                $request->get('type')
+            );
 
         return redirect('/vacations/requestHistory');
     }

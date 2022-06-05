@@ -1264,6 +1264,9 @@ select {
 .uppercase {
   text-transform: uppercase;
 }
+.normal-case {
+  text-transform: none;
+}
 .leading-4 {
   line-height: 1rem;
 }

@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('vacation_days_per_year', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('user_id')->unique();
             $table->integer('vacations');
             $table->integer('personal_days');
             $table->integer('sick_days');

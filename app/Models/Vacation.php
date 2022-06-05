@@ -34,8 +34,9 @@ class Vacation extends Model
     public const TYPE_SICK_DAYS = 'SICK_DAYS';
 
     protected $casts = [
-        'start_date'    => 'datetime:Y-m-d',
-        'end_date'      => 'datetime:Y-m-d',
+        'start_date'     => 'datetime:Y-m-d',
+        'end_date'       => 'datetime:Y-m-d',
+        'number_of_days' => 'int'
     ];
 
     public function user(): BelongsTo

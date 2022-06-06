@@ -1,23 +1,19 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class City extends Model
+class Domain extends Model
 {
     use HasFactory;
 
+    protected $table = 'allowed_domains';
+
     protected $fillable = [
-        'title',
-        'country_id'
+        'name',
     ];
 
-    public function country()
-    {
-        return $this->belongsTo(Country::class);
-    }
+    public $timestamps = false;
 }

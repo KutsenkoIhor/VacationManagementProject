@@ -10,7 +10,5 @@ interface CitiesRepositoryInterface
     public function getById(int $id);
     public function add($request);
     public function update(int $id, $request);
-    public function delete($id);
-    public function getCountry(int $country_id);
-    public function getCountries();
+    public function delete(int $id);
 }

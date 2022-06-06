@@ -4,46 +4,44 @@ declare(strict_types=1);
 
 namespace App\Repositories\Location;
 
+use App\DTO\CityDTO;
+use App\Factories\CityFactory;
 use App\Models\City;
-use App\Models\Country;
 use App\Repositories\Interfaces\CitiesRepositoryInterface;
 
 
 class CitiesRepository implements CitiesRepositoryInterface
 {
-    public function all(): object
+    private CityFactory $cityFactory;
+
+    public  function __construct(CityFactory $cityFactory)
     {
-        return City::all();
+        $this->cityFactory = $cityFactory;
     }
 
-    public function getById($id): object
+    public function all(): array
     {
-        return City::findOrFail($id);
+        return $this->cityFactory->makeDTOFromModelCollection(City::all());
     }
 
-    public function add($request)
+    public function getById(int $id): CityDTO
+    {
+        return $this->cityFactory->makeDTOFromModel(City::findOrFail($id));
+    }
+
+    public function add($request): void
     {
         City::create($request->all());
     }
 
-    public function update($id, $request)
+    public function update(int $id, $request): void
     {
         $city = City::findOrFail($id);
         $city->update($request->all());
     }
 
-    public function delete($id)
+    public function delete(int $id): void
     {
         City::findOrFail($id)->delete();
-    }
-
-    public function getCountry(int $country_id): string
-    {
-        return Country::where('id', $country_id)->first()->title;
-    }
-
-    public function getCountries()
-    {
-        return Country::all();
     }
 }

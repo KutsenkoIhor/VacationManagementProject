@@ -2,19 +2,19 @@
 
 namespace App\DTO;
 
-class CountryDTO
+class DomainDTO
 {
     public int $id;
-    public string|null $title;
+    public string|null $name;
 
     /**
      * @param int $id
-     * @param string|null $title
+     * @param string|null $name
      */
-    public function __construct(int $id, string|null $title)
+    public function __construct(int $id, string|null $name)
     {
         $this->id = $id;
-        $this->title = $title;
+        $this->name = $name;
     }
 
     /**
@@ -28,8 +28,8 @@ class CountryDTO
     /**
      * @return string|null
      */
-    public function getTitle(): string|null
+    public function getName(): string|null
     {
-        return $this->title;
+        return $this->name;
     }
 }

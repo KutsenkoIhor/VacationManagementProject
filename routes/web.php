@@ -5,6 +5,7 @@ use App\Http\Controllers\CountriesController;
 use App\Http\Controllers\HomePageController;
 use App\Http\Controllers\SocialController;
 use App\Http\Controllers\VacationController;
+use App\Http\Controllers\VacationRequestController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -59,14 +60,16 @@ Route::name('page.')->group(function () {
 });
 
 Route::prefix('vacations')->name('vacations.')->middleware('auth')->group(function () {
-    Route::post('/', [VacationController::class, 'createVacation'])->name('create');
+    Route::post('/', [VacationRequestController::class, 'createVacationRequest'])->name('create');
     Route::get('/', function () {
         return view('vacations/creation');
     })->name('create.form');
 
     Route::get('/upcoming', [VacationController::class, 'getUpcomingVacations'])->name('upcoming');
 
-    Route::get('/history', [VacationController::class, 'getVacationsByUserId'])->name('list');
+    Route::get('/requestHistory', [VacationRequestController::class, 'getVacationRequestsByUserId'])->name('requestHistory');
+
+    Route::get('/requests', [VacationRequestController::class, 'getVacationRequestsForApproval'])->name('requests');
 });
 
 

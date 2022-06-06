@@ -33,11 +33,13 @@
                                     <p class="text-sm font-medium text-gray-600">{{$userParameters->getEmail()}}</p>
                                 </div>
                             </div>
+                            @hasrole('Employee')
                             <div class="mt-5 flex justify-center sm:mt-0">
                                 <a href="{{route('vacations.create.form')}}"
-                                   class="flex justify-center items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
-                                    Vacation request </a>
+                                   class="items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-indigo-800 bg-indigo-100 hover:bg-indigo-200 text-center bg-indigo-100 hover:bg-indigo-200 text-center">
+                                    Create vacation request</a>
                             </div>
+                            @endhasrole
                         </div>
                     </div>
                     <div

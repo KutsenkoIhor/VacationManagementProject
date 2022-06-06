@@ -2,33 +2,43 @@
 
 declare(strict_types=1);
 
+
 namespace App\DTO;
 
 use Carbon\Carbon;
 
-class VacationDTO implements \JsonSerializable
+class VacationRequestDTO
 {
     private int $id;
     private Carbon $startDate;
     private Carbon $endDate;
     private int $numberOfDays;
     private string $type;
+    private ?bool $isApproved;
     private Carbon $createdAt;
     private Carbon $updatedAt;
     private UserDTO $user;
-    private VacationRequestDTO $vacationRequest;
 
-    public function __construct(int $id, Carbon $startDate, Carbon $endDate, int $numberOfDays, string $type, Carbon $createdAt, Carbon $updatedAt, UserDTO $user, VacationRequestDTO $vacationRequest)
-    {
+    public function __construct(
+        int $id,
+        Carbon $startDate,
+        Carbon $endDate,
+        int $numberOfDays,
+        string $type,
+        ?bool $isApproved,
+        Carbon $createdAt,
+        Carbon $updatedAt,
+        UserDTO $user
+    ) {
         $this->id = $id;
         $this->startDate = $startDate;
         $this->endDate = $endDate;
         $this->numberOfDays = $numberOfDays;
         $this->type = $type;
+        $this->isApproved = $isApproved;
         $this->createdAt = $createdAt;
         $this->updatedAt = $updatedAt;
         $this->user = $user;
-        $this->vacationRequest = $vacationRequest;
     }
 
     public function getId(): int
@@ -56,6 +66,11 @@ class VacationDTO implements \JsonSerializable
         return $this->type;
     }
 
+    public function IsApproved(): ?bool
+    {
+        return $this->isApproved;
+    }
+
     public function getCreatedAt(): Carbon
     {
         return $this->createdAt;
@@ -71,23 +86,20 @@ class VacationDTO implements \JsonSerializable
         return $this->user;
     }
 
-    public function getVacationRequest(): VacationRequestDTO
-    {
-        return $this->vacationRequest;
-    }
-
     public function jsonSerialize(): array
     {
         return [
-            'id'               => $this->getId(),
-            'start_date'       => $this->getStartDate(),
-            'end_date'         => $this->getEndDate(),
-            'number_of_days'   => $this->getNumberOfDays(),
-            'type'             => $this->getType(),
-            'created_at'       => $this->getCreatedAt(),
-            'updated_at'       => $this->getUpdatedAt(),
-            'user'             => $this->getUser(),
-            'vacation_request' => $this->getVacationRequest()
+            'id'             => $this->getId(),
+            'start_date'     => $this->getStartDate(),
+            'end_date'       => $this->getEndDate(),
+            'number_of_days' => $this->getNumberOfDays(),
+            'type'           => $this->getType(),
+            'is_approved'    => $this->isApproved(),
+            'created_at'     => $this->getCreatedAt(),
+            'updated_at'     => $this->getUpdatedAt(),
+            'user'           => $this->getUser()
         ];
     }
+
+
 }

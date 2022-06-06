@@ -13,21 +13,19 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('vacations', function (Blueprint $table) {
+        Schema::create('vacation_request_approvals', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('vacation_request_id');
+            $table->unsignedBigInteger('user_id');
 
-            $table->date('start_date');
-            $table->date('end_date');
-            $table->integer('number_of_days');
-            $table->enum('type', ['VACATIONS', 'PERSONAL_DAYS', 'SICK_DAYS']);
+            $table->boolean('is_approved');
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrentOnUpdate();
-            $table->softDeletes();
 
-            $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('vacation_request_id')->references('id')->on('vacation_requests');
+            $table->foreign('user_id')->references('id')->on('users');
+
+            $table->unique(['vacation_request_id', 'user_id']);
         });
     }
 
@@ -38,6 +36,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('vacations');
+        Schema::dropIfExists('vacation_request_approvals');
     }
 };

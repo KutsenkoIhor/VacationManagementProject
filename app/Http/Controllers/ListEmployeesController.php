@@ -5,8 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\deleteUserRequest;
 use App\Http\Requests\SaveNewUserRequest;
 use App\Http\Requests\UpdateNewUserRequest;
-use App\Repositories\Interfaces\CountryRepositoryInterface;
-use App\Repositories\Interfaces\RoleRepositoryInterface;
 use App\Services\ListEmployeesService;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -16,91 +14,99 @@ use Illuminate\Http\Request;
 
 class ListEmployeesController extends Controller
 {
-    private CountryRepositoryInterface $countryRepository;
-    private RoleRepositoryInterface $roleRepository;
     private ListEmployeesService $listEmployeesService;
 
-
-    public function __construct(
-        CountryRepositoryInterface $countryRepository,
-        RoleRepositoryInterface $roleRepository,
-        ListEmployeesService $listEmployeesService,
-    )
+    public function __construct(ListEmployeesService $listEmployeesService)
     {
-        $this->countryRepository = $countryRepository;
-        $this->roleRepository = $roleRepository;
         $this->listEmployeesService = $listEmployeesService;
     }
 
+    /**
+     * @return Factory|View|Application
+     */
     public function listEmployees(): Factory|View|Application
     {
-        $dataCountries = $this->countryRepository->orderBy('title');
-        $dataRole = $this->roleRepository->all();
-
-        $arrData = $this->listEmployeesService->modalWindow($dataCountries, $dataRole);
-//        $arrData['user parameters'] = $this->listEmployeesService->listEmployeesInformation();
-//        dd($arrData);
+        $arrData['arr'] =  $this->listEmployeesService->getRolesAndDays();
+        $arrData ['countries'] = $this->listEmployeesService->getCountries();
         return view('pages.listOfAllEmployeesPage', ['arrData' => $arrData]);
     }
 
-    public function getEmployeeDataTable(Request $request): Factory|View|Application
-    {
-        $x = $this->listEmployeesService->listEmployeesInformation($request);
-        $arrData['user parameters'] = $x['userInfo'];
-
-        return view('listEmployees.tableListEmployees', ['arrData' => $arrData]);
-//        return view('pages.listOfAllEmployeesPage', ['arrData' => $arrData]);
-    }
-
-    public function getPaginateData(Request $request): JsonResponse
-    {
-        $x = $this->listEmployeesService->listEmployeesInformation($request);
-        $dataForElasticsearch = $this->listEmployeesService->dataForElasticsearch();
-        $arr['userModel'] = $x['userModel'];
-        $arr['dataForElasticsearch'] = $dataForElasticsearch;
-//        $arr = [$x['userModel'], $dataForElasticsearch];
-        return response()->json($arr);
-
-    }
-
+    /**
+     * @return JsonResponse
+     */
     public function addUser(): JsonResponse
     {
-        $dataCountriesAndCities = $this->countryRepository->all();
-        $dataRole = $this->roleRepository->all();
-
-//        return $this->listEmployeesService->addNewUser($dataCountriesAndCities, $dataRole);
-        return response()->json($this->listEmployeesService->addNewUser($dataCountriesAndCities, $dataRole));
+        $arrData = $this->listEmployeesService->getRolesAndDays();
+        $arrData['CountriesAndCities'] = $this->listEmployeesService->getCountriesAndCities();
+        return response()->json($arrData);
     }
 
+    /**
+     * @param SaveNewUserRequest $request
+     * @return JsonResponse
+     */
     public function saveUser(SaveNewUserRequest $request): JsonResponse
     {
-        $idCountry = $this->listEmployeesService->takeIdCountry($request);
-        $idCity = $this->listEmployeesService->takeIdCity($idCountry, $request);
-
-        return $this->listEmployeesService->saveUser($request, $idCountry, $idCity);
+        $idCountry = $this->listEmployeesService->getIdCountry($request);
+        $idCity = $this->listEmployeesService->getIdCity($idCountry, $request);
+        $transactionSaveUser = $this->listEmployeesService->saveUser($request, $idCountry, $idCity);
+        return response()->json($transactionSaveUser);
     }
 
+    /**
+     * @param deleteUserRequest $request
+     * @return JsonResponse
+     */
     public function deleteUser(deleteUserRequest $request): JsonResponse
     {
-        return $this->listEmployeesService->deleteUser($request->get('userId'));
+        $transactionDeleteUser = $this->listEmployeesService->deleteUser($request->get('userId'));
+        return response()->json($transactionDeleteUser);
     }
 
-    public function getInformationUserForEdit(Request $request): JsonResponse
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function UserInformationForEdit(Request $request): JsonResponse
     {
-        $employeeInformation = [];
-        $employeeInformation['informationUser'] = $this->listEmployeesService->employeeInformationById($request->get('userId'));
-        $dataCountriesAndCities = $this->countryRepository->all();
-        $dataRole = $this->roleRepository->all();
-        $employeeInformation['roleAndDaysUser'] = $this->listEmployeesService->addNewUser($dataCountriesAndCities, $dataRole);
-
-        return response()->json($employeeInformation);
+        $userInformation['roleAndDaysUser'] = $this->listEmployeesService->getRolesAndDays();
+        $userInformation['roleAndDaysUser']['CountriesAndCities'] = $this->listEmployeesService->getCountriesAndCities();
+        $userInformation['informationUser'] = $this->listEmployeesService->getEmployeeInformationById($request->get('userId'));
+        return response()->json($userInformation);
     }
 
+    /**
+     * @param UpdateNewUserRequest $request
+     * @return JsonResponse
+     */
     public function updateUser(UpdateNewUserRequest $request): JsonResponse
     {
-        $idCountry = $this->listEmployeesService->takeIdCountry($request);
-        $idCity = $this->listEmployeesService->takeIdCity($idCountry, $request);
-        return $this->listEmployeesService->updateUser($request, $idCountry, $idCity);
+        $idCountry = $this->listEmployeesService->getIdCountry($request);
+        $idCity = $this->listEmployeesService->getIdCity($idCountry, $request);
+        $transactionUpdateUser = $this->listEmployeesService->updateUser($request, $idCountry, $idCity);
+        return response()->json($transactionUpdateUser);
     }
 
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function getPaginateAndElasticsearchData(Request $request): JsonResponse
+    {
+        $usersInformation = $this->listEmployeesService->listEmployeesInformation($request);
+        $paginateAndElasticsearchData['dataForElasticsearch'] = $this->listEmployeesService->dataForElasticsearch();
+        $paginateAndElasticsearchData['userModel'] = $usersInformation['userModel'];
+        return response()->json($paginateAndElasticsearchData);
+    }
+
+    /**
+     * @param Request $request
+     * @return Factory|View|Application
+     */
+    public function createEmployeeDataTable(Request $request): Factory|View|Application
+    {
+        $usersInformation = $this->listEmployeesService->listEmployeesInformation($request);
+        $arrData['user parameters'] = $usersInformation['userInfo'];
+        return view('listEmployees.tableListEmployees', ['arrData' => $arrData]);
+    }
 }

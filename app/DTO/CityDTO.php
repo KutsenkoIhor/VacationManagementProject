@@ -31,7 +31,7 @@ class CityDTO
     /**
      * @return string|null
      */
-    public function getCountryId (): string|null
+    public function getCountryId(): string|null
     {
         return $this->countryId;
     }

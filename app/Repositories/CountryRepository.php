@@ -7,10 +7,11 @@ namespace App\Repositories;
 use App\Models\City;
 use App\Models\Country;
 use App\Repositories\Interfaces\CountryRepositoryInterface;
+use App\Repositories\Interfaces\ListEmployees\ListEmployeesCountryRepositoryInterface;
 use Illuminate\Database\Eloquent\Collection;
 
 
-class CountryRepository implements CountryRepositoryInterface
+class CountryRepository implements CountryRepositoryInterface, ListEmployeesCountryRepositoryInterface
 {
 
     public function all()
@@ -52,16 +53,28 @@ class CountryRepository implements CountryRepositoryInterface
         return Country::orderBy($colum)->get();
     }
 
+    /**
+     * @param string $country
+     * @return Country
+     */
     public function searchByCountry(string $country): Country
     {
         return Country::where('title', $country)->first();
     }
 
+    /**
+     * @param int $countryId
+     * @return string|null
+     */
     public function searchCountryById(int $countryId): string|null
     {
         return Country::where('id', $countryId)->first()->title;
     }
 
+    /**
+     * @param string $country
+     * @return int|null
+     */
     public function searchIdByCountry(string $country): int|null
     {
         return Country::where('title', $country)->first()->id;

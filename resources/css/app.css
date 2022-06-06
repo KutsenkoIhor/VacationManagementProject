@@ -2,6 +2,38 @@
 @tailwind components;
 @tailwind utilities;
 
+.bg-bloc-gray-200.active{
+    --tw-bg-opacity: 1;
+    background-color: rgb(229 231 235 / var(--tw-bg-opacity));
+}
+
+.bg-bloc-gray-200{}
+
+
+.sidebar_button_bg.active{
+    --tw-text-opacity: 1;
+    color: rgb(255 255 255 / var(--tw-text-opacity));
+    --tw-bg-opacity: 1;
+    background-color: rgb(75 85 99 / var(--tw-bg-opacity));
+}
+
+.sidebar_button_bg{}
+
+
+
+.svg-text-gray-400.active{
+    --tw-text-opacity: 1;
+    color: rgb(255 255 255 / var(--tw-text-opacity));
+}
+
+.svg-text-gray-400{
+    --tw-text-opacity: 1;
+    color: rgb(156 163 175 / var(--tw-text-opacity));
+}
+
+
+
+
 .show_error{
     display: none;
 }
@@ -79,13 +111,7 @@
 }
 /*{{--Elasticsearch--}}*/
 .absoluteCenter {
-
     position: absolute;
-    /*position: fixed;*/
-    /*padding-left: 50%;*/
-    /*left: 50%;*/
-    /*margin-left: auto;*/
-
     width: 500px; /* Need a specific value to work */
 }
 

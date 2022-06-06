@@ -182,6 +182,9 @@ return [
         App\Providers\CountriesRepositoryServiceProvider::class,
         App\Providers\CitiesRepositoryServiceProvider::class,
         App\Providers\RolesRepositoryServiceProvider::class,
+        App\Providers\UserRepositoryServiceProvider::class,
+        App\Providers\VacationDaysLeftProvider::class,
+        App\Providers\VacationDaysPerYearProvider::class,
 
     ],
 

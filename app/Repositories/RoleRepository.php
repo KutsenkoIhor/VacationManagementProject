@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace App\Repositories;
 
+use App\Repositories\Interfaces\ListEmployees\ListEmployeesRoleRepositoryInterface;
 use App\Repositories\Interfaces\RoleRepositoryInterface;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
 
-class RoleRepository implements RoleRepositoryInterface
+class RoleRepository implements RoleRepositoryInterface, ListEmployeesRoleRepositoryInterface
 {
     public function all(): object
     {

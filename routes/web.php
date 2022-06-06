@@ -40,27 +40,17 @@ Route::name('page.')->group(function () {
         return view('pages.overviewAllUserInVacationPage');
     })->middleware('auth')->name('overviewAllUserInVacation');
 
-//    Route::get('/listOfAllEmployees', function () {
-//        return view('pages.listOfAllEmployeesPage');
-//    })->middleware('auth')->name('listOfAllEmployees');
 
     Route::prefix('/listOfAllEmployees')->middleware('auth')->group(function () {
         Route::get('/', [ListEmployeesController::class, 'listEmployees'])->name('listOfAllEmployees');
         Route::post('/addUser', [ListEmployeesController::class, 'addUser']);
         Route::post('/saveUser', [ListEmployeesController::class, 'saveUser']);
         Route::post('/deleteUser', [ListEmployeesController::class, 'deleteUser']);
-        Route::post('/editUser', [ListEmployeesController::class, 'getInformationUserForEdit']);
+        Route::post('/editUser', [ListEmployeesController::class, 'UserInformationForEdit']);
         Route::post('/updateUser', [ListEmployeesController::class, 'updateUser']);
-        Route::get('/createEmployeeDataTable', [ListEmployeesController::class, 'getEmployeeDataTable']);
-        Route::post('/createEmployeeDataTable', [ListEmployeesController::class, 'getPaginateData']);
+        Route::get('/createEmployeeDataTable', [ListEmployeesController::class, 'createEmployeeDataTable']);
+        Route::post('/createEmployeeDataTable', [ListEmployeesController::class, 'getPaginateAndElasticsearchData']);
     });
-//    Route::get('/listOfAllEmployees', [ListOfAllEmployees::class, 'getRoles'])
-//        ->middleware('auth')->name('listOfAllEmployees');
-//    Route::post('/listOfAllEmployees/addUser', [ListOfAllEmployees::class, 'addUser'])
-//        ->middleware('auth');
-//    Route::post('/listOfAllEmployees/saveUser', [ListOfAllEmployees::class, 'saveUser'])
-//        ->middleware('auth');
-
 
     Route::get('/publicHoliday', function () {
         return view('pages.publicHolidayPage');
@@ -73,6 +63,10 @@ Route::name('page.')->group(function () {
     Route::get('/settingsPage', function () {
         return view('pages.settingsPage');
     })->middleware('auth')->name('settingsPage');
+
+    Route::get('/profile', function () {
+        return view('pages.profile');
+    })->middleware('auth')->name('profile');
 });
 
 Route::prefix('vacations')->name('vacations.')->middleware('auth')->group(function () {

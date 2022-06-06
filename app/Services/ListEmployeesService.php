@@ -9,14 +9,14 @@ use App\Factories\UserFactory;
 use App\Handlers\ListEmployeesHandler;
 use App\Http\Requests\SaveNewUserRequest;
 use App\Http\Requests\UpdateNewUserRequest;
-use App\Models\User;
-use App\Repositories\Interfaces\CityRepositoryInterface;
-use App\Repositories\Interfaces\CountryRepositoryInterface;
-use App\Repositories\UserRepository;
-use App\Repositories\VacationDaysLeftRepository;
-use App\Repositories\VacationDaysPerYearRepository;
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Http\JsonResponse;
+use App\Repositories\Interfaces\ListEmployees\ListEmployeesCityRepositoryInterface;
+use App\Repositories\Interfaces\ListEmployees\ListEmployeesCountryRepositoryInterface;
+use App\Repositories\Interfaces\ListEmployees\ListEmployeesRoleRepositoryInterface;
+use App\Repositories\Interfaces\ListEmployees\ListEmployeesUserRepositoryInterface;
+use App\Repositories\Interfaces\ListEmployees\ListEmployeesVacationDaysLeftRepositoryInterface;
+use App\Repositories\Interfaces\ListEmployees\ListEmployeesVacationDaysPerYearRepositoryInterface;
+use Exception;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class ListEmployeesService
@@ -25,48 +25,64 @@ class ListEmployeesService
     private CountryFactory $countryFactory;
     private CityFactory $cityFactory;
     private UserFactory $userFactory;
-    private CountryRepositoryInterface $countryRepository;
-    private CityRepositoryInterface $cityRepository;
-    private UserRepository $userRepository;
-    private VacationDaysPerYearRepository $vacationDaysPerYearRepository;
-    private VacationDaysLeftRepository $vacationDaysLeftRepository;
+    private ListEmployeesCountryRepositoryInterface $countryRepository;
+    private ListEmployeesRoleRepositoryInterface $roleRepository;
+    private ListEmployeesUserRepositoryInterface $userRepository;
+    private ListEmployeesCityRepositoryInterface $cityRepository;
+    private ListEmployeesVacationDaysLeftRepositoryInterface $vacationDaysLeftRepository;
+    private ListEmployeesVacationDaysPerYearRepositoryInterface $vacationDaysPerYearRepository;
     private ListEmployeesHandler $listEmployeesHandler;
 
 
     public function __construct(
-        RoleFactory $roleFactory,
-        CountryFactory $countryFactory,
-        CityFactory $cityFactory,
-        UserFactory $userFactory,
-        CountryRepositoryInterface $countryRepository,
-        CityRepositoryInterface $cityRepository,
-        UserRepository $userRepository,
-        VacationDaysPerYearRepository $vacationDaysPerYearRepository,
-        VacationDaysLeftRepository $vacationDaysLeftRepository,
-        ListEmployeesHandler $listEmployeesHandler,
+        RoleFactory                                         $roleFactory,
+        CountryFactory                                      $countryFactory,
+        CityFactory                                         $cityFactory,
+        UserFactory                                         $userFactory,
+        ListEmployeesCountryRepositoryInterface             $listEmployeesCountryRepository,
+        ListEmployeesRoleRepositoryInterface                $listEmployeesRoleRepository,
+        ListEmployeesUserRepositoryInterface                $listEmployeesUserRepository,
+        ListEmployeesCityRepositoryInterface                $listEmployeesCityRepository,
+        ListEmployeesVacationDaysLeftRepositoryInterface    $listEmployeesVacationDaysLeftRepository,
+        ListEmployeesVacationDaysPerYearRepositoryInterface $listEmployeesVacationDaysPerYearRepository,
+        ListEmployeesHandler                 $listEmployeesHandler,
     )
     {
         $this->roleFactory = $roleFactory;
         $this->countryFactory = $countryFactory;
         $this->cityFactory = $cityFactory;
-        $this->countryRepository = $countryRepository;
-        $this->cityRepository = $cityRepository;
-        $this->userRepository = $userRepository;
-        $this->vacationDaysPerYearRepository = $vacationDaysPerYearRepository;
-        $this->vacationDaysLeftRepository = $vacationDaysLeftRepository;
         $this->userFactory = $userFactory;
+        $this->countryRepository = $listEmployeesCountryRepository;
+        $this->roleRepository = $listEmployeesRoleRepository;
+        $this->userRepository = $listEmployeesUserRepository;
+        $this->cityRepository = $listEmployeesCityRepository;
+        $this->vacationDaysLeftRepository = $listEmployeesVacationDaysLeftRepository;
+        $this->vacationDaysPerYearRepository = $listEmployeesVacationDaysPerYearRepository;
         $this->listEmployeesHandler = $listEmployeesHandler;
     }
 
     /**
-     * @param Collection $modelsRole
      * @return array
      */
-    public function getRolesAndDays(Collection $modelsRole): array
+    public function getCountries(): array
     {
-        $arrRolesAndDays = [];
-        foreach ($modelsRole as $modelRole) {
+        $collectionCountries = $this->countryRepository->orderBy('title');
+        $arrCountries = [];
+        foreach ($collectionCountries as $modelCountries) {
+            $CountriesDTO = $this->countryFactory->makeDTOFromModel($modelCountries);
+            $arrCountries[] = $CountriesDTO->getCountry();
+        }
+        return $arrCountries;
+    }
 
+    /**
+     * @return array
+     */
+    public function getRolesAndDays(): array
+    {
+        $collectionRole = $this->roleRepository->all();
+        $arrRolesAndDays = [];
+        foreach ($collectionRole as $modelRole) {
             $roleAndDaysDTO = $this->roleFactory->makeDTOFromModel($modelRole);
             $arrRolesAndDays["roles"][] = $roleAndDaysDTO->getName();
             $arrRolesAndDays[$roleAndDaysDTO->getName()]['role'] = $roleAndDaysDTO->getName();
@@ -78,42 +94,29 @@ class ListEmployeesService
     }
 
     /**
-     * @param Collection $modelsCountries
-     * @param Collection $modelsRole
      * @return array
      */
-    public function modalWindow(Collection $modelsCountries, Collection $modelsRole): array
+    public function getCountriesAndCities(): array
     {
-        $arrData = [];
-        $arrCountries = [];
-        foreach ($modelsCountries as $modelCountries) {
-            $CountriesDTO = $this->countryFactory->makeDTOFromModel($modelCountries);
-            $arrCountries[] = $CountriesDTO->getCountry();
+        $collectionCountriesAndCities = $this->countryRepository->all();
+        $arrCountriesAndCities = [];
+        foreach ($collectionCountriesAndCities as $modelCountryAndCity) {
+            $arrCities = [];
+            foreach ($modelCountryAndCity->cities as $city) {
+                $cityDTO = $this->cityFactory->makeDTOFromModel($city);
+                $arrCities[] = $cityDTO->getCity();
+            }
+            $countryDTO = $this->countryFactory->makeDTOFromModel($modelCountryAndCity);
+            $arrCountriesAndCities[$countryDTO->getCountry()] =  $arrCities;
         }
-
-        $arrRolesAndDays = $this->getRolesAndDays($modelsRole);
-        $arrData['arr'] =  $arrRolesAndDays;
-        $arrData ['countries'] = $arrCountries;
-        return $arrData;
+        return $arrCountriesAndCities;
     }
 
-    public function dataForElasticsearch():array
-    {
-        $userInformation = [];
-        $userModels = $this->userRepository->all();
-        foreach ($userModels as $userModel) {
-            $dataUser = $this->userFactory->makeDTOFromModel($userModel);
-            $userID = $dataUser->getId();
-            $fullName = $this->listEmployeesHandler->getUserName($dataUser->getFirstName(), $dataUser->getLastName());
-
-//            $userInformation[$userID]['userId'] = $userID;
-            $userInformation[$userID]['email'] = $dataUser->getEmail();
-            $userInformation[$userID]['name'] = $fullName;
-        }
-        return $userInformation;
-    }
-
-    public function employeeInformationById ($userId): array
+    /**
+     * @param int $userId
+     * @return array
+     */
+    public function getEmployeeInformationById(int $userId): array
     {
         $userInformation = [];
         $userModel = $this->userRepository->getUserModelById($userId);
@@ -130,301 +133,191 @@ class ListEmployeesService
         return $userInformation;
     }
 
-    public function listEmployeesInformation($x): array
-    {
-        $elasticsearch = json_decode($x->get('elasticsearch'), true);
-        if ($elasticsearch !== []) {
-            $arrIdUserElasticsearch = $this->listEmployeesHandler->getIdFromArrElasticsearch($elasticsearch);
-            $userInformation = [];
-            $userModels = $this->userRepository->Elasticsearchpagination($arrIdUserElasticsearch);
-            foreach ($userModels as $userModel) {
-                $dataUser = $this->userFactory->makeDTOFromModel($userModel);
-                $userID = $dataUser->getId();
-                $fullName = $this->listEmployeesHandler->getUserName($dataUser->getFirstName(), $dataUser->getLastName());
-                $arrUserRoles = $this->listEmployeesHandler->getArrRoles($userModel);
-                $strUserRoles = $this->listEmployeesHandler->getStrRoles($userModel);
-                $country = $dataUser->getCountryId() ? $this->countryRepository->searchCountryById($dataUser->getCountryId()) : null;
-                $city = $dataUser->getCityId() ? $this->cityRepository->searchCityById($dataUser->getCityId()) : null;
-                $vacationDayLeft = $userModel->vacationDaysLeft ? $userModel->vacationDaysLeft->vacations : null;
-                $personalDayLeft = $userModel->vacationDaysLeft ? $userModel->vacationDaysLeft->personal_days : null;
-                $sickDayLeft = $userModel->vacationDaysLeft ? $userModel->vacationDaysLeft->sick_days : null;
-                $vacationDayPerYear = $userModel->vacationDaysPerYear ? $userModel->vacationDaysPerYear->vacations : null;
-                $personalDayPerYear = $userModel->vacationDaysPerYear ? $userModel->vacationDaysPerYear->personal_days : null;
-                $sickDayPerYear = $userModel->vacationDaysPerYear ? $userModel->vacationDaysPerYear->sick_days: null;
-
-                $userInformation[$userID]['userId'] = $userID;
-                $userInformation[$userID]['email'] = $dataUser->getEmail();
-                $userInformation[$userID]['name'] = $fullName;
-                $userInformation[$userID]['roles'] = $strUserRoles;
-                $userInformation[$userID]['rolesArr'] =$arrUserRoles;
-                $userInformation[$userID]['country'] = $country;
-                $userInformation[$userID]['city'] = $city;
-                $userInformation[$userID]['vacation days left'] = $vacationDayLeft;
-                $userInformation[$userID]['personal days left'] = $personalDayLeft;
-                $userInformation[$userID]['sick days left'] = $sickDayLeft;
-                $userInformation[$userID]['vacation days per year'] = $vacationDayPerYear;
-                $userInformation[$userID]['personal days per year'] = $personalDayPerYear;
-                $userInformation[$userID]['sick days per year'] = $sickDayPerYear;
-            }
-            $dataInformation = [];
-            $dataInformation['userInfo'] = $userInformation;
-            $dataInformation['userModel'] = $userModels;
-            return $dataInformation;
-        } else {
-            if ($x->get('countrySort') !== 'All') {
-                $idCountry = $this->countryRepository->searchIdByCountry($x->get('countrySort'));
-            } else {
-                $idCountry = 'All';
-            }
-            if ($x->get('citySort') !== 'All') {
-                $idCity = $this->cityRepository->searchIdByCity($x->get('citySort'));
-            } else {
-                $idCity = 'All';
-            }
-
-            $arrIdRole = [];
-            if ($x->get('roleSort') !== 'All') {
-                $userss = User::role($x->get('roleSort'))->get();
-                foreach ($userss as $user) {
-                    $arrIdRole[$user['id']] = $user['id'];
-                }
-            }
-
-
-
-
-//            dd($idCity);
-
-            $userInformation = [];
-            $userModels = $this->userRepository->allPagination($arrIdRole, $idCountry, $idCity);
-            foreach ($userModels as $userModel) {
-                $dataUser = $this->userFactory->makeDTOFromModel($userModel);
-                $userID = $dataUser->getId();
-                $fullName = $this->listEmployeesHandler->getUserName($dataUser->getFirstName(), $dataUser->getLastName());
-                $arrUserRoles = $this->listEmployeesHandler->getArrRoles($userModel);
-                $strUserRoles = $this->listEmployeesHandler->getStrRoles($userModel);
-                $country = $dataUser->getCountryId() ? $this->countryRepository->searchCountryById($dataUser->getCountryId()) : null;
-                $city = $dataUser->getCityId() ? $this->cityRepository->searchCityById($dataUser->getCityId()) : null;
-                $vacationDayLeft = $userModel->vacationDaysLeft ? $userModel->vacationDaysLeft->vacations : null;
-                $personalDayLeft = $userModel->vacationDaysLeft ? $userModel->vacationDaysLeft->personal_days : null;
-                $sickDayLeft = $userModel->vacationDaysLeft ? $userModel->vacationDaysLeft->sick_days : null;
-                $vacationDayPerYear = $userModel->vacationDaysPerYear ? $userModel->vacationDaysPerYear->vacations : null;
-                $personalDayPerYear = $userModel->vacationDaysPerYear ? $userModel->vacationDaysPerYear->personal_days : null;
-                $sickDayPerYear = $userModel->vacationDaysPerYear ? $userModel->vacationDaysPerYear->sick_days: null;
-
-                $userInformation[$userID]['userId'] = $userID;
-                $userInformation[$userID]['email'] = $dataUser->getEmail();
-                $userInformation[$userID]['name'] = $fullName;
-                $userInformation[$userID]['roles'] = $strUserRoles;
-                $userInformation[$userID]['rolesArr'] =$arrUserRoles;
-                $userInformation[$userID]['country'] = $country;
-                $userInformation[$userID]['city'] = $city;
-                $userInformation[$userID]['vacation days left'] = $vacationDayLeft;
-                $userInformation[$userID]['personal days left'] = $personalDayLeft;
-                $userInformation[$userID]['sick days left'] = $sickDayLeft;
-                $userInformation[$userID]['vacation days per year'] = $vacationDayPerYear;
-                $userInformation[$userID]['personal days per year'] = $personalDayPerYear;
-                $userInformation[$userID]['sick days per year'] = $sickDayPerYear;
-            }
-            $dataInformation = [];
-            $dataInformation['userInfo'] = $userInformation;
-            $dataInformation['userModel'] = $userModels;
-            return $dataInformation;
-        }
-
-//        $userInformation = [];
-//        $userModels = $this->userRepository->allPagination();
-//        foreach ($userModels as $userModel) {
-//            $dataUser = $this->userFactory->makeDTOFromModel($userModel);
-//            $userID = $dataUser->getId();
-//            $fullName = $this->listEmployeesHandler->getUserName($dataUser->getFirstName(), $dataUser->getLastName());
-//            $arrUserRoles = $this->listEmployeesHandler->getArrRoles($userModel);
-//            $strUserRoles = $this->listEmployeesHandler->getStrRoles($userModel);
-//            $country = $dataUser->getCountryId() ? $this->countryRepository->searchCountryById($dataUser->getCountryId()) : null;
-//            $city = $dataUser->getCityId() ? $this->cityRepository->searchCityById($dataUser->getCityId()) : null;
-//            $vacationDayLeft = $userModel->vacationDaysLeft ? $userModel->vacationDaysLeft->vacations : null;
-//            $personalDayLeft = $userModel->vacationDaysLeft ? $userModel->vacationDaysLeft->personal_days : null;
-//            $sickDayLeft = $userModel->vacationDaysLeft ? $userModel->vacationDaysLeft->sick_days : null;
-//            $vacationDayPerYear = $userModel->vacationDaysPerYear ? $userModel->vacationDaysPerYear->vacations : null;
-//            $personalDayPerYear = $userModel->vacationDaysPerYear ? $userModel->vacationDaysPerYear->personal_days : null;
-//            $sickDayPerYear = $userModel->vacationDaysPerYear ? $userModel->vacationDaysPerYear->sick_days: null;
-//
-//            $userInformation[$userID]['userId'] = $userID;
-//            $userInformation[$userID]['email'] = $dataUser->getEmail();
-//            $userInformation[$userID]['name'] = $fullName;
-//            $userInformation[$userID]['roles'] = $strUserRoles;
-//            $userInformation[$userID]['rolesArr'] =$arrUserRoles;
-//            $userInformation[$userID]['country'] = $country;
-//            $userInformation[$userID]['city'] = $city;
-//            $userInformation[$userID]['vacation days left'] = $vacationDayLeft;
-//            $userInformation[$userID]['personal days left'] = $personalDayLeft;
-//            $userInformation[$userID]['sick days left'] = $sickDayLeft;
-//            $userInformation[$userID]['vacation days per year'] = $vacationDayPerYear;
-//            $userInformation[$userID]['personal days per year'] = $personalDayPerYear;
-//            $userInformation[$userID]['sick days per year'] = $sickDayPerYear;
-//        }
-//        $dataInformation = [];
-//        $dataInformation['userInfo'] = $userInformation;
-//        $dataInformation['userModel'] = $userModels;
-//        return $dataInformation;
-    }
-
     /**
-     * @param Collection $dataCountriesAndCities
-     * @param Collection $dataRole
-     * @return JsonResponse
+     * @param SaveNewUserRequest|UpdateNewUserRequest $request
+     * @return int
      */
-    public function addNewUser(Collection $dataCountriesAndCities, Collection $dataRole): array
+    public function getIdCountry(SaveNewUserRequest|UpdateNewUserRequest $request): int
     {
-        $arrCountriesAndCities = [];
-        foreach ($dataCountriesAndCities as $dataCountryAndCity) {
-            $arrCities = [];
-            foreach ($dataCountryAndCity->cities as $city) {
-                $cityDTO = $this->cityFactory->makeDTOFromModel($city);
-                $arrCities[] = $cityDTO->getCity();
-            }
-            $countryDTO = $this->countryFactory->makeDTOFromModel($dataCountryAndCity);
-            $arrCountriesAndCities[$countryDTO->getCountry()] =  $arrCities;
-        }
-
-        $arrRolesAndDays = $this->getRolesAndDays($dataRole);
-
-        $arrRolesAndDays['CountriesAndCities'] = $arrCountriesAndCities;
-        return $arrRolesAndDays;
-//        return response()->json($arrRolesAndDays);
-    }
-
-    public function takeIdCountry(SaveNewUserRequest|UpdateNewUserRequest $request): int
-    {
-        $collectionCountry = $this->countryRepository->searchByCountry($request->get('country'));
-        $DTOCountry = $this->countryFactory->makeDTOFromModel($collectionCountry);
+        $modelCountry = $this->countryRepository->searchByCountry($request->get('country'));
+        $DTOCountry = $this->countryFactory->makeDTOFromModel($modelCountry);
         return $DTOCountry->getId();
     }
 
-    public function takeIdCity(int $idCountry, SaveNewUserRequest|UpdateNewUserRequest $request): int
+    /**
+     * @param int $idCountry
+     * @param SaveNewUserRequest|UpdateNewUserRequest $request
+     * @return int
+     */
+    public function getIdCity(int $idCountry, SaveNewUserRequest|UpdateNewUserRequest $request): int
     {
         $collectionCity = $this->cityRepository->searchByCountryIdAndCity($idCountry, $request->get('city'));
         $DTOCity = $this->cityFactory->makeDTOFromModel($collectionCity);
         return $DTOCity->getId();
     }
 
-    public function saveUser(SaveNewUserRequest $request, int $idCountry, int $idCity): JsonResponse
+    /**
+     * @param SaveNewUserRequest $request
+     * @param int $idCountry
+     * @param int $idCity
+     * @return bool
+     */
+    public function saveUser(SaveNewUserRequest $request, int $idCountry, int $idCity): bool
     {
-        DB::transaction(function () use ($request, $idCountry, $idCity) {
-            $modelUser = $this->userRepository->updateOrCreate(
-                $request->get('firstName'),
-                $request->get('lastName'),
-                $request->get('email'),
-//                null,
-                $idCountry,
-                $idCity,
-            );
-
-            foreach ($request->get('roles') as $role) {
-                $modelUser->assignRole($role);
-            }
-
-            $idUser = $modelUser["id"];
-
-            $this->vacationDaysPerYearRepository->updateOrCreate(
-                $idUser,
-                $request->get('vacationDays'),
-                $request->get('personalDays'),
-                $request->get('sickDays'),
-            );
-            $this->vacationDaysLeftRepository->create(
-                $idUser,
-                $request->get('vacationDays'),
-                $request->get('personalDays'),
-                $request->get('sickDays'),
-            );
-        });
-
-//---- для внутрышньої перевірки js----
-        $data = [];
-        $data['country'] = $request->get('country');
-        $data['city'] = $request->get('city');
-        $data['email'] = $request->get('email');
-        $data['firstName'] = $request->get('firstName');
-        $data['lastName"'] = $request->get('lastName');
-        $data['vacationDays'] = $request->get('vacationDays');
-        $data['sickDays'] = $request->get('sickDays');
-        $data['personalDays'] = $request->get('personalDays');
-        $data['arrRoles'] = $request->get('roles');
-        $data['idCountry'] = $idCountry;
-        $data['idCity'] = $idCity;
-        return response()->json($data);
-
+        try {
+            DB::transaction(function() use ($request, $idCountry, $idCity) {
+                $modelUser = $this->userRepository->updateOrCreate(
+                    $request->get('firstName'),
+                    $request->get('lastName'),
+                    $request->get('email'),
+                    $idCountry,
+                    $idCity,
+                );
+                $this->listEmployeesHandler->assignListRoles($request->get('roles'), $modelUser);
+                $userDto = $this->userFactory->makeDTOFromModel($modelUser);
+                $idUser = $userDto->getId();
+                $this->vacationDaysPerYearRepository->updateOrCreate(
+                    $idUser,
+                    $request->get('vacationDays'),
+                    $request->get('personalDays'),
+                    $request->get('sickDays'),
+                );
+                $this->vacationDaysLeftRepository->create(
+                    $idUser,
+                    $request->get('vacationDays'),
+                    $request->get('personalDays'),
+                    $request->get('sickDays'),
+                );
+            });
+        } catch (Exception $e) {
+            return false;
+        }
+        return true;
     }
 
-    public function updateUser(UpdateNewUserRequest $request, int $idCountry, int $idCity): JsonResponse
+    /**
+     * @param int $userId
+     * @return bool
+     */
+    public function deleteUser(int $userId): bool
     {
-        DB::transaction(function () use ($request, $idCountry, $idCity) {
-            $modelUser = $this->userRepository->updateOrCreate(
-                $request->get('firstName'),
-                $request->get('lastName'),
-                $request->get('email'),
-//                null,
-                $idCountry,
-                $idCity,
-            );
-
-            foreach ($modelUser->getRoleNames() as $role) {
-                $modelUser->removeRole($role);
-            }
-            foreach ($request->get('roles') as $role) {
-                $modelUser->assignRole($role);
-            }
-
-            $idUser = $modelUser["id"];
-
-            $this->vacationDaysPerYearRepository->updateOrCreate(
-                $idUser,
-                $request->get('vacationDays'),
-                $request->get('personalDays'),
-                $request->get('sickDays'),
-            );
-        });
-        //---- для внутрышньої перевірки js----
-        $data = [];
-        $data['country'] = $request->get('country');
-        $data['city'] = $request->get('city');
-        $data['email'] = $request->get('email');
-        $data['firstName'] = $request->get('firstName');
-        $data['lastName"'] = $request->get('lastName');
-        $data['vacationDays'] = $request->get('vacationDays');
-        $data['sickDays'] = $request->get('sickDays');
-        $data['personalDays'] = $request->get('personalDays');
-        $data['arrRoles'] = $request->get('roles');
-        $data['idCountry'] = $idCountry;
-        $data['idCity'] = $idCity;
-        return response()->json($data);
+        try {
+            DB::transaction(function () use ($userId){
+                $userModel = $this->userRepository->getUserModelById($userId);
+                $userModel->vacationDaysLeft()->delete();
+                $userModel->vacationDaysPerYear()->delete();
+                $userModel->vacations()->delete();
+                $userModel->cityHr()->delete();
+                $userModel->employeeHrForeignKeyEmployee()->delete();
+                $userModel->employeeHrForeignKeyHr()->delete();
+                $userModel->employeePmForeignKeyEmployee()->delete();
+                $userModel->employeePmForeignKeyPm()->delete();
+                $this->listEmployeesHandler->removeAllRole($userModel);
+                $userModel->delete();
+            });
+        } catch (Exception $e) {
+            return false;
+        }
+        return true;
     }
 
-    public function deleteUser(int $userId): JsonResponse
+    /**
+     * @param UpdateNewUserRequest $request
+     * @param int $idCountry
+     * @param int $idCity
+     * @return bool
+     */
+    public function updateUser(UpdateNewUserRequest $request, int $idCountry, int $idCity): bool
     {
-        DB::transaction(function () use ($userId){
-            $userModel = $this->userRepository->getUserModelById($userId);
-            $userModel->vacationDaysLeft()->delete();
-            $userModel->vacationDaysPerYear()->delete();
-            $userModel->vacations()->delete();
-            $userModel->cityHr()->delete();
-            $userModel->employeeHrForeignKeyEmployee()->delete();
-            $userModel->employeeHrForeignKeyHr()->delete();
-            $userModel->employeePmForeignKeyEmployee()->delete();
-            $userModel->employeePmForeignKeyPm()->delete();
-            foreach ($userModel->getRoleNames() as $role) {
-                $userModel->removeRole($role);
-            }
-            $userModel->delete();
-
-        });
-
-        return response()->json($userId);
+        try {
+            DB::transaction(function () use ($request, $idCountry, $idCity) {
+                $modelUser = $this->userRepository->updateOrCreate(
+                    $request->get('firstName'),
+                    $request->get('lastName'),
+                    $request->get('email'),
+                    $idCountry,
+                    $idCity,
+                );
+                $this->listEmployeesHandler->removeAllRole($modelUser);
+                $this->listEmployeesHandler->assignListRoles($request->get('roles'), $modelUser);
+                $userDto = $this->userFactory->makeDTOFromModel($modelUser);
+                $idUser = $userDto->getId();
+                $this->vacationDaysPerYearRepository->updateOrCreate(
+                    $idUser,
+                    $request->get('vacationDays'),
+                    $request->get('personalDays'),
+                    $request->get('sickDays'),
+                );
+            });
+        } catch (Exception $e) {
+            return false;
+        }
+        return true;
     }
 
+    /**
+     * @return array
+     */
+    public function dataForElasticsearch():array
+    {
+        $userInformation = [];
+        $collectionUsers = $this->userRepository->all();
+        foreach ($collectionUsers as $userModel) {
+            $dataUser = $this->userFactory->makeDTOFromModel($userModel);
+            $userID = $dataUser->getId();
+            $fullName = $this->listEmployeesHandler->getUserName($dataUser->getFirstName(), $dataUser->getLastName());
+            $userInformation[$userID]['email'] = $dataUser->getEmail();
+            $userInformation[$userID]['name'] = $fullName;
+        }
+        return $userInformation;
+    }
 
+    /**
+     * @param Request $request
+     * @return array
+     */
+    public function listEmployeesInformation(Request $request): array
+    {
+        $elasticsearch = json_decode($request->get('elasticsearch'), true);
+        if ($elasticsearch) {
+            $arrIdUserElasticsearch = $this->listEmployeesHandler->getIdFromArrElasticsearch($elasticsearch);
+            $userModels = $this->userRepository->elasticsearchPagination($arrIdUserElasticsearch);
+        } else {
+            $idCountry = ($request->get('countrySort') !== 'All') ? $this->countryRepository->searchIdByCountry($request->get('countrySort')) : 'All';
+            $idCity = ($request->get('citySort') !== 'All') ? $this->cityRepository->searchIdByCity($request->get('citySort')) : 'All';
+            $arrIdRole = ($request->get('roleSort') !== 'All') ? $this->listEmployeesHandler->getArrIdUsersWithSpecificRole($request->get('roleSort')) : [];
+            $userModels = $this->userRepository->allPagination($arrIdRole, $idCountry, $idCity);
+        }
+        return $this->usersModelHandler($userModels);
+    }
+
+    /**
+     * @param $userModels
+     * @return array
+     */
+    private function usersModelHandler($userModels): array
+    {
+        $userInformation = [];
+        foreach ($userModels as $userModel) {
+            $dataUser = $this->userFactory->makeDTOFromModel($userModel);
+            $userID = $dataUser->getId();
+            $userInformation[$userID]['userId'] = $userID;
+            $userInformation[$userID]['email'] = $dataUser->getEmail();
+            $userInformation[$userID]['name'] = $this->listEmployeesHandler->getUserName($dataUser->getFirstName(), $dataUser->getLastName());
+            $userInformation[$userID]['roles'] = $this->listEmployeesHandler->getStrRoles($userModel);
+            $userInformation[$userID]['rolesArr'] =$this->listEmployeesHandler->getArrRoles($userModel);
+            $userInformation[$userID]['country'] = $dataUser->getCountryId() ? $this->countryRepository->searchCountryById($dataUser->getCountryId()) : null;
+            $userInformation[$userID]['city'] = $dataUser->getCityId() ? $this->cityRepository->searchCityById($dataUser->getCityId()) : null;
+            $userInformation[$userID]['vacation days left'] = $userModel->vacationDaysLeft ? $userModel->vacationDaysLeft->vacations : null;
+            $userInformation[$userID]['personal days left'] = $userModel->vacationDaysLeft ? $userModel->vacationDaysLeft->personal_days : null;
+            $userInformation[$userID]['sick days left'] = $userModel->vacationDaysLeft ? $userModel->vacationDaysLeft->sick_days : null;
+            $userInformation[$userID]['vacation days per year'] = $userModel->vacationDaysPerYear ? $userModel->vacationDaysPerYear->vacations : null;
+            $userInformation[$userID]['personal days per year'] = $userModel->vacationDaysPerYear ? $userModel->vacationDaysPerYear->personal_days : null;
+            $userInformation[$userID]['sick days per year'] = $userModel->vacationDaysPerYear ? $userModel->vacationDaysPerYear->sick_days: null;
+        }
+        $dataInformation = [];
+        $dataInformation['userInfo'] = $userInformation;
+        $dataInformation['userModel'] = $userModels;
+        return $dataInformation;
+    }
 }
-
-
-

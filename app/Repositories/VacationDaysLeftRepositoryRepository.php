@@ -3,10 +3,17 @@
 namespace App\Repositories;
 
 use App\Models\VacationDaysLeft;
-use App\Repositories\Interfaces\VacationDaysLeftInterface;
+use App\Repositories\Interfaces\ListEmployees\ListEmployeesVacationDaysLeftRepositoryInterface;
 
-class VacationDaysLeftRepository implements VacationDaysLeftInterface
+class VacationDaysLeftRepositoryRepository implements ListEmployeesVacationDaysLeftRepositoryInterface
 {
+    /**
+     * @param int $userId
+     * @param int $vacationsDays
+     * @param int $personalDays
+     * @param int $sickDays
+     * @return void
+     */
     public function create(int $userId, int $vacationsDays, int $personalDays, int $sickDays): void
     {
         VacationDaysLeft::create([

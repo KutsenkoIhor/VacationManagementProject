@@ -3,10 +3,17 @@
 namespace App\Repositories;
 
 use App\Models\VacationDaysPerYear;
-use App\Repositories\Interfaces\VacationDaysPerYearRepositoryInterface;
+use App\Repositories\Interfaces\ListEmployees\ListEmployeesVacationDaysPerYearRepositoryInterface;
 
-class VacationDaysPerYearRepository implements VacationDaysPerYearRepositoryInterface
+class VacationDaysPerYearRepository implements ListEmployeesVacationDaysPerYearRepositoryInterface
 {
+    /**
+     * @param int $userId
+     * @param int $vacationsDays
+     * @param int $personalDays
+     * @param int $sickDays
+     * @return void
+     */
     public function updateOrCreate(int $userId, int $vacationsDays, int $personalDays, int $sickDays): void
     {
         VacationDaysPerYear::updateOrCreate(

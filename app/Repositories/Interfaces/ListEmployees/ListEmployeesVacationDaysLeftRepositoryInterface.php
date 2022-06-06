@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Repositories\Interfaces;
+namespace App\Repositories\Interfaces\ListEmployees;
 
-interface VacationDaysLeftInterface
+interface ListEmployeesVacationDaysLeftRepositoryInterface
 {
     public function create(int $userId, int $vacationsDays, int $personalDays, int $sickDays): void;
 }

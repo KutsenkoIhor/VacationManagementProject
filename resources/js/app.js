@@ -1,5 +1,6 @@
 require('./bootstrap');
-require('./listOfAllEmployees');
+require('./web');
+
 
 
 

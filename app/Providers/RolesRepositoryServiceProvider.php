@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Repositories\Interfaces\ListEmployees\ListEmployeesRoleRepositoryInterface;
 use App\Repositories\Interfaces\RoleRepositoryInterface;
 use App\Repositories\RoleRepository;
 use Illuminate\Support\ServiceProvider;
@@ -19,7 +20,13 @@ class RolesRepositoryServiceProvider extends ServiceProvider
             RoleRepositoryInterface::class,
             RoleRepository::class
         );
+
+        $this->app->bind(
+            ListEmployeesRoleRepositoryInterface::class,
+            RoleRepository::class
+        );
     }
+
 
     /**
      * Bootstrap services.

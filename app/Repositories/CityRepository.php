@@ -7,9 +7,10 @@ namespace App\Repositories;
 use App\Models\City;
 use App\Models\Country;
 use App\Repositories\Interfaces\CityRepositoryInterface;
+use App\Repositories\Interfaces\ListEmployees\ListEmployeesCityRepositoryInterface;
 
 
-class CityRepository implements CityRepositoryInterface
+class CityRepository implements CityRepositoryInterface, ListEmployeesCityRepositoryInterface
 {
     public function all(): object
     {

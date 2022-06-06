@@ -1,3 +1,8 @@
+// set the background of the sidebar button
+document.getElementById("sideBar_list_of_all_employees").classList.add("active");
+// set the background of the sidebar svg
+document.getElementById("sideBar_list_of_all_employees_svg").classList.add("active");
+
 //-----------------------------------------/listOfAllEmployees/-----------------------------------------
 if(window.location.pathname === '/listOfAllEmployees'){
     const openPopUpAddEmployee = document.getElementById("add_pop_up_employee");
@@ -56,6 +61,8 @@ if(window.location.pathname === '/listOfAllEmployees'){
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
+
+
 
     createEmployeeDataTable()
 
@@ -538,10 +545,18 @@ if(window.location.pathname === '/listOfAllEmployees'){
 
             },
             success: function(data) {
-                pushNotifications(firstName, lastName)
-                clearAfterSave()
+                if (data) {
+                    pushNotifications(firstName, lastName)
+                    createEmployeeDataTable()
+                    clearAfterSave()
+                    console.log(data);
+                }
+
+                console.log('EROROR');
+
+
                 console.log(data);
-                createEmployeeDataTable()
+
             },
             error: function(er) {
                 if (er.status === 422) {
@@ -620,8 +635,10 @@ if(window.location.pathname === '/listOfAllEmployees'){
                 "userId" : userId,
             },
             success: function(data) {
-                console.log(data);
-                createEmployeeDataTable(currentPageNumber)
+                if(data) {
+                    console.log(data);
+                    createEmployeeDataTable(currentPageNumber)
+                }
             },
             error: function(er) {
                 console.log(er['responseJSON']['errors']);
@@ -641,8 +658,11 @@ if(window.location.pathname === '/listOfAllEmployees'){
                 "userId" : userId,
             },
             success: function(data) {
+                if (data) {
+                    console.log(data);
+                    fillingEmployeeDetailsForEditing(data)
+                }
                 console.log(data);
-                fillingEmployeeDetailsForEditing(data)
             },
             error: function(er) {
                     console.log(er);

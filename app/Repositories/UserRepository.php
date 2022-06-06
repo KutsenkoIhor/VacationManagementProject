@@ -5,9 +5,10 @@ namespace App\Repositories;
 use App\DTO\UserDTO;
 use App\Factories\UserFactory;
 use App\Models\User;
+use App\Repositories\Interfaces\ListEmployees\ListEmployeesUserRepositoryInterface;
 use App\Repositories\Interfaces\UserRepositoryInterface;
 
-class UserRepository implements UserRepositoryInterface
+class UserRepository implements UserRepositoryInterface, ListEmployeesUserRepositoryInterface
 {
     private UserFactory $homePageFactory;
 
@@ -27,53 +28,34 @@ class UserRepository implements UserRepositoryInterface
         return User::all()->sortByDesc('updated_at');
     }
 
+
     /**
+     * @param array $role
+     * @param string|int|null $countryId
+     * @param string|int|null $cityId
      * @return object
      */
-    public function allPagination(
-        array $role,
-        string|int|null $countryId,
-        string|int|null $cityId,
-    ): object {
+    public function allPagination(array $role, string|int|null $countryId, string|int|null $cityId): object
+    {
         $queryBuilder = User::query();
 
         if ($role !== []) {
             $queryBuilder->whereIn('id', $role);
         }
-//        dd($queryBuilder);
         if ($countryId !== 'All') {
             $queryBuilder->where('country_id', $countryId);
-//            dd($queryBuilder->get());
-//            dd($queryBuilder->orderBy('updated_at', 'DESC')->paginate(5));
         }
         if ($cityId !== 'All') {
             $queryBuilder->where('city_id', $cityId);
         }
-
-        $z =  $queryBuilder->orderBy('updated_at', 'DESC')->paginate(5);
-
-//        dd($z);
-        return $z;
-
-
+        return  $queryBuilder->orderBy('updated_at', 'DESC')->paginate(5);
     }
-
-
-//    public function allPaginations (): object
-//    {
-//        dd(User::orderBy('updated_at', 'DESC')->paginate(5));
-//        return User::orderBy('updated_at', 'DESC')->paginate(5);
-//    }
-//        return User::where('country_id', '1')->where('country_id', '1')->orderBy('updated_at', 'DESC')->paginate(5);
-//        return User::orderBy('updated_at', 'DESC')->paginate(5);
-
-
 
     /**
      * @param $arrIdUserElasticsearch
      * @return object
      */
-    public function Elasticsearchpagination($arrIdUserElasticsearch): object
+    public function elasticsearchPagination($arrIdUserElasticsearch): object
     {
         return User::whereIn('id', $arrIdUserElasticsearch)->orderBy('updated_at', 'DESC')->paginate(5);
     }

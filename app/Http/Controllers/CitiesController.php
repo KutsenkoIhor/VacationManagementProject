@@ -7,30 +7,33 @@ namespace App\Http\Controllers;
 use App\Http\Requests\AddCityRequest;
 use App\Http\Requests\EditCityRequest;
 use App\Repositories\Interfaces\CitiesRepositoryInterface;
+use App\Repositories\Interfaces\CountriesRepositoryInterface;
 
 class CitiesController extends Controller
 {
     private $citiesRepository;
+    private $countriesRepository;
 
-    public function __construct(CitiesRepositoryInterface $citiesRepository)
+    public function __construct(CitiesRepositoryInterface $citiesRepository, CountriesRepositoryInterface $countriesRepository)
     {
         $this->citiesRepository = $citiesRepository;
+        $this->countriesRepository = $countriesRepository;
     }
 
     public function index()
     {
         $cities = $this->citiesRepository->all();
-        foreach ($cities as $city){
-            $city->country = $this->citiesRepository->getCountry($city->country_id);
-        }
+//        foreach ($cities as $city){
+//            $city->country = $this->countriesRepository->getCountryTitle((int) $city->country_id);
+//        }
 
-        return view('location.cities.index', ['cities' => $cities]);
+        return view('settings.cities.index', ['cities' => $cities]);
     }
 
     public function addCityForm()
     {
-        $countries = $this->citiesRepository->getCountries();
-        return view('location.cities.create', ['countries' => $countries]);
+        $countries = $this->countriesRepository->all();
+        return view('settings.cities.create', ['countries' => $countries]);
     }
 
     public function addCity(AddCityRequest $request)
@@ -40,27 +43,27 @@ class CitiesController extends Controller
         return redirect(route('cities.index'))->with('status', 'City added!');
     }
 
-    public function editCityForm($id)
+    public function editCityForm(int $id)
     {
-        $city = $this->citiesRepository->getById($id);
-        $countries = $this->citiesRepository->getCountries();
+        $city = $this->citiesRepository->getById((int) $id);
+        $countries = $this->countriesRepository->all();
 
-        return view('location.cities.edit',[
+        return view('settings.cities.edit',[
             'city' => $city,
             'countries' => $countries
         ]);
     }
 
-    public function editCity($id, EditCityRequest $request)
+    public function editCity(int $id, EditCityRequest $request)
     {
-        $this->citiesRepository->update($id, $request);
+        $this->citiesRepository->update((int) $id, $request);
 
         return redirect(route('cities.index'))->with('status', 'City edited!');
     }
 
-    public function deleteCity($id)
+    public function deleteCity(int $id)
     {
-        $this->citiesRepository->delete($id);
+        $this->citiesRepository->delete((int) $id);
 
         return redirect(route('cities.index'))->with('status', 'City deleted!');
     }

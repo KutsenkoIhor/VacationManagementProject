@@ -7,8 +7,8 @@ namespace App\Repositories\Interfaces;
 interface CountriesRepositoryInterface
 {
     public function all();
-    public function getById($id);
+    public function getById(int $id);
     public function add($request);
     public function update(int $id, $request);
-    public function delete($id);
+    public function delete(int $id);
 }

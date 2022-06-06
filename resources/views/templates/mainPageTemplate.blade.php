@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <script src="{{ asset('js/jquery.js') }}"></script>
     @yield('custom_styles')
     <title>Vacation Management</title>
     <link rel="shortcut icon" href="{{"/image/vacation.svg"}}" type="image/svg">
@@ -218,6 +219,7 @@
                         Home (1234)
                     </a>
 
+                    @hasrole('Employee')
                     <a href="{{route('vacations.create.form')}}"
                        class="text-gray-100 hover:text-white hover:bg-gray-700 group flex items-center px-2 py-2 text-sm leading-6 font-medium rounded-md">
                         <!-- Heroicon name: outline/clock -->
@@ -226,10 +228,12 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                   d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                         </svg>
-                        Vacation request
+                        Vacation Request
                     </a>
+                    @endhasrole
 
-                    <a href="{{ route('vacations.list') }}"
+                    @hasrole('Employee')
+                    <a href="{{ route('vacations.requestHistory') }}"
                        class="text-gray-100 hover:text-white hover:bg-gray-700 group flex items-center px-2 py-2 text-sm leading-6 font-medium rounded-md">
                         <!-- Heroicon name: outline/clock -->
                         <svg class="mr-4 flex-shrink-0 h-6 w-6 text-gray-100" xmlns="http://www.w3.org/2000/svg"
@@ -237,9 +241,24 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                   d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
                         </svg>
-                        Vacations history (1234)
+                        Vacation Request History (123)
                     </a>
+                    @endhasrole
 
+                    @hasanyrole('PM|HR')
+                    <a href="{{ route('vacations.requests') }}"
+                       class="text-gray-100 hover:text-white hover:bg-gray-700 group flex items-center px-2 py-2 text-sm leading-6 font-medium rounded-md">
+                        <!-- Heroicon name: outline/clock -->
+                        <svg class="mr-4 flex-shrink-0 h-6 w-6 text-gray-100" xmlns="http://www.w3.org/2000/svg"
+                             fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        Vacation Requests (123)
+                    </a>
+                    @endhasanyrole
+
+                    @hasanyrole('PM|HR')
                     <a href="{{route('vacations.upcoming')}}"
                        class="text-gray-100 hover:text-white hover:bg-gray-700 group flex items-center px-2 py-2 text-sm leading-6 font-medium rounded-md">
                         <!-- Heroicon name: outline/scale -->
@@ -248,8 +267,9 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                   d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
                         </svg>
-                        Vacation Overview (23)
+                        Vacation Overview
                     </a>
+                    @endhasanyrole
 
                     <a href="{{route('page.listOfAllEmployees')}}"
                        class="text-gray-100 hover:text-white hover:bg-gray-700 group flex items-center px-2 py-2 text-sm leading-6 font-medium rounded-md">
@@ -286,7 +306,7 @@
                         Manage HRs and PMs (4)
                     </a>
 
-                    <a href="{{route('page.settingsPage')}}"
+                    <a href="{{route('countries.index')}}"
                        class="text-gray-100 hover:text-white hover:bg-gray-700 group flex items-center px-2 py-2 text-sm leading-6 font-medium rounded-md">
                         <!-- Heroicon name: outline/document-report -->
                         <svg class="mr-4 flex-shrink-0 h-6 w-6 text-gray-100" xmlns="http://www.w3.org/2000/svg"
@@ -333,6 +353,7 @@
     <div class="lg:pl-64 flex flex-col flex-1">
         <main class="pb-8 pt-1">
             <div class="lg:px-3">
+                @yield('nav')
                 @yield('content')
             </div>
         </main>

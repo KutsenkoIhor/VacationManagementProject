@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Repositories\Vacation;
 
+use App\DTO\VacationDaysNumberDTO;
 use App\Factories\VacationFactory;
 use App\Models\Vacation;
 use App\Models\VacationRequest;
@@ -47,4 +48,28 @@ class VacationRepository implements VacationRepositoryInterface
         );
     }
 
+    public function getNumberOfVacationDaysByUserIdPerMonth(int $userId): int
+    {
+        return (int) Vacation::where('user_id', $userId)
+            ->whereMonth('created_at', Carbon::now()->month)
+            ->sum('number_of_days');
+    }
+
+    public function getVacationsPerYear(int $userId, Carbon $date, string $type): array
+    {
+        return Vacation::where('user_id', $userId)
+            ->where('type', '=', $type)
+            ->where(function ($query) use ($date, $type) {
+                $query
+                    ->whereBetween(
+                        'start_date',
+                        [$date->startOfYear()->toDateString(), $date->endOfYear()->toDateString()]
+                    )->orWhereBetween(
+                        'end_date',
+                        [$date->startOfYear()->toDateString(), $date->endOfYear()->toDateString()]
+                    );
+            })
+            ->get()
+            ->toArray();
+    }
 }

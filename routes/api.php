@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\VacationRequestApprovalController;
+use App\Http\Controllers\VacationRequestController;
 use Illuminate\Support\Facades\Route;
 
 /*

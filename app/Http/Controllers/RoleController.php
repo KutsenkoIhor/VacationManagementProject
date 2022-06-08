@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
 use App\Http\Requests\AddRoleRequest;
@@ -23,7 +25,7 @@ class RoleController extends Controller
     {
         $roles = $this->roleRepository->all();
 
-        return view('roles.index', ['roles' => $roles]);
+        return view('settings.roles.index', ['roles' => $roles]);
     }
 
     /**
@@ -35,7 +37,7 @@ class RoleController extends Controller
     {
         $permissions = $this->roleRepository->permissions();
 
-        return view('roles.create', compact([
+        return view('settings.roles.create', compact([
             'permissions'
         ]));
     }
@@ -70,12 +72,12 @@ class RoleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(int $id)
     {
-        $role = $this->roleRepository->getRoleById($id);
+        $role = $this->roleRepository->getRoleById((int) $id);
         $permissions = $this->roleRepository->permissions();
 
-        return view('roles.edit', compact([
+        return view('settings.roles.edit', compact([
             'permissions',
             'role'
         ]));
@@ -88,9 +90,9 @@ class RoleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update($id, EditRoleRequest $request)
+    public function update(int $id, EditRoleRequest $request)
     {
-        $this->roleRepository->update($id, $request, );
+        $this->roleRepository->update((int) $id, $request);
 
         return redirect(route('roles.index'))->with('status', 'Role edited!');
     }
@@ -101,9 +103,9 @@ class RoleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(int $id)
     {
-        $this->roleRepository->delete($id);
+        $this->roleRepository->delete((int) $id);
 
         return redirect(route('roles.index'))->with('status', 'Role deleted!');
     }

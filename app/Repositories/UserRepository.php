@@ -5,19 +5,16 @@ namespace App\Repositories;
 use App\DTO\UserDTO;
 use App\Factories\UserFactory;
 use App\Models\User;
-use App\Repositories\Interfaces\ListEmployees\ListEmployeesUserRepositoryInterface;
 use App\Repositories\Interfaces\UserRepositoryInterface;
 
-class UserRepository implements UserRepositoryInterface, ListEmployeesUserRepositoryInterface
+class UserRepository implements UserRepositoryInterface
 {
-    private UserFactory $homePageFactory;
+    private UserFactory $userFactory;
 
-    /**
-     * @param UserFactory $homePageFactory
-     */
-    public function __construct(UserFactory $homePageFactory)
+
+    public function __construct(UserFactory $userFactory)
     {
-        $this->homePageFactory = $homePageFactory;
+        $this->userFactory = $userFactory;
     }
 
     /**
@@ -66,7 +63,7 @@ class UserRepository implements UserRepositoryInterface, ListEmployeesUserReposi
      */
     public function getUserParameters (int $userId): UserDTO
     {
-        return $this->homePageFactory->makeDTOFromModelCollection(User::where('id', $userId)->get());
+        return $this->userFactory->makeDTOFromModelCollection(User::where('id', $userId)->get());
     }
 
     /**

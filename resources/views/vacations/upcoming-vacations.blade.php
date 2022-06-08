@@ -42,7 +42,7 @@
                            placeholder="End date">
                 </div>
                 <button type="submit"
-                        class="items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-indigo-800 bg-indigo-100 hover:bg-indigo-200 focus:outline focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 text-center">
+                        class="items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-indigo-800 bg-indigo-100 hover:bg-indigo-200 text-center bg-indigo-100 hover:bg-indigo-200 text-center">
                     Apply filter
                 </button>
             </div>
@@ -86,7 +86,7 @@
                         </tbody>
 
                     </table>
-            </div>
+                </div>
             </div>
         </div>
     </div>

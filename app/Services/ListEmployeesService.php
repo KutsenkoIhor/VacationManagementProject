@@ -9,12 +9,12 @@ use App\Factories\UserFactory;
 use App\Handlers\ListEmployeesHandler;
 use App\Http\Requests\SaveNewUserRequest;
 use App\Http\Requests\UpdateNewUserRequest;
-use App\Repositories\Interfaces\ListEmployees\ListEmployeesCityRepositoryInterface;
-use App\Repositories\Interfaces\ListEmployees\ListEmployeesCountryRepositoryInterface;
-use App\Repositories\Interfaces\ListEmployees\ListEmployeesRoleRepositoryInterface;
-use App\Repositories\Interfaces\ListEmployees\ListEmployeesUserRepositoryInterface;
-use App\Repositories\Interfaces\ListEmployees\ListEmployeesVacationDaysLeftRepositoryInterface;
-use App\Repositories\Interfaces\ListEmployees\ListEmployeesVacationDaysPerYearRepositoryInterface;
+use App\Repositories\Interfaces\CitiesRepositoryInterface;
+use App\Repositories\Interfaces\CountriesRepositoryInterface;
+use App\Repositories\Interfaces\RoleRepositoryInterface;
+use App\Repositories\Interfaces\UserRepositoryInterface;
+use App\Repositories\Interfaces\VacationDaysLeftRepositoryInterface;
+use App\Repositories\Interfaces\VacationDaysPerYearRepositoryInterface;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -25,39 +25,39 @@ class ListEmployeesService
     private CountryFactory $countryFactory;
     private CityFactory $cityFactory;
     private UserFactory $userFactory;
-    private ListEmployeesCountryRepositoryInterface $countryRepository;
-    private ListEmployeesRoleRepositoryInterface $roleRepository;
-    private ListEmployeesUserRepositoryInterface $userRepository;
-    private ListEmployeesCityRepositoryInterface $cityRepository;
-    private ListEmployeesVacationDaysLeftRepositoryInterface $vacationDaysLeftRepository;
-    private ListEmployeesVacationDaysPerYearRepositoryInterface $vacationDaysPerYearRepository;
+    private CountriesRepositoryInterface $countryRepository;
+    private RoleRepositoryInterface $roleRepository;
+    private UserRepositoryInterface $userRepository;
+    private CitiesRepositoryInterface $cityRepository;
+    private VacationDaysLeftRepositoryInterface $vacationDaysLeftRepository;
+    private VacationDaysPerYearRepositoryInterface $vacationDaysPerYearRepository;
     private ListEmployeesHandler $listEmployeesHandler;
 
 
     public function __construct(
-        RoleFactory                                         $roleFactory,
-        CountryFactory                                      $countryFactory,
-        CityFactory                                         $cityFactory,
-        UserFactory                                         $userFactory,
-        ListEmployeesCountryRepositoryInterface             $listEmployeesCountryRepository,
-        ListEmployeesRoleRepositoryInterface                $listEmployeesRoleRepository,
-        ListEmployeesUserRepositoryInterface                $listEmployeesUserRepository,
-        ListEmployeesCityRepositoryInterface                $listEmployeesCityRepository,
-        ListEmployeesVacationDaysLeftRepositoryInterface    $listEmployeesVacationDaysLeftRepository,
-        ListEmployeesVacationDaysPerYearRepositoryInterface $listEmployeesVacationDaysPerYearRepository,
-        ListEmployeesHandler                 $listEmployeesHandler,
+        RoleFactory                            $roleFactory,
+        CountryFactory                         $countryFactory,
+        CityFactory                            $cityFactory,
+        UserFactory                            $userFactory,
+        CountriesRepositoryInterface           $countryRepository,
+        RoleRepositoryInterface                $roleRepository,
+        UserRepositoryInterface                $userRepository,
+        CitiesRepositoryInterface              $cityRepository,
+        VacationDaysLeftRepositoryInterface    $vacationDaysLeftRepository,
+        VacationDaysPerYearRepositoryInterface $vacationDaysPerYearRepository,
+        ListEmployeesHandler                   $listEmployeesHandler,
     )
     {
         $this->roleFactory = $roleFactory;
         $this->countryFactory = $countryFactory;
         $this->cityFactory = $cityFactory;
         $this->userFactory = $userFactory;
-        $this->countryRepository = $listEmployeesCountryRepository;
-        $this->roleRepository = $listEmployeesRoleRepository;
-        $this->userRepository = $listEmployeesUserRepository;
-        $this->cityRepository = $listEmployeesCityRepository;
-        $this->vacationDaysLeftRepository = $listEmployeesVacationDaysLeftRepository;
-        $this->vacationDaysPerYearRepository = $listEmployeesVacationDaysPerYearRepository;
+        $this->countryRepository = $countryRepository;
+        $this->roleRepository = $roleRepository;
+        $this->userRepository = $userRepository;
+        $this->cityRepository = $cityRepository;
+        $this->vacationDaysLeftRepository = $vacationDaysLeftRepository;
+        $this->vacationDaysPerYearRepository = $vacationDaysPerYearRepository;
         $this->listEmployeesHandler = $listEmployeesHandler;
     }
 
@@ -69,8 +69,8 @@ class ListEmployeesService
         $collectionCountries = $this->countryRepository->orderBy('title');
         $arrCountries = [];
         foreach ($collectionCountries as $modelCountries) {
-            $CountriesDTO = $this->countryFactory->makeDTOFromModel($modelCountries);
-            $arrCountries[] = $CountriesDTO->getCountry();
+            $countriesDTO = $this->countryFactory->makeDTOFromModel($modelCountries);
+            $arrCountries[] = $countriesDTO->getTitle();
         }
         return $arrCountries;
     }
@@ -98,16 +98,16 @@ class ListEmployeesService
      */
     public function getCountriesAndCities(): array
     {
-        $collectionCountriesAndCities = $this->countryRepository->all();
+        $collectionCountriesAndCities = $this->countryRepository->allCollection();
         $arrCountriesAndCities = [];
         foreach ($collectionCountriesAndCities as $modelCountryAndCity) {
             $arrCities = [];
             foreach ($modelCountryAndCity->cities as $city) {
                 $cityDTO = $this->cityFactory->makeDTOFromModel($city);
-                $arrCities[] = $cityDTO->getCity();
+                $arrCities[] = $cityDTO->getTitle();
             }
             $countryDTO = $this->countryFactory->makeDTOFromModel($modelCountryAndCity);
-            $arrCountriesAndCities[$countryDTO->getCountry()] =  $arrCities;
+            $arrCountriesAndCities[$countryDTO->getTitle()] =  $arrCities;
         }
         return $arrCountriesAndCities;
     }

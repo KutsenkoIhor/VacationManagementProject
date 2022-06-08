@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Services\Vacation;
 
 use App\DTO\VacationDTO;
-use App\Models\Vacation;
+
 use App\Repositories\Interfaces\VacationRepositoryInterface;
 use Carbon\Carbon;
 
@@ -18,38 +18,6 @@ class VacationService
         $this->vacationRepository = $vacationRepository;
     }
 
-    public function createVacation(
-        int $userId,
-        Carbon $startDate,
-        Carbon $endDate,
-        string $type
-    ) : VacationDTO {
-        $numberOfDays = 4; //TODO create NumberOfDaysCalculationService [weekends, holidays etc.]
-
-        return $this->vacationRepository->createVacation(
-            $userId,
-            $startDate,
-            $endDate,
-            $numberOfDays,
-            $type
-        );
-    }
-
-    public function getVacations(): array
-    {
-        return $this->vacationRepository->getVacations();
-    }
-
-    public function getVacation(int $id): VacationDTO
-    {
-        return $this->vacationRepository->getVacation($id);
-    }
-
-    public function getVacationsByUserId(int $id): array
-    {
-        return $this->vacationRepository->getVacationsByUserId($id);
-    }
-
     public function getUpcomingVacations(Carbon $startDate, Carbon $endDate): array
     {
         $vacationIntervals = $this->vacationRepository->getUpcomingVacations($startDate, $endDate);
@@ -58,23 +26,19 @@ class VacationService
         $users = [];
 
         foreach ($vacationIntervals as $vacationInterval) {
-
-            if ($vacationInterval->getStatus() != Vacation::STATUS_APPROVED) {
-                continue; //TODO filter in DB query instead of filtering in PHP
-            }
-
+            /** @var VacationDTO $vacationInterval */
             $dates = [];
             for ($i = $vacationInterval->getStartDate(); $i <= $vacationInterval->getEndDate(); $i = $i->addDay()) {
                 $dates[$i->format(config('vacation.date_format'))] = $vacationInterval->getType();
             }
 
-            if (array_key_exists($vacationInterval->getUserId(), $userDates)) {
-                $userDates[$vacationInterval->getUserId()] = array_merge($userDates[$vacationInterval->getUserId()], $dates);
+            if (array_key_exists($vacationInterval->getUser()->getId(), $userDates)) {
+                $userDates[$vacationInterval->getUser()->getId()] = array_merge($userDates[$vacationInterval->getUser()->getId()], $dates);
             } else {
-                $userDates[$vacationInterval->getUserId()] = $dates;
+                $userDates[$vacationInterval->getUser()->getId()] = $dates;
             }
 
-            $users[$vacationInterval->getUserId()] = $vacationInterval->getUser(); //put user model to be able to access it in blade
+            $users[$vacationInterval->getUser()->getId()] = $vacationInterval->getUser(); //put user model to be able to access it in blade
         }
 
         $columns = [];
@@ -86,26 +50,8 @@ class VacationService
         return ['users' => $users, 'columns' => $columns, 'userDates' => $userDates];
     }
 
-    public function updateVacation(
-        int $id,
-        Carbon $startDate,
-        Carbon $endDate,
-        string $type
-    ) : VacationDTO  {
-
-        $numberOfDays = 4; //TODO create NumberOfDaysCalculationService [weekends, holidays etc.]
-
-        return $this->vacationRepository->updateVacation(
-            $id,
-            $startDate,
-            $endDate,
-            $numberOfDays,
-            $type
-        );
-    }
-
-    public function deleteVacation(int $id)
+    public function createVacation(int $vacationRequestId): void
     {
-        return $this->vacationRepository->deleteVacation($id);
+        $this->vacationRepository->createVacation($vacationRequestId);
     }
 }

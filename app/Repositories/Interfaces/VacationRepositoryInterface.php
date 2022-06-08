@@ -9,23 +9,8 @@ use Carbon\Carbon;
 
 interface VacationRepositoryInterface
 {
-    public function createVacation(
-        int $userId,
-        Carbon $startDate,
-        Carbon $endDate,
-        int $numberOfDays,
-        string $type
-    ): VacationDTO;
-    public function getVacations(): array;
-    public function getVacation(int $id): VacationDTO;
-    public function getVacationsByUserId(int $id): array;
+    public function createVacation(int $vacationRequestId): void;
     public function getUpcomingVacations(Carbon $startDate, Carbon $endDate): array;
-    public function updateVacation(
-        int $id,
-        Carbon $startDate,
-        Carbon $endDate,
-        int $numberOfDays,
-        string $type
-    ): VacationDTO;
-    public function deleteVacation(int $id);
+    public function getNumberOfVacationDaysByUserIdPerMonth(int $userId): int;
+    public function getVacationsPerYear(int $userId, Carbon $date, string $type): array;
 }

@@ -16,14 +16,18 @@ return new class extends Migration
         Schema::create('vacations', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('vacation_request_id');
+
             $table->date('start_date');
             $table->date('end_date');
             $table->integer('number_of_days');
             $table->enum('type', ['VACATIONS', 'PERSONAL_DAYS', 'SICK_DAYS']);
-            $table->enum('status', ['NEW', 'APPROVED', 'DENIED']);
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrentOnUpdate();
+            $table->softDeletes();
 
             $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('vacation_request_id')->references('id')->on('vacation_requests');
         });
     }
 

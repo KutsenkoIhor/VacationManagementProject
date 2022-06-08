@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace App\Repositories;
 
-use App\DTO\VacationDTO;
+
 use App\Factories\VacationFactory;
 use App\Models\Vacation;
+use App\Models\VacationRequest;
 use App\Repositories\Interfaces\VacationRepositoryInterface;
 use Carbon\Carbon;
 
@@ -20,74 +21,55 @@ class VacationRepository implements VacationRepositoryInterface
         $this->vacationFactory = $vacationFactory;
     }
 
-    public function createVacation(
-        int $userId,
-        Carbon $startDate,
-        Carbon $endDate,
-        int $numberOfDays,
-        string $type
-    ): VacationDTO {
+    public function createVacation(int $vacationRequestId): void
+    {
+        /** @var VacationRequest $vacationRequest */
+        $vacationRequest = VacationRequest::findOrFail($vacationRequestId);
+
         $vacation = new Vacation();
 
-        $vacation->user_id = $userId;
-        $vacation->start_date = $startDate;
-        $vacation->end_date = $endDate;
-        $vacation->number_of_days = $numberOfDays;
-        $vacation->type = $type;
-        $vacation->status = Vacation::STATUS_NEW;
+        $vacation->user_id = $vacationRequest->user_id;
+        $vacation->vacation_request_id = $vacationRequest->id;
+        $vacation->start_date = $vacationRequest->start_date;
+        $vacation->end_date = $vacationRequest->end_date;
+        $vacation->number_of_days = $vacationRequest->number_of_days;
+        $vacation->type = $vacationRequest->type;
 
         $vacation->save();
-
-        return $this->vacationFactory->makeDTOFromModel($vacation);
-    }
-
-    public function getVacations(): array
-    {
-        return $this->vacationFactory->makeDTOFromModelCollection(Vacation::all());
-    }
-
-    public function getVacation(int $id): VacationDTO
-    {
-        return $this->vacationFactory->makeDTOFromModel(Vacation::findOrFail($id));
-    }
-
-    public function getVacationsByUserId(int $id): array
-    {
-        return $this->vacationFactory->makeDTOFromModelCollection(Vacation::where('user_id', $id)->get());
     }
 
     public function getUpcomingVacations(Carbon $startDate, Carbon $endDate): array
     {
-        return $this->vacationFactory->makeDTOFromModelCollection(Vacation::whereBetween('start_date', [$startDate, $endDate])
-            ->orWhereBetween('end_date', [$startDate,  $endDate])
-            ->with('user') //TODO think about performance
-            ->get());
+        return $this->vacationFactory->makeDTOFromModelCollection(
+            Vacation::whereBetween('start_date', [$startDate, $endDate])
+                ->orWhereBetween('end_date', [$startDate,  $endDate])
+                ->with('user') //TODO think about performance
+                ->get()
+        );
     }
 
-    public function updateVacation(
-        int $id,
-        Carbon $startDate,
-        Carbon $endDate,
-        int $numberOfDays,
-        string $type
-    ): VacationDTO {
-
-        $vacation = Vacation::findOrFail($id);
-
-        $vacation->start_date = $startDate;
-        $vacation->end_date = $endDate;
-        $vacation->number_of_days = $numberOfDays;
-        $vacation->type = $type;
-        $vacation->status = Vacation::STATUS_NEW;
-
-        $vacation->save();
-
-        return $this->vacationFactory->makeDTOFromModel($vacation);
-    }
-
-    public function deleteVacation(int $id): void
+    public function getNumberOfVacationDaysByUserIdPerMonth(int $userId): int
     {
-        Vacation::findOrFail($id)->delete();
+        return (int) Vacation::where('user_id', $userId)
+            ->whereMonth('created_at', Carbon::now()->month)
+            ->sum('number_of_days');
     }
 
+    public function getVacationsPerYear(int $userId, Carbon $date, string $type): array
+    {
+        return Vacation::where('user_id', $userId)
+            ->where('type', '=', $type)
+            ->where(function ($query) use ($date, $type) {
+                $query
+                    ->whereBetween(
+                        'start_date',
+                        [$date->startOfYear()->toDateString(), $date->endOfYear()->toDateString()]
+                    )->orWhereBetween(
+                        'end_date',
+                        [$date->startOfYear()->toDateString(), $date->endOfYear()->toDateString()]
+                    );
+            })
+            ->get()
+            ->toArray();
+    }
 }

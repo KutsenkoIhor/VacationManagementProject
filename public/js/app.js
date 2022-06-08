@@ -2212,7 +2212,8 @@ __webpack_require__(/*! ./web/GeneralHandler/generalHandler */ "./resources/js/w
 
 currentPage === '/home' ? __webpack_require__(/*! ./web/Home/home */ "./resources/js/web/Home/home.js") : null;
 currentPage === '/vacations' ? __webpack_require__(/*! ./web/Vacations/vacations */ "./resources/js/web/Vacations/vacations.js") : null;
-currentPage === '/vacations/history' ? __webpack_require__(/*! ./web/VacationsHistory/vacationsHistory */ "./resources/js/web/VacationsHistory/vacationsHistory.js") : null;
+currentPage === '/vacations/requestHistory' ? __webpack_require__(/*! ./web/VacationsHistory/vacationsHistory */ "./resources/js/web/VacationsHistory/vacationsHistory.js") : null;
+currentPage === '/vacations/requests' ? __webpack_require__(/*! ./web/VacationsRequests/vacationsRequests */ "./resources/js/web/VacationsRequests/vacationsRequests.js") : null;
 currentPage === '/vacations/upcoming' ? __webpack_require__(/*! ./web/VacationsOverview/vacationsOverview */ "./resources/js/web/VacationsOverview/vacationsOverview.js") : null;
 currentPage === '/listOfAllEmployees' ? __webpack_require__(/*! ./web/ListOfAllEmployees/listOfAllEmployees */ "./resources/js/web/ListOfAllEmployees/listOfAllEmployees.js") : null;
 currentPage === '/publicHoliday' ? __webpack_require__(/*! ./web/PublicHoliday/publicHoliday */ "./resources/js/web/PublicHoliday/publicHoliday.js") : null;
@@ -3296,6 +3297,19 @@ document.getElementById("sideBar_vacations_history_svg").classList.add("active")
 document.getElementById("sideBar_vacations_overview").classList.add("active"); // set the background of the sidebar svg
 
 document.getElementById("sideBar_vacations_overview_svg").classList.add("active");
+
+/***/ }),
+
+/***/ "./resources/js/web/VacationsRequests/vacationsRequests.js":
+/*!*****************************************************************!*\
+  !*** ./resources/js/web/VacationsRequests/vacationsRequests.js ***!
+  \*****************************************************************/
+/***/ (() => {
+
+// set the background of the sidebar button
+document.getElementById("sideBar_vacations_requests").classList.add("active"); // set the background of the sidebar svg
+
+document.getElementById("sideBar_vacations_requests_svg").classList.add("active");
 
 /***/ }),
 

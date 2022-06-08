@@ -4,20 +4,31 @@ namespace App\DTO;
 
 class CityDTO
 {
-    private int $id;
-    private int|null $countryId;
-    private string|null $city;
+    public int $id;
+    public int|null $countryId;
+    public string|null $title;
+    public string|null $countryTitle;
 
     /**
      * @param int $id
      * @param int|null $countryId
-     * @param string|null $city
+     * @param string|null $title
+     * @param string|null $countryTitle
      */
-    public function __construct(int $id, int|null $countryId, string|null $city)
+    public function __construct(int $id, int|null $countryId, string|null $title, string|null $countryTitle)
     {
         $this->id = $id;
         $this->countryId = $countryId;
-        $this->city = $city;
+        $this->title = $title;
+        $this->countryTitle = $countryTitle;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getCountryTitle(): ?string
+    {
+        return $this->countryTitle;
     }
 
     /**
@@ -31,7 +42,7 @@ class CityDTO
     /**
      * @return string|null
      */
-    public function getCountryId(): string|null
+    public function getCountryId (): string|null
     {
         return $this->countryId;
     }
@@ -39,8 +50,8 @@ class CityDTO
     /**
      * @return string|null
      */
-    public function getCity(): string|null
+    public function getTitle(): string|null
     {
-        return $this->city;
+        return $this->title;
     }
 }

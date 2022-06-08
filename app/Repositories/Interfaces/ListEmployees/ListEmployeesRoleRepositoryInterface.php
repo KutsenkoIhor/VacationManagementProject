@@ -4,5 +4,5 @@ namespace App\Repositories\Interfaces\ListEmployees;
 
 interface ListEmployeesRoleRepositoryInterface
 {
-    public function all();
+    public function all(): object;
 }

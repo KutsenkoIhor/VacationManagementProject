@@ -6,11 +6,10 @@ namespace App\Repositories\Interfaces;
 
 interface RoleRepositoryInterface
 {
-    public function all();
-    public function getRoleById($id);
-    public function permissions();
+    public function all(): object;
+    public function getRoleById(int $id): object;
+    public function permissions(): object;
     public function store($request);
-    public function update($id, $request);
-    public function delete($id);
-
+    public function update(int $id, $request);
+    public function delete(int $id);
 }

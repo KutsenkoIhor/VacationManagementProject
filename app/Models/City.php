@@ -23,10 +23,17 @@ class City extends Model
         'country_id'
     ];
 
+
     /**
      * @return BelongsTo
      */
     public function countries(): BelongsTo
+
+    {
+        return $this->belongsTo(Country::class);
+    }
+
+    public function country()
     {
         return $this->belongsTo(Country::class);
     }

@@ -28,4 +28,16 @@ class EditCityRequest extends FormRequest
             'country_id' => 'required|exists:App\Models\Country,id',
         ];
     }
+
+    public function messages()
+    {
+        return [
+            'title.required' => 'A City field is required',
+            'title.string' => 'A City field must be string',
+            'title.unique' => 'This City exists',
+            'title.max' => 'The City name must not be greater than 255 characters',
+            'country_id.required' => 'The Country of City is required',
+            'country_id.exists' => 'This Country does not exist',
+        ];
+    }
 }

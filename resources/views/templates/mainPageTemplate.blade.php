@@ -4,7 +4,6 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-{{--    <link rel="stylesheet" href="{{asset('https://unpkg.com/flowbite@1.4.2/dist/flowbite.min.css')}}"/>--}}
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <script src="{{asset('js/jquery.js')}}"></script>
     @yield('custom_styles')
@@ -202,8 +201,7 @@
 
     {{--Sidebar--}}
     <div class="hidden lg:flex lg:w-64 lg:flex-col lg:fixed lg:inset-y-0">
-        <!-- Sidebar component, swap this element with another sidebar if you like -->
-        <div class="flex flex-col flex-grow bg-gray-800 pt-5 pb-4 overflow-y-auto"> <!--bg-gray-900-->
+        <div class="flex flex-col flex-grow bg-gray-800 pt-5 pb-4 overflow-y-auto">
             <div class="flex items-center flex-shrink-0 px-4">
                 <img class="h-8 w-auto" src="{{"/image/vacation.svg"}}" alt="Quantox logo">
                 <div class="text-gray-100 items-center px-2 leading-6 font-medium pt-4 pl-4">
@@ -217,7 +215,6 @@
 
                     <a href="{{route('page.homePage')}}" id="sideBar_home"
                        class="sidebar_button_bg text-gray-300 hover:text-white hover:bg-gray-700 group flex items-center px-2 py-2 text-sm leading-6 font-medium rounded-md">
-                        <!-- Heroicon name: outline/clock -->
                         <svg id="sideBar_home_svg" class="mr-4 flex-shrink-0 h-6 w-6 svg-text-gray-400 group-hover:text-white" xmlns="http://www.w3.org/2000/svg"
                              fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -226,40 +223,54 @@
                         Home
                     </a>
 
+                    @hasrole('Employee')
                     <a href="{{route('vacations.create.form')}}" id="sideBar_vacations"
                        class="sidebar_button_bg text-gray-300 hover:text-white hover:bg-gray-700 group flex items-center px-2 py-2 text-sm leading-6 font-medium rounded-md">
-                        <!-- Heroicon name: outline/clock -->
                         <svg id="sideBar_vacations_svg" class="mr-4 h-6 w-6 svg-text-gray-400 group-hover:text-white" xmlns="http://www.w3.org/2000/svg" fill="none"
                              viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                   d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                         </svg>
-                        Vacation request
+                        Vacation Request
                     </a>
+                    @endhasrole
 
-                    <a href="{{ route('vacations.list') }}" id="sideBar_vacations_history"
+                    @hasrole('Employee')
+                    <a href="{{ route('vacations.requestHistory') }}" id="sideBar_vacations_history"
                        class="sidebar_button_bg text-gray-300 hover:text-white hover:bg-gray-700 group flex items-center px-2 py-2 text-sm leading-6 font-medium rounded-md">
-                        <!-- Heroicon name: outline/clock -->
                         <svg id="sideBar_vacations_history_svg" class="mr-4 flex-shrink-0 h-6 w-6 svg-text-gray-400 group-hover:text-white" xmlns="http://www.w3.org/2000/svg"
                              fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                   d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
                         </svg>
-                        Vacations history
+                        Vacation Request History
                     </a>
+                    @endhasrole
 
+                    @hasanyrole('PM|HR')
+                    <a href="{{ route('vacations.requests') }}" id="sideBar_vacations_requests"
+                       class="sidebar_button_bg text-gray-300 hover:text-white hover:bg-gray-700 group flex items-center px-2 py-2 text-sm leading-6 font-medium rounded-md">
+                        <svg id="sideBar_vacations_requests_svg" class="mr-4 flex-shrink-0 h-6 w-6 svg-text-gray-400 group-hover:text-white" xmlns="http://www.w3.org/2000/svg"
+                             fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        Vacation Requests
+                    </a>
+                    @endhasanyrole
+
+                    @hasanyrole('PM|HR')
                     <a href="{{route('vacations.upcoming')}}" id="sideBar_vacations_overview"
                        class="sidebar_button_bg text-gray-300 hover:text-white hover:bg-gray-700 group flex items-center px-2 py-2 text-sm leading-6 font-medium rounded-md">
-                        <!-- Heroicon name: outline/scale -->
                         <svg id="sideBar_vacations_overview_svg" class="mr-4 flex-shrink-0 h-6 w-6 svg-text-gray-400 group-hover:text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                         </svg>
                         Vacation Overview
                     </a>
+                    @endhasanyrole
 
                     <a href="{{route('page.listOfAllEmployees')}}" id="sideBar_list_of_all_employees"
                        class="sidebar_button_bg text-gray-300 hover:text-white hover:bg-gray-700 group flex items-center px-2 py-2 text-sm leading-6 font-medium rounded-md">
-                        <!-- Heroicon name: outline/credit-card -->
                         <svg id="sideBar_list_of_all_employees_svg" class="mr-4 flex-shrink-0 h-6 w-6 svg-text-gray-400 group-hover:text-white" xmlns="http://www.w3.org/2000/svg"
                              fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -270,7 +281,6 @@
 
                     <a href="{{route('page.publicHoliday')}}" id="sideBar_public_holiday"
                        class="sidebar_button_bg text-gray-300 hover:text-white hover:bg-gray-700 group flex items-center px-2 py-2 text-sm leading-6 font-medium rounded-md">
-                        <!-- Heroicon name: outline/user-group -->
                         <svg id="sideBar_public_holiday_svg" class="mr-4 flex-shrink-0 h-6 w-6 svg-text-gray-400 group-hover:text-white" xmlns="http://www.w3.org/2000/svg"
                              fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -281,7 +291,6 @@
 
                     <a href="{{route('page.manageHRandPM')}}" id="sideBar_manage_HR_and_PM"
                        class="sidebar_button_bg text-gray-300 hover:text-white hover:bg-gray-700 group flex items-center px-2 py-2 text-sm leading-6 font-medium rounded-md">
-                        <!-- Heroicon name: outline/document-report -->
                         <svg id="sideBar_manage_HR_and_PM_svg" class="svg-text-gray-400 group-hover:text-white mr-4 flex-shrink-0 h-6 w-6 " xmlns="http://www.w3.org/2000/svg"
                              fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -290,9 +299,8 @@
                         Manage HRs and PMs
                     </a>
 
-                    <a href="{{route('page.settingsPage')}}" id="sideBar_settings_page"
+                    <a href="{{route('countries.index')}}" id="sideBar_settings_page"
                        class="sidebar_button_bg text-gray-300 hover:text-white hover:bg-gray-700 group flex items-center px-2 py-2 text-sm leading-6 font-medium rounded-md">
-                        <!-- Heroicon name: outline/document-report -->
                         <svg id="sideBar_settings_page_svg" class="svg-text-gray-400 group-hover:text-white mr-4 h-6 w-6 " xmlns="http://www.w3.org/2000/svg" fill="none"
                              viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -307,7 +315,6 @@
                     <div class="px-2 space-y-1">
                         <a href="{{route('page.profile')}}" id="sideBar_profile"
                            class="sidebar_button_bg text-gray-300 hover:text-white hover:bg-gray-700 group flex items-center px-2 py-2 text-sm leading-6 font-medium rounded-md text-gray-100 hover:text-white hover:bg-gray-700">
-                            <!-- Heroicon name: outline/cog -->
                             <svg id="sideBar_profile_svg" class="svg-text-gray-400 group-hover:text-white mr-4 h-6 w-6 " xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
@@ -316,7 +323,6 @@
 
                         <a href="{{route('logout')}}"
                            class="sidebar_button_bg text-gray-300 hover:text-white hover:bg-gray-700 group flex items-center px-2 py-2 text-sm leading-6 font-medium rounded-md text-gray-100 hover:text-white hover:bg-gray-700">
-                            <!-- Heroicon name: outline/question-mark-circle -->
                             <svg class="mr-4 flex-shrink-0 h-6 w-6 svg-text-gray-400 group-hover:text-white" xmlns="http://www.w3.org/2000/svg"
                                  fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -324,7 +330,6 @@
                             </svg>
                             Sign out
                         </a>
-
                     </div>
                 </div>
             </nav>
@@ -335,6 +340,7 @@
     <div class="lg:pl-64 flex flex-col flex-1">
         <main class="pb-8 pt-1">
             <div class="lg:px-3">
+                @yield('nav')
                 @yield('content')
             </div>
         </main>

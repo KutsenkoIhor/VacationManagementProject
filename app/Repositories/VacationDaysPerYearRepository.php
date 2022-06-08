@@ -3,9 +3,9 @@
 namespace App\Repositories;
 
 use App\Models\VacationDaysPerYear;
-use App\Repositories\Interfaces\ListEmployees\ListEmployeesVacationDaysPerYearRepositoryInterface;
+use App\Repositories\Interfaces\VacationDaysPerYearRepositoryInterface;
 
-class VacationDaysPerYearRepository implements ListEmployeesVacationDaysPerYearRepositoryInterface
+class VacationDaysPerYearRepository implements VacationDaysPerYearRepositoryInterface
 {
     /**
      * @param int $userId

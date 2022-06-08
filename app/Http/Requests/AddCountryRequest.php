@@ -27,4 +27,14 @@ class AddCountryRequest extends FormRequest
             'title' => 'required|string|max:255|unique:App\Models\Country',
         ];
     }
+
+    public function messages()
+    {
+        return [
+            'title.required' => 'A Country field is required',
+            'title.string' => 'A Country field must be string',
+            'title.unique' => 'This Country exists',
+            'title.max' => 'The Country name must not be greater than 255 characters',
+        ];
+    }
 }

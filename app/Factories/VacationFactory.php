@@ -5,28 +5,33 @@ declare(strict_types=1);
 namespace App\Factories;
 
 use App\DTO\VacationDTO;
+use App\Models\User;
 use App\Models\Vacation;
 use Illuminate\Database\Eloquent\Collection;
 
 class VacationFactory
 {
-    private UserFactory $userDTOFactory;
+    private UserFactory $user;
+    private VacationRequestFactory $vacationRequest;
 
-    public function __construct(UserFactory $userDTOFactory)
+    public function __construct(UserFactory $user, VacationRequestFactory $vacationRequest)
     {
-        $this->userDTOFactory = $userDTOFactory;
+        $this->user = $user;
+        $this->vacationRequest = $vacationRequest;
     }
 
     public function makeDTOFromModel(Vacation $vacation): VacationDTO
     {
         return new VacationDTO(
             $vacation->id,
-            $vacation->user_id,
             $vacation->start_date,
             $vacation->end_date,
+            $vacation->number_of_days,
             $vacation->type,
-            $vacation->status,
-            $this->userDTOFactory->makeDTOFromModel($vacation->user)
+            $vacation->created_at,
+            $vacation->updated_at,
+            $this->user->makeDTOFromModel($vacation->user),
+            $this->vacationRequest->makeDTOFromModel($vacation->vacation_request)
         );
     }
 

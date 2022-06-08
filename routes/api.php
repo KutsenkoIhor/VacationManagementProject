@@ -1,7 +1,7 @@
 <?php
 
-use App\Http\Controllers\VacationController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\VacationRequestApprovalController;
+use App\Http\Controllers\VacationRequestController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,13 +14,6 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::prefix('vacationRequests')->name('vacationRequests.')->middleware('auth')->group(function () {
+    Route::post('/{id}/createVacationRequestApproval', [VacationRequestApprovalController::class, 'createVacationRequestApproval'])->name('createVacationRequestApproval');
 });
-
-Route::post('/vacations', [VacationController::class, 'createVacation']);
-Route::get('/vacations', [VacationController::class, 'getVacations']);
-Route::get('/vacations/{vacation}', [VacationController::class, 'getVacation']);
-Route::post('/vacations/{vacation}', [VacationController::class, 'updateVacation']);
-Route::delete('/vacations/{vacation}', [VacationController::class, 'deleteVacation']);

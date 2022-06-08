@@ -7,7 +7,7 @@ namespace App\Services\Vacation;
 
 use App\Models\Vacation;
 use App\Models\VacationDaysPerYear;
-use App\Repositories\Vacation\VacationRepository;
+use App\Repositories\VacationRepository;
 use Carbon\Carbon;
 
 class VacationDaysLeftCalculationService

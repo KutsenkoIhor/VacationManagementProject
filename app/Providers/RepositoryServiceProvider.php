@@ -2,19 +2,27 @@
 
 namespace App\Providers;
 
+use App\Repositories\CitiesRepository;
+use App\Repositories\CountriesRepository;
+use App\Repositories\CountryHolidayRepository;
+use App\Repositories\Interfaces\CitiesRepositoryInterface;
+use App\Repositories\Interfaces\CountriesRepositoryInterface;
 use App\Repositories\Interfaces\CountryHolidayRepositoryInterface;
-use App\Repositories\Interfaces\HomePageRepositoryInterface;
-use App\Repositories\Interfaces\SocialRepositoryInterface;
+use App\Repositories\Interfaces\RoleRepositoryInterface;
 use App\Repositories\Interfaces\DomainsRepositoryInterface;
-use App\Repositories\HomePageRepository;
+use App\Repositories\Interfaces\UserRepositoryInterface;
+use App\Repositories\Interfaces\VacationDaysLeftRepositoryInterface;
+use App\Repositories\Interfaces\VacationDaysPerYearRepositoryInterface;
 use App\Repositories\Interfaces\VacationRepositoryInterface;
 use App\Repositories\Interfaces\VacationRequestApprovalRepositoryInterface;
 use App\Repositories\Interfaces\VacationRequestRepositoryInterface;
-use App\Repositories\Location\CountryHolidayRepository;
-use App\Repositories\SocialRepository;
-use App\Repositories\Vacation\VacationRepository;
-use App\Repositories\Vacation\VacationRequestApprovalRepository;
-use App\Repositories\Vacation\VacationRequestRepository;
+use App\Repositories\RoleRepository;
+use App\Repositories\UserRepository;
+use App\Repositories\VacationDaysLeftRepository;
+use App\Repositories\VacationDaysPerYearRepository;
+use App\Repositories\VacationRepository;
+use App\Repositories\VacationRequestApprovalRepository;
+use App\Repositories\VacationRequestRepository;
 use App\Repositories\DomainsRepository;
 use Illuminate\Support\ServiceProvider;
 
@@ -28,28 +36,18 @@ class RepositoryServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->bind(
-            SocialRepositoryInterface::class,
-            SocialRepository::class
+            CitiesRepositoryInterface::class,
+            CitiesRepository::class
         );
 
         $this->app->bind(
-            HomePageRepositoryInterface::class,
-            HomePageRepository::class
+            CountriesRepositoryInterface::class,
+            CountriesRepository::class
         );
 
         $this->app->bind(
-            VacationRequestRepositoryInterface::class,
-            VacationRequestRepository::class
-        );
-
-        $this->app->bind(
-            VacationRequestApprovalRepositoryInterface::class,
-            VacationRequestApprovalRepository::class
-        );
-
-        $this->app->bind(
-            VacationRepositoryInterface::class,
-            VacationRepository::class
+            CountryHolidayRepositoryInterface::class,
+            CountryHolidayRepository::class
         );
 
         $this->app->bind(
@@ -58,8 +56,38 @@ class RepositoryServiceProvider extends ServiceProvider
         );
 
         $this->app->bind(
-            CountryHolidayRepositoryInterface::class,
-            CountryHolidayRepository::class
+            RoleRepositoryInterface::class,
+            RoleRepository::class
+        );
+
+        $this->app->bind(
+            UserRepositoryInterface::class,
+            UserRepository::class
+        );
+
+        $this->app->bind(
+            VacationDaysLeftRepositoryInterface::class,
+            VacationDaysLeftRepository::class
+        );
+
+        $this->app->bind(
+            VacationDaysPerYearRepositoryInterface::class,
+            VacationDaysPerYearRepository::class
+        );
+
+        $this->app->bind(
+            VacationRepositoryInterface::class,
+            VacationRepository::class
+        );
+
+        $this->app->bind(
+            VacationRequestApprovalRepositoryInterface::class,
+            VacationRequestApprovalRepository::class
+        );
+
+        $this->app->bind(
+            VacationRequestRepositoryInterface::class,
+            VacationRequestRepository::class
         );
     }
 

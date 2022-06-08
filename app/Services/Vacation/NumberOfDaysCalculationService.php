@@ -6,8 +6,8 @@ declare(strict_types=1);
 namespace App\Services\Vacation;
 
 use App\DTO\VacationDaysNumberDTO;
-use App\Repositories\Location\CountryHolidayRepository;
-use App\Repositories\Vacation\VacationRepository;
+use App\Repositories\CountryHolidayRepository;
+use App\Repositories\VacationRepository;
 use Carbon\Carbon;
 
 class NumberOfDaysCalculationService

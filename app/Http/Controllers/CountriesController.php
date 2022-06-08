@@ -12,7 +12,7 @@ class CountriesController extends Controller
 {
     private $countriesRepository;
 
-    public function __construct(CountriesRepositoryInterface $countriesRepository)
+    public function __construct(CountriesRepositoryInterface$countriesRepository)
     {
         $this->countriesRepository = $countriesRepository;
     }

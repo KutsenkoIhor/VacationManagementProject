@@ -12,11 +12,8 @@
         2. Employee should be able to see any pending requests they have
 </pre>
     <h1 class="sr-only">Profile</h1>
-    <!-- Main 3 column grid -->
     <div class="grid grid-cols-1 gap-4 items-start lg:grid-cols-2 lg:gap-8">
-        <!-- Left column -->
         <div class="grid grid-cols-1 gap-4 lg:col-span-2">
-            <!-- Welcome panel -->
             <section aria-labelledby="profile-overview-title">
                 <div class="rounded-lg bg-white overflow-hidden shadow">
                     <h2 class="sr-only" id="profile-overview-title">Profile Overview</h2>
@@ -52,7 +49,6 @@
                     </div>
                 </div>
             </section>
-
         </div>
     </div>
 @endsection

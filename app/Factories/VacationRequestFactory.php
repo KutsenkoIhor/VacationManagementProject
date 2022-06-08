@@ -5,14 +5,15 @@ declare(strict_types=1);
 namespace App\Factories;
 
 use App\DTO\VacationRequestDTO;
+use App\Models\User;
 use App\Models\VacationRequest;
 use Illuminate\Database\Eloquent\Collection;
 
 class VacationRequestFactory
 {
-    private HomePageFactory $user;
+    private UserFactory $user;
 
-    public function __construct(HomePageFactory $user)
+    public function __construct(UserFactory $user)
     {
         $this->user = $user;
     }

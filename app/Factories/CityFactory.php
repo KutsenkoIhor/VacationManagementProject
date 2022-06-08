@@ -20,7 +20,6 @@ class CityFactory
             $parameter->title,
             $parameter->country->title,
         );
-
     }
 
     public function makeDTOFromModelCollection(Collection $cityParameters): array

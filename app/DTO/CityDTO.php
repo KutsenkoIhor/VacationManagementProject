@@ -13,6 +13,7 @@ class CityDTO
      * @param int $id
      * @param int|null $countryId
      * @param string|null $title
+     * @param string|null $countryTitle
      */
     public function __construct(int $id, int|null $countryId, string|null $title, string|null $countryTitle)
     {

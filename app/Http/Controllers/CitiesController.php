@@ -9,12 +9,15 @@ use App\Http\Requests\EditCityRequest;
 use App\Repositories\Interfaces\CitiesRepositoryInterface;
 use App\Repositories\Interfaces\CountriesRepositoryInterface;
 
+
 class CitiesController extends Controller
 {
-    private $citiesRepository;
-    private $countriesRepository;
+    private CitiesRepositoryInterface $citiesRepository;
+    private CountriesRepositoryInterface $countriesRepository;
+
 
     public function __construct(CitiesRepositoryInterface $citiesRepository, CountriesRepositoryInterface $countriesRepository)
+
     {
         $this->citiesRepository = $citiesRepository;
         $this->countriesRepository = $countriesRepository;
@@ -22,6 +25,7 @@ class CitiesController extends Controller
 
     public function index()
     {
+
         $cities = $this->citiesRepository->all();
 //        foreach ($cities as $city){
 //            $city->country = $this->countriesRepository->getCountryTitle((int) $city->country_id);

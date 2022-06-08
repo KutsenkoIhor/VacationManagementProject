@@ -2164,6 +2164,8 @@ module.exports = {
 
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
+__webpack_require__(/*! ./web */ "./resources/js/web.js");
+
 /***/ }),
 
 /***/ "./resources/js/bootstrap.js":
@@ -2194,6 +2196,1120 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 //     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
 //     forceTLS: true
 // });
+
+/***/ }),
+
+/***/ "./resources/js/web.js":
+/*!*****************************!*\
+  !*** ./resources/js/web.js ***!
+  \*****************************/
+/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
+
+var currentPage = window.location.pathname; //connect a common controller
+
+__webpack_require__(/*! ./web/GeneralHandler/generalHandler */ "./resources/js/web/GeneralHandler/generalHandler.js"); //connect a page controllers
+
+
+currentPage === '/home' ? __webpack_require__(/*! ./web/Home/home */ "./resources/js/web/Home/home.js") : null;
+currentPage === '/vacations' ? __webpack_require__(/*! ./web/Vacations/vacations */ "./resources/js/web/Vacations/vacations.js") : null;
+currentPage === '/vacations/requestHistory' ? __webpack_require__(/*! ./web/VacationsHistory/vacationsHistory */ "./resources/js/web/VacationsHistory/vacationsHistory.js") : null;
+currentPage === '/vacations/requests' ? __webpack_require__(/*! ./web/VacationsRequests/vacationsRequests */ "./resources/js/web/VacationsRequests/vacationsRequests.js") : null;
+currentPage === '/vacations/upcoming' ? __webpack_require__(/*! ./web/VacationsOverview/vacationsOverview */ "./resources/js/web/VacationsOverview/vacationsOverview.js") : null;
+currentPage === '/listOfAllEmployees' ? __webpack_require__(/*! ./web/ListOfAllEmployees/listOfAllEmployees */ "./resources/js/web/ListOfAllEmployees/listOfAllEmployees.js") : null;
+currentPage === '/publicHoliday' ? __webpack_require__(/*! ./web/PublicHoliday/publicHoliday */ "./resources/js/web/PublicHoliday/publicHoliday.js") : null;
+currentPage === '/manageHRandPM' ? __webpack_require__(/*! ./web/ManageHRAndPM/manageHRAndPM */ "./resources/js/web/ManageHRAndPM/manageHRAndPM.js") : null;
+currentPage === '/settingsPage' ? __webpack_require__(/*! ./web/SettingsPage/settingsPage */ "./resources/js/web/SettingsPage/settingsPage.js") : null;
+currentPage === '/profile' ? __webpack_require__(/*! ./web/Profile/profile */ "./resources/js/web/Profile/profile.js") : null;
+
+/***/ }),
+
+/***/ "./resources/js/web/GeneralHandler/generalHandler.js":
+/*!***********************************************************!*\
+  !*** ./resources/js/web/GeneralHandler/generalHandler.js ***!
+  \***********************************************************/
+/***/ (() => {
+
+// clearBgSidebarButton() // clear the background of the sidebar buttons
+// function clearBgSidebarButton()
+// {
+//     let buttonSideBar = document.getElementsByClassName("sidebar_button_bg")
+//     for (let i = 0; i < buttonSideBar.length; i++) {
+//         buttonSideBar[i].classList.remove("active")
+//     }
+// }
+
+/***/ }),
+
+/***/ "./resources/js/web/Home/home.js":
+/*!***************************************!*\
+  !*** ./resources/js/web/Home/home.js ***!
+  \***************************************/
+/***/ (() => {
+
+// set the background of the sidebar button
+document.getElementById("sideBar_home").classList.add("active"); // set the background of the sidebar svg
+
+document.getElementById("sideBar_home_svg").classList.add("active");
+
+/***/ }),
+
+/***/ "./resources/js/web/ListOfAllEmployees/listOfAllEmployees.js":
+/*!*******************************************************************!*\
+  !*** ./resources/js/web/ListOfAllEmployees/listOfAllEmployees.js ***!
+  \*******************************************************************/
+/***/ (() => {
+
+// set the background of the sidebar button
+document.getElementById("sideBar_list_of_all_employees").classList.add("active"); // set the background of the sidebar svg
+
+document.getElementById("sideBar_list_of_all_employees_svg").classList.add("active"); //-----------------------------------------/listOfAllEmployees/-----------------------------------------
+
+if (window.location.pathname === '/listOfAllEmployees') {
+  var checkClick = function checkClick() {
+    firstPage.addEventListener('click', function (e) {
+      e.preventDefault();
+      createEmployeeDataTable("1");
+    });
+    previousPage.addEventListener('click', function (e) {
+      e.preventDefault();
+
+      if (currentPageNumber > 1) {
+        createEmployeeDataTable(currentPageNumber - 1);
+      } else {
+        createEmployeeDataTable("1");
+      }
+    });
+    nextPage.addEventListener('click', function (e) {
+      e.preventDefault();
+
+      if (currentPageNumber < lastPageNumber) {
+        createEmployeeDataTable(currentPageNumber + 1);
+      } else {
+        createEmployeeDataTable(currentPageNumber);
+      }
+    });
+    lastPage.addEventListener('click', function (e) {
+      e.preventDefault();
+      createEmployeeDataTable(lastPageNumber);
+    });
+    openPopUpAddEmployee.addEventListener('click', function (e) {
+      e.preventDefault();
+      popUpAddEmployee.classList.add('active');
+      addEmployee();
+    });
+    closePopUpAddEmployee.addEventListener('click', function (e) {
+      e.preventDefault();
+      popUpAddEmployee.classList.remove('active');
+      clearAfterSave();
+    });
+    saveEmployee.addEventListener('click', function (e) {
+      e.preventDefault();
+      saveUser();
+    });
+    buttonCloseModalWindowEditUser.addEventListener('click', function (e) {
+      e.preventDefault();
+      modalWindowEditUser.classList.remove('active');
+      clearErrorModalWindowEditUser();
+    });
+    buttonCloseModalWindowVacationHistoryUser.addEventListener('click', function (e) {
+      e.preventDefault();
+      modalWindowVacationHistory.classList.remove('active');
+    });
+    updateEmployee.addEventListener('click', function (e) {
+      e.preventDefault();
+      updateUser();
+    });
+    elementRoleSort.addEventListener('change', function (e) {
+      e.preventDefault();
+      createEmployeeDataTable(); // console.log(elementRoleSort.options[elementRoleSort.selectedIndex].value)
+    });
+    elementCountrySort.addEventListener('change', function (e) {
+      e.preventDefault();
+      getListOfCitiesSort(elementCountrySort);
+      createEmployeeDataTable(); // console.log(elementCountrySort.options[elementCountrySort.selectedIndex].value)
+    });
+    elementCitySort.addEventListener('change', function (e) {
+      e.preventDefault();
+      createEmployeeDataTable(); // console.log(elementCitySort.options[elementCitySort.selectedIndex].value)
+    });
+    checkCheckBox();
+    closingElasticsearch();
+    sendInputElasticsearch();
+    checkCheckBoxEdit();
+  };
+
+  var getListOfCitiesSort = function getListOfCitiesSort(elementCountrySort) {
+    var arr = $.ajax({
+      url: "/listOfAllEmployees/addUser",
+
+      /* Куда пойдет запрос */
+      method: 'POST',
+
+      /* Метод передачи (post или get) */
+      dataType: 'json',
+
+      /* Тип данных в ответе (xml, json, script, html). */
+      async: false,
+      data: {},
+
+      /* Параметры передаваемые в запросе. */
+      global: true,
+      success: function success(response) {
+        return response;
+      }
+    }).responseJSON; // let element = document.getElementById("list_city_admin");
+    //---Delete all items in the list---
+
+    var opts = elementCitySort.options;
+
+    while (opts.length > 0) {
+      opts[opts.length - 1] = null;
+    }
+
+    var country = elementCountrySort.options[elementCountrySort.selectedIndex].value;
+    var oOpt1st = document.createElement('OPTION');
+    oOpt1st.value = 'All';
+    oOpt1st.text = 'All';
+    elementCitySort.appendChild(oOpt1st);
+
+    for (var i in arr['CountriesAndCities']) {
+      if (country === i) {
+        for (var y in arr['CountriesAndCities'][i]) {
+          //---Create new list items---
+          var _oOpt1st = document.createElement('OPTION');
+
+          _oOpt1st.value = arr['CountriesAndCities'][i][y];
+          _oOpt1st.text = arr['CountriesAndCities'][i][y];
+          elementCitySort.appendChild(_oOpt1st);
+        }
+      }
+    }
+  };
+
+  var elasticsearch = function elasticsearch(data) {
+    var arr = [];
+
+    for (var i in data) {
+      arr['email_' + i] = data[i]['email'];
+      arr['name__' + i] = data[i]['name'];
+    }
+
+    elementElasticsearch.oninput = function () {
+      var globalListElasticsearchUsers = [];
+      elementElasticsearchOptionsList.innerHTML = '';
+      var val = this.value.trim();
+
+      if (val !== '') {
+        var iter = 0;
+        var strSearchUser = null;
+
+        for (var y in arr) {
+          var str = arr[y].toLowerCase();
+          var inputStr = val.toLowerCase();
+
+          if (str.search(inputStr) !== -1) {
+            strSearchUser = arr[y];
+            iter++;
+            globalListElasticsearchUsers.length = 0;
+            globalListElasticsearchUsers[y] = arr[y];
+
+            if (iter < 6) {
+              var li = document.createElement('li');
+              li.textContent = arr[y];
+              li.classList.add('cursor-default', 'select-none', 'px-4', 'py-2', 'hover:bg-gray-50');
+              li.id = y;
+              li.value = y;
+              elementElasticsearchOptionsList.appendChild(li);
+              elementElasticsearchOptionsList.classList.add("active");
+              elementElasticsearchNotFound.classList.remove("active");
+            }
+          }
+        }
+
+        if (!strSearchUser) {
+          elementElasticsearchOptionsList.classList.remove("active");
+          elementElasticsearchNotFound.classList.add("active");
+        }
+      } else {
+        elementElasticsearchOptionsList.classList.remove("active");
+        elementElasticsearchNotFound.classList.remove("active");
+      }
+
+      checkClickElasticsearchList();
+      arrUserelasticsearch = {};
+
+      for (var z in globalListElasticsearchUsers) {
+        arrUserelasticsearch[z] = globalListElasticsearchUsers[z];
+      } // dataaa = globalListElasticsearchUsers;
+
+    };
+  };
+
+  var sendInputElasticsearch = function sendInputElasticsearch() {
+    elementElasticsearch.addEventListener('keypress', function (e) {
+      if (e.which === 13) {
+        e.preventDefault(); // console.log(dataaa)
+        // console.log(elementElasticsearch.value);
+
+        elementElasticsearchOptionsList.classList.remove("active");
+        createEmployeeDataTable(1);
+      }
+    });
+  };
+
+  var closingElasticsearch = function closingElasticsearch() {
+    $(document).click(function (e) {
+      if (!$(e.target).closest('.box-elasticsearchUser').length) {
+        elementElasticsearchOptionsList.classList.remove("active");
+        elementElasticsearchNotFound.classList.remove("active");
+      }
+    });
+  };
+
+  var checkButtonsHistoryVacationUser = function checkButtonsHistoryVacationUser(checkButtonsHistoryVacation) {
+    var _loop = function _loop(i) {
+      var idButton = "button-historyVacations-" + checkButtonsHistoryVacation[i]['value'];
+
+      if (idButton !== 'button-historyVacations-undefined') {
+        var elementButtonHistoryVacation = document.getElementById(idButton);
+        elementButtonHistoryVacation.addEventListener('click', function (e) {
+          e.preventDefault();
+          reviewHistoryVacationUser(checkButtonsHistoryVacation[i]['value']);
+        });
+      }
+    };
+
+    for (var i in checkButtonsHistoryVacation) {
+      _loop(i);
+    }
+  };
+
+  var checkButtonsEditUser = function checkButtonsEditUser(checkButtonsEdit) {
+    var _loop2 = function _loop2(i) {
+      var idButton = "button-edit-" + checkButtonsEdit[i]['value'];
+
+      if (idButton !== 'button-edit-undefined') {
+        var elementButtonEdit = document.getElementById(idButton);
+        elementButtonEdit.addEventListener('click', function (e) {
+          e.preventDefault();
+          editUser(checkButtonsEdit[i]['value']);
+        });
+      }
+    };
+
+    for (var i in checkButtonsEdit) {
+      _loop2(i);
+    }
+  };
+
+  var checkButtonsDeleteUser = function checkButtonsDeleteUser(checkButtonsDelete) {
+    var _loop3 = function _loop3(i) {
+      var idButton = "button-delete-" + checkButtonsDelete[i]['value'];
+
+      if (idButton !== 'button-delete-undefined') {
+        var elementButtonDelete = document.getElementById(idButton);
+        elementButtonDelete.addEventListener('click', function (e) {
+          e.preventDefault();
+          deleteUser(checkButtonsDelete[i]['value']);
+        });
+      }
+    };
+
+    for (var i in checkButtonsDelete) {
+      _loop3(i);
+    }
+  };
+
+  var checkClickElasticsearchList = function checkClickElasticsearchList() {
+    var _loop4 = function _loop4(i) {
+      var idElasticsearchListUser = elementListElasticsearch[0]['childNodes'][i]['id'] + "";
+
+      if (idElasticsearchListUser !== 'undefined') {
+        // console.log(elementListElasticsearch[0]['childNodes'][i]["textContent"])
+        var elementListElasticsearchUser = document.getElementById(idElasticsearchListUser);
+        elementListElasticsearchUser.addEventListener('click', function (e) {
+          e.preventDefault();
+          elementElasticsearch.value = elementListElasticsearch[0]['childNodes'][i]["textContent"]; // console.log(idElasticsearchListUser)
+        });
+      }
+    };
+
+    for (var i in elementListElasticsearch[0]['childNodes']) {
+      _loop4(i);
+    }
+  };
+
+  var checkCheckBox = function checkCheckBox() {
+    var _loop5 = function _loop5(i) {
+      var role = checkboxes[i]['value'];
+      var idBoxCheckBox = role + "_box";
+      var idCheckBox = role + "_checkbox";
+
+      if (idBoxCheckBox !== 'undefined_box') {
+        var elementBoxCheckBox = document.getElementById(idBoxCheckBox);
+        elementBoxCheckBox.addEventListener('click', function (e) {
+          e.preventDefault();
+          document.getElementById(idCheckBox).checked = !document.getElementById(idCheckBox).checked;
+        });
+      }
+    };
+
+    for (var i in checkboxes) {
+      _loop5(i);
+    }
+  };
+
+  var checkCheckBoxEdit = function checkCheckBoxEdit() {
+    var _loop6 = function _loop6(i) {
+      var role = checkboxesEditUser[i]['value'];
+      var idBoxCheckBox = role + "_box_edit";
+      var idCheckBox = role + "_checkbox_edit";
+
+      if (idBoxCheckBox !== 'undefined_box_edit') {
+        var elementBoxCheckBoxEdit = document.getElementById(idBoxCheckBox);
+        elementBoxCheckBoxEdit.addEventListener('click', function (e) {
+          e.preventDefault();
+          document.getElementById(idCheckBox).checked = !document.getElementById(idCheckBox).checked;
+        });
+      }
+    };
+
+    for (var i in checkboxesEditUser) {
+      _loop6(i);
+    }
+  };
+
+  var paginationHandler = function paginationHandler(paginationData) {
+    currentPageNumber = paginationData['current_page'];
+    lastPageNumber = paginationData['last_page'];
+    textNumberPage.innerText = currentPageNumber + " / " + lastPageNumber;
+  };
+
+  var createEmployeeDataTable = function createEmployeeDataTable() {
+    var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
+    var url = "/listOfAllEmployees/createEmployeeDataTable?page=" + page;
+    console.log(elementRoleSort.options[elementRoleSort.selectedIndex].value);
+    console.log(elementCountrySort.options[elementCountrySort.selectedIndex].value);
+    console.log(elementCitySort.options[elementCitySort.selectedIndex].value);
+    console.log(arrUserelasticsearch);
+    $.ajax({
+      method: "GET",
+      url: url,
+      dataType: "html",
+      data: {
+        "elasticsearch": JSON.stringify(arrUserelasticsearch),
+        "roleSort": elementRoleSort.options[elementRoleSort.selectedIndex].value,
+        "countrySort": elementCountrySort.options[elementCountrySort.selectedIndex].value,
+        "citySort": elementCitySort.options[elementCitySort.selectedIndex].value
+      },
+      success: function success(data) {
+        var block = document.getElementById('1234567');
+        block.innerHTML = data;
+        var checkButtonsHistoryVacation = document.getElementsByClassName('button-historyVacations-user');
+        var checkButtonsEdit = document.getElementsByClassName('button-edit-user');
+        var checkButtonsDelete = document.getElementsByClassName('button-delete-user');
+        checkButtonsHistoryVacationUser(checkButtonsHistoryVacation);
+        checkButtonsEditUser(checkButtonsEdit);
+        checkButtonsDeleteUser(checkButtonsDelete);
+      }
+    });
+    $.ajax({
+      method: "POST",
+      url: url,
+      dataType: "json",
+      data: {
+        "elasticsearch": JSON.stringify(arrUserelasticsearch),
+        "roleSort": elementRoleSort.options[elementRoleSort.selectedIndex].value,
+        "countrySort": elementCountrySort.options[elementCountrySort.selectedIndex].value,
+        "citySort": elementCitySort.options[elementCitySort.selectedIndex].value
+      },
+      success: function success(data) {
+        elasticsearch(data['dataForElasticsearch']);
+        paginationHandler(data['userModel']); // lastPageNumber = paginationData['last_page'];
+        // sendInputElasticsearch(data['dataForElasticsearch'])
+        // console.log(data)
+        // console.log(data['dataForElasticsearch']);
+      }
+    });
+  };
+
+  var clearAfterSave = function clearAfterSave() {
+    //clear Errors
+    elementErrorEmail.classList.remove('active');
+    elementErrorFirstName.classList.remove('active');
+    elementErrorLastName.classList.remove('active');
+    elementErrorVacationDays.classList.remove('active');
+    elementErrorSickDays.classList.remove('active');
+    elementErrorPersonalDays.classList.remove('active');
+    elementErrorRoles.classList.remove('active'); //clear Forms
+
+    document.getElementById("create_email").value = "";
+    document.getElementById("create_first_name").value = "";
+    document.getElementById("create_last_name").value = "";
+  };
+
+  var addEmployee = function addEmployee() {
+    //---ajax request---
+    var arr = $.ajax({
+      url: "/listOfAllEmployees/addUser",
+
+      /* Куда пойдет запрос */
+      method: 'POST',
+
+      /* Метод передачи (post или get) */
+      dataType: 'json',
+
+      /* Тип данных в ответе (xml, json, script, html). */
+      async: false,
+      data: {},
+
+      /* Параметры передаваемые в запросе. */
+      global: true,
+      success: function success(response) {
+        return response;
+      }
+    }).responseJSON; // console.log(arr)
+
+    getListOfCities(elementCountry);
+    elementCountry.addEventListener('change', function (e) {
+      e.preventDefault();
+      getListOfCities(elementCountry);
+    });
+
+    function getListOfCities(elementCountry) {
+      var element = document.getElementById("list_city_admin"); //---Delete all items in the list---
+
+      var opts = element.options;
+
+      while (opts.length > 0) {
+        opts[opts.length - 1] = null;
+      }
+
+      var country = elementCountry.options[elementCountry.selectedIndex].value;
+
+      for (var i in arr['CountriesAndCities']) {
+        if (country === i) {
+          for (var y in arr['CountriesAndCities'][i]) {
+            //---Create new list items---
+            var oOpt1st = document.createElement('OPTION');
+            oOpt1st.value = arr['CountriesAndCities'][i][y];
+            oOpt1st.text = arr['CountriesAndCities'][i][y];
+            element.appendChild(oOpt1st);
+          }
+        }
+      }
+    }
+
+    getListOfDays(elementRole);
+    elementRole.addEventListener('change', function (e) {
+      e.preventDefault();
+      getListOfDays(elementRole);
+    });
+
+    function getListOfDays(elementRole) {
+      var role = elementRole.options[elementRole.selectedIndex].value;
+
+      for (var i in arr['roles']) {
+        if (role === arr['roles'][i]) {
+          var _role = arr['roles'][i];
+          document.getElementById("Vacation_days_list_admin").value = arr[_role]["vacations"];
+          document.getElementById("Sick_days_list_admin").value = arr[_role]["personal_days"];
+          document.getElementById("Personal_days_list_admin").value = arr[_role]["sick_days"];
+        }
+      }
+    }
+  };
+
+  var saveUser = function saveUser() {
+    //---get form values
+    var country = elementCountry.options[elementCountry.selectedIndex].value;
+    var city = elementCity.options[elementCity.selectedIndex].value;
+    var email = document.getElementById("create_email").value;
+    var firstName = document.getElementById("create_first_name").value;
+    var lastName = document.getElementById("create_last_name").value;
+    var vacationDays = document.getElementById("Vacation_days_list_admin").value;
+    var sickDays = document.getElementById("Sick_days_list_admin").value;
+    var personalDays = document.getElementById("Personal_days_list_admin").value;
+    var checkboxesChecked = [];
+
+    for (var index = 0; index < checkboxes.length; index++) {
+      if (checkboxes[index].checked) {
+        checkboxesChecked.push(checkboxes[index].value);
+      }
+    }
+
+    $.ajax({
+      method: "POST",
+      url: "/listOfAllEmployees/saveUser",
+      dataType: "json",
+      data: {
+        "country": country,
+        "city": city,
+        "email": email,
+        "firstName": firstName,
+        "lastName": lastName,
+        "vacationDays": vacationDays,
+        "sickDays": sickDays,
+        "personalDays": personalDays,
+        "roles": checkboxesChecked
+      },
+      success: function success(data) {
+        if (data) {
+          pushNotifications(firstName, lastName);
+          createEmployeeDataTable();
+          clearAfterSave();
+          console.log(data);
+        }
+
+        console.log('EROROR');
+        console.log(data);
+      },
+      error: function error(er) {
+        if (er.status === 422) {
+          validate(er);
+          console.log(er['responseJSON']['errors']);
+        }
+      }
+    });
+
+    function pushNotifications(firstName, lastName) {
+      elementTextPushNotification.textContent = firstName + " " + lastName + " added successfully";
+      elementPushNotification.classList.add('active');
+      setTimeout(function () {
+        elementPushNotification.classList.remove('active');
+      }, 3700);
+    }
+
+    function validate(er) {
+      if (er['responseJSON']['errors']['email']) {
+        elementErrorEmail.classList.add('active');
+        elementErrorEmail.textContent = er['responseJSON']['errors']['email'][0];
+      } else {
+        elementErrorEmail.classList.remove('active');
+      }
+
+      if (er['responseJSON']['errors']['firstName']) {
+        elementErrorFirstName.classList.add('active');
+        elementErrorFirstName.textContent = er['responseJSON']['errors']['firstName'][0];
+      } else {
+        elementErrorFirstName.classList.remove('active');
+      }
+
+      if (er['responseJSON']['errors']['lastName']) {
+        elementErrorLastName.classList.add('active');
+        elementErrorLastName.textContent = er['responseJSON']['errors']['lastName'][0];
+      } else {
+        elementErrorLastName.classList.remove('active');
+      }
+
+      if (er['responseJSON']['errors']['vacationDays']) {
+        elementErrorVacationDays.classList.add('active');
+        elementErrorVacationDays.textContent = er['responseJSON']['errors']['vacationDays'][0];
+      } else {
+        elementErrorVacationDays.classList.remove('active');
+      }
+
+      if (er['responseJSON']['errors']['sickDays']) {
+        elementErrorSickDays.classList.add('active');
+        elementErrorSickDays.textContent = er['responseJSON']['errors']['sickDays'][0];
+      } else {
+        elementErrorSickDays.classList.remove('active');
+      }
+
+      if (er['responseJSON']['errors']['personalDays']) {
+        elementErrorPersonalDays.classList.add('active');
+        elementErrorPersonalDays.textContent = er['responseJSON']['errors']['personalDays'][0];
+      } else {
+        elementErrorPersonalDays.classList.remove('active');
+      }
+
+      if (er['responseJSON']['errors']['roles']) {
+        elementErrorRoles.classList.add('active');
+        elementErrorRoles.textContent = er['responseJSON']['errors']['roles'][0];
+      } else {
+        elementErrorRoles.classList.remove('active');
+      }
+    }
+  };
+
+  var deleteUser = function deleteUser(userId) {
+    $.ajax({
+      method: "POST",
+      url: "/listOfAllEmployees/deleteUser",
+      dataType: "json",
+      data: {
+        "userId": userId
+      },
+      success: function success(data) {
+        if (data) {
+          console.log(data);
+          createEmployeeDataTable(currentPageNumber);
+        }
+      },
+      error: function error(er) {
+        console.log(er['responseJSON']['errors']);
+      }
+    });
+  };
+
+  var editUser = function editUser(userId) {
+    modalWindowEditUser.classList.add('active');
+    $.ajax({
+      method: "POST",
+      url: "/listOfAllEmployees/editUser",
+      dataType: "json",
+      data: {
+        "userId": userId
+      },
+      success: function success(data) {
+        if (data) {
+          console.log(data);
+          fillingEmployeeDetailsForEditing(data);
+        }
+
+        console.log(data);
+      },
+      error: function error(er) {
+        console.log(er);
+      }
+    });
+
+    function fillingEmployeeDetailsForEditing(data) {
+      document.getElementById('edit_email').value = data['informationUser']['email'];
+      document.getElementById('edit_first_name').value = data['informationUser']['firstName'];
+      document.getElementById('edit_last_name').value = data['informationUser']['lastName'];
+      document.getElementById('list_country_admin_edit').value = data['informationUser']['country'];
+      switcherCityAndCountry(data); // order is very important
+
+      document.getElementById('list_city_admin_edit').value = data['informationUser']['city'];
+      document.getElementById('edit_role_list_admin_edit').value = data['informationUser']['rolesArr'][0];
+      switchDaysOff(data); // order is very important
+
+      document.getElementById("Vacation_days_list_admin_edit").value = data['informationUser']['vacation days per year'];
+      document.getElementById("Sick_days_list_admin_edit").value = data['informationUser']['sick days per year'];
+      document.getElementById("Personal_days_list_admin_edit").value = data['informationUser']['personal days per year'];
+      clearCheckBoxEdit();
+      setCheckBoxEdit(data['informationUser']['rolesArr']);
+    }
+
+    function switcherCityAndCountry(data) {
+      var elementCountryEdit = document.getElementById('list_country_admin_edit');
+      getListOfCitiesEdit(elementCountryEdit, data);
+      elementCountryEdit.addEventListener('change', function (e) {
+        e.preventDefault();
+        getListOfCitiesEdit(elementCountryEdit, data);
+      });
+
+      function getListOfCitiesEdit(elementCountryEdit, data) {
+        var element = document.getElementById("list_city_admin_edit"); //---Delete all items in the list---
+
+        var opts = element.options;
+
+        while (opts.length > 0) {
+          opts[opts.length - 1] = null;
+        }
+
+        if (elementCountryEdit.selectedIndex !== -1) {
+          var country = elementCountryEdit.options[elementCountryEdit.selectedIndex].value;
+
+          for (var i in data['roleAndDaysUser']['CountriesAndCities']) {
+            if (country === i) {
+              for (var y in data['roleAndDaysUser']['CountriesAndCities'][i]) {
+                //---Create new list items---
+                var oOpt1st = document.createElement('OPTION');
+                oOpt1st.value = data['roleAndDaysUser']['CountriesAndCities'][i][y];
+                oOpt1st.text = data['roleAndDaysUser']['CountriesAndCities'][i][y];
+                element.appendChild(oOpt1st);
+              }
+            }
+          }
+        } // console.log(elementCountryEdit.options[elementCountryEdit.selectedIndex].value)
+        // const country = elementCountryEdit.options[elementCountryEdit.selectedIndex].value;
+        // for( const i in data['roleAndDaysUser']['CountriesAndCities']){
+        //     if (country === i) {
+        //         for (const y in data['roleAndDaysUser']['CountriesAndCities'][i]){
+        //             //---Create new list items---
+        //             const oOpt1st = document.createElement('OPTION');
+        //             oOpt1st.value = data['roleAndDaysUser']['CountriesAndCities'][i][y];
+        //             oOpt1st.text = data['roleAndDaysUser']['CountriesAndCities'][i][y];
+        //             element.appendChild(oOpt1st);
+        //         }
+        //     }
+        // }
+
+      }
+    }
+
+    function switchDaysOff(data) {
+      var elementRoleEdit = document.getElementById("edit_role_list_admin_edit");
+      getListOfDaysEdit(elementRoleEdit, data);
+      elementRoleEdit.addEventListener('change', function (e) {
+        e.preventDefault();
+        getListOfDaysEdit(elementRoleEdit, data);
+      });
+
+      function getListOfDaysEdit(elementRole, data) {
+        if (elementRole.selectedIndex !== -1) {
+          var role = elementRole.options[elementRole.selectedIndex].value;
+
+          for (var i in data['roleAndDaysUser']['roles']) {
+            if (role === data['roleAndDaysUser']['roles'][i]) {
+              var _role2 = data['roleAndDaysUser']['roles'][i];
+              document.getElementById("Vacation_days_list_admin_edit").value = data['roleAndDaysUser'][_role2]["vacations"];
+              document.getElementById("Sick_days_list_admin_edit").value = data['roleAndDaysUser'][_role2]["personal_days"];
+              document.getElementById("Personal_days_list_admin_edit").value = data['roleAndDaysUser'][_role2]["sick_days"];
+            }
+          }
+        } // let role = elementRole.options[elementRole.selectedIndex].value;
+        // for (const i in data['roleAndDaysUser']['roles']) {
+        //     if (role === data['roleAndDaysUser']['roles'][i]) {
+        //         const role = data['roleAndDaysUser']['roles'][i];
+        //         document.getElementById("Vacation_days_list_admin_edit").value = data['roleAndDaysUser'][role]["vacations"];
+        //         document.getElementById("Sick_days_list_admin_edit").value = data['roleAndDaysUser'][role]["personal_days"];
+        //         document.getElementById("Personal_days_list_admin_edit").value = data['roleAndDaysUser'][role]["sick_days"];
+        //     }
+        // }
+
+      }
+    }
+
+    function clearCheckBoxEdit() {
+      for (var i in checkboxesEditUser) {
+        var role = checkboxesEditUser[i]['value'];
+        var idBoxCheckBox = role + "_box_edit";
+        var idCheckBox = role + "_checkbox_edit";
+
+        if (idBoxCheckBox !== 'undefined_box_edit') {
+          document.getElementById(idCheckBox).checked = false;
+        }
+      }
+    }
+
+    function setCheckBoxEdit(roles) {
+      for (var i in checkboxesEditUser) {
+        var role = checkboxesEditUser[i]['value'];
+        var idBoxCheckBox = role + "_box_edit";
+        var idCheckBox = role + "_checkbox_edit";
+
+        if (idBoxCheckBox !== 'undefined_box_edit') {
+          for (var y in roles) {
+            if (roles[y] === role) {
+              document.getElementById(idCheckBox).checked = true;
+            }
+          }
+        }
+      }
+    }
+  };
+
+  var reviewHistoryVacationUser = function reviewHistoryVacationUser(userId) {
+    modalWindowVacationHistory.classList.add('active');
+    console.log(userId);
+  };
+
+  var updateUser = function updateUser() {
+    var country = document.getElementById('list_country_admin_edit').value;
+    var city = document.getElementById('list_city_admin_edit').value;
+    var email = document.getElementById('edit_email').value;
+    var firstName = document.getElementById('edit_first_name').value;
+    var lastName = document.getElementById('edit_last_name').value;
+    var vacationDays = document.getElementById("Vacation_days_list_admin_edit").value;
+    var sickDays = document.getElementById("Sick_days_list_admin_edit").value;
+    var personalDays = document.getElementById("Personal_days_list_admin_edit").value;
+    var checkboxesChecked = [];
+
+    for (var index = 0; index < checkboxesEditUser.length; index++) {
+      if (checkboxesEditUser[index].checked) {
+        checkboxesChecked.push(checkboxesEditUser[index].value);
+      }
+    }
+
+    $.ajax({
+      method: "POST",
+      url: "/listOfAllEmployees/updateUser",
+      dataType: "json",
+      data: {
+        "country": country,
+        "city": city,
+        "email": email,
+        "firstName": firstName,
+        "lastName": lastName,
+        "vacationDays": vacationDays,
+        "sickDays": sickDays,
+        "personalDays": personalDays,
+        "roles": checkboxesChecked
+      },
+      success: function success(data) {
+        pushNotifications(firstName, lastName);
+        createEmployeeDataTable();
+        modalWindowEditUser.classList.remove('active');
+        clearErrorModalWindowEditUser();
+        console.log(data);
+      },
+      error: function error(_error) {
+        if (_error.status === 422) {
+          validate(_error);
+          console.log(_error['responseJSON']['errors']);
+        }
+      }
+    });
+
+    function pushNotifications(firstName, lastName) {
+      elementTextPushNotification.textContent = firstName + " " + lastName + " update successfully";
+      elementPushNotification.classList.add('active');
+      setTimeout(function () {
+        elementPushNotification.classList.remove('active');
+      }, 3700);
+    }
+
+    function validate(error) {
+      if (error['responseJSON']['errors']['email']) {
+        elementErrorEmailEdit.classList.add('active');
+        elementErrorEmailEdit.textContent = error['responseJSON']['errors']['email'][0];
+      } else {
+        elementErrorEmailEdit.classList.remove('active');
+      }
+
+      if (error['responseJSON']['errors']['firstName']) {
+        elementErrorFirstNameEdit.classList.add('active');
+        elementErrorFirstNameEdit.textContent = error['responseJSON']['errors']['firstName'][0];
+      } else {
+        elementErrorFirstNameEdit.classList.remove('active');
+      }
+
+      if (error['responseJSON']['errors']['lastName']) {
+        elementErrorLastNameEdit.classList.add('active');
+        elementErrorLastNameEdit.textContent = error['responseJSON']['errors']['lastName'][0];
+      } else {
+        elementErrorLastNameEdit.classList.remove('active');
+      }
+
+      if (error['responseJSON']['errors']['vacationDays']) {
+        elementErrorVacationDaysEdit.classList.add('active');
+        elementErrorVacationDaysEdit.textContent = error['responseJSON']['errors']['vacationDays'][0];
+      } else {
+        elementErrorVacationDaysEdit.classList.remove('active');
+      }
+
+      if (error['responseJSON']['errors']['sickDays']) {
+        elementErrorSickDaysEdit.classList.add('active');
+        elementErrorSickDaysEdit.textContent = error['responseJSON']['errors']['sickDays'][0];
+      } else {
+        elementErrorSickDaysEdit.classList.remove('active');
+      }
+
+      if (error['responseJSON']['errors']['personalDays']) {
+        elementErrorPersonalDaysEdit.classList.add('active');
+        elementErrorPersonalDaysEdit.textContent = error['responseJSON']['errors']['personalDays'][0];
+      } else {
+        elementErrorPersonalDaysEdit.classList.remove('active');
+      }
+
+      if (error['responseJSON']['errors']['roles']) {
+        elementErrorRolesEdit.classList.add('active');
+        elementErrorRolesEdit.textContent = error['responseJSON']['errors']['roles'][0];
+      } else {
+        elementErrorRolesEdit.classList.remove('active');
+      }
+    }
+  };
+
+  var clearErrorModalWindowEditUser = function clearErrorModalWindowEditUser() {
+    //clear Errors
+    elementErrorEmailEdit.classList.remove('active');
+    elementErrorFirstNameEdit.classList.remove('active');
+    elementErrorLastNameEdit.classList.remove('active');
+    elementErrorVacationDaysEdit.classList.remove('active');
+    elementErrorSickDaysEdit.classList.remove('active');
+    elementErrorPersonalDaysEdit.classList.remove('active');
+    elementErrorRolesEdit.classList.remove('active');
+  };
+
+  var openPopUpAddEmployee = document.getElementById("add_pop_up_employee");
+  var closePopUpAddEmployee = document.getElementById("close_pop_up_employee");
+  var popUpAddEmployee = document.getElementById("pop_up_employee");
+  var saveEmployee = document.getElementById("save_pop_up_employee");
+  var elementErrorRoles = document.getElementById("roles_error");
+  var elementErrorEmail = document.getElementById("email-error");
+  var elementErrorLastName = document.getElementById("last_name_error");
+  var elementErrorFirstName = document.getElementById("first_name_error");
+  var elementErrorVacationDays = document.getElementById("vacation_days_error");
+  var elementErrorSickDays = document.getElementById("sick_days_error");
+  var elementErrorPersonalDays = document.getElementById("personal_days_error");
+  var buttonCloseModalWindowEditUser = document.getElementById("close-modal-window-edit-user");
+  var buttonCloseModalWindowVacationHistoryUser = document.getElementById("close-modal-window-history-vacation-user");
+  var elementErrorRolesEdit = document.getElementById("roles_edit_error");
+  var elementErrorEmailEdit = document.getElementById("email-edit_error");
+  var elementErrorLastNameEdit = document.getElementById("last_name_edit_error");
+  var elementErrorFirstNameEdit = document.getElementById("first_name_edit_error");
+  var elementErrorVacationDaysEdit = document.getElementById("vacation_days_edit_error");
+  var elementErrorSickDaysEdit = document.getElementById("sick_days_edit_error");
+  var elementErrorPersonalDaysEdit = document.getElementById("personal_days_edit_error");
+  var modalWindowEditUser = document.getElementById('pop_up_edit_user');
+  var modalWindowVacationHistory = document.getElementById("pop_up_viewing_user's_vacation_history");
+  var elementCountry = document.getElementById("list_country_admin");
+  var elementCity = document.getElementById("list_city_admin");
+  var checkboxes = document.getElementsByClassName('create_checkbox');
+  var checkboxesEditUser = document.getElementsByClassName('create_checkbox_edit_user');
+  var elementRole = document.getElementById("role_list_admin");
+  var elementPushNotification = document.getElementById("push-notifications");
+  var elementTextPushNotification = document.getElementById("push-notifications-text");
+  var elementElasticsearch = document.getElementById("elasticsearchListUser");
+  var elementElasticsearchOptionsList = document.getElementById("elasticsearchOptionsList");
+  var elementElasticsearchNotFound = document.getElementById("elasticsearchNotFound");
+  var elementListElasticsearch = document.getElementsByClassName('elasticsearchOptionsListUser');
+  var firstPage = document.getElementById("first-page-table-user");
+  var previousPage = document.getElementById("previous-page-table-user");
+  var nextPage = document.getElementById("next-page-table-user");
+  var lastPage = document.getElementById("last-page-table-user");
+  var textNumberPage = document.getElementById("text-number-page");
+  var updateEmployee = document.getElementById("update_pop_up_employee");
+  var elementRoleSort = document.getElementById("list_roles_sort");
+  var elementCountrySort = document.getElementById("list_countries_sort");
+  var elementCitySort = document.getElementById("list_cities_sort");
+  var currentPageNumber;
+  var lastPageNumber;
+  arrUserelasticsearch = {};
+  $.ajaxSetup({
+    headers: {
+      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+  });
+  createEmployeeDataTable();
+  checkClick();
+}
+
+/***/ }),
+
+/***/ "./resources/js/web/ManageHRAndPM/manageHRAndPM.js":
+/*!*********************************************************!*\
+  !*** ./resources/js/web/ManageHRAndPM/manageHRAndPM.js ***!
+  \*********************************************************/
+/***/ (() => {
+
+// set the background of the sidebar button
+document.getElementById("sideBar_manage_HR_and_PM").classList.add("active"); // set the background of the sidebar svg
+
+document.getElementById("sideBar_manage_HR_and_PM_svg").classList.add("active");
+initializeStartBlocManagePM();
+document.getElementById('button-Manage-PM').addEventListener('click', function (e) {
+  e.preventDefault();
+  initializeStartBlocManagePM();
+});
+document.getElementById('button-Manage-HR').addEventListener('click', function (e) {
+  e.preventDefault();
+  initializeStartBlocManageHR();
+});
+
+function initializeStartBlocManagePM() {
+  clearBlocManagePMAndHR();
+  document.getElementById("bloc-manage-PM").classList.add('active');
+  document.getElementById('button-Manage-PM').classList.add('active');
+}
+
+function initializeStartBlocManageHR() {
+  clearBlocManagePMAndHR();
+  document.getElementById('button-Manage-HR').classList.add('active');
+  document.getElementById("bloc-manage-HR").classList.add('active');
+}
+
+function clearBlocManagePMAndHR() {
+  document.getElementById("bloc-manage-PM").classList.remove('active');
+  document.getElementById("bloc-manage-HR").classList.remove('active');
+  document.getElementById('button-Manage-PM').classList.remove('active');
+  document.getElementById('button-Manage-HR').classList.remove('active');
+}
+
+/***/ }),
+
+/***/ "./resources/js/web/Profile/profile.js":
+/*!*********************************************!*\
+  !*** ./resources/js/web/Profile/profile.js ***!
+  \*********************************************/
+/***/ (() => {
+
+// set the background of the sidebar button
+document.getElementById("sideBar_profile").classList.add("active"); // set the background of the sidebar svg
+
+document.getElementById("sideBar_profile_svg").classList.add("active");
+
+/***/ }),
+
+/***/ "./resources/js/web/PublicHoliday/publicHoliday.js":
+/*!*********************************************************!*\
+  !*** ./resources/js/web/PublicHoliday/publicHoliday.js ***!
+  \*********************************************************/
+/***/ (() => {
+
+// set the background of the sidebar button
+document.getElementById("sideBar_public_holiday").classList.add("active"); // set the background of the sidebar svg
+
+document.getElementById("sideBar_public_holiday_svg").classList.add("active");
+
+/***/ }),
+
+/***/ "./resources/js/web/SettingsPage/settingsPage.js":
+/*!*******************************************************!*\
+  !*** ./resources/js/web/SettingsPage/settingsPage.js ***!
+  \*******************************************************/
+/***/ (() => {
+
+// set the background of the sidebar button
+document.getElementById("sideBar_settings_page").classList.add("active"); // set the background of the sidebar svg
+
+document.getElementById("sideBar_settings_page_svg").classList.add("active");
+
+/***/ }),
+
+/***/ "./resources/js/web/Vacations/vacations.js":
+/*!*************************************************!*\
+  !*** ./resources/js/web/Vacations/vacations.js ***!
+  \*************************************************/
+/***/ (() => {
+
+// set the background of the sidebar button
+document.getElementById("sideBar_vacations").classList.add("active"); // set the background of the sidebar svg
+
+document.getElementById("sideBar_vacations_svg").classList.add("active");
+
+/***/ }),
+
+/***/ "./resources/js/web/VacationsHistory/vacationsHistory.js":
+/*!***************************************************************!*\
+  !*** ./resources/js/web/VacationsHistory/vacationsHistory.js ***!
+  \***************************************************************/
+/***/ (() => {
+
+// set the background of the sidebar button
+document.getElementById("sideBar_vacations_history").classList.add("active"); // set the background of the sidebar svg
+
+document.getElementById("sideBar_vacations_history_svg").classList.add("active");
+
+/***/ }),
+
+/***/ "./resources/js/web/VacationsOverview/vacationsOverview.js":
+/*!*****************************************************************!*\
+  !*** ./resources/js/web/VacationsOverview/vacationsOverview.js ***!
+  \*****************************************************************/
+/***/ (() => {
+
+// set the background of the sidebar button
+document.getElementById("sideBar_vacations_overview").classList.add("active"); // set the background of the sidebar svg
+
+document.getElementById("sideBar_vacations_overview_svg").classList.add("active");
+
+/***/ }),
+
+/***/ "./resources/js/web/VacationsRequests/vacationsRequests.js":
+/*!*****************************************************************!*\
+  !*** ./resources/js/web/VacationsRequests/vacationsRequests.js ***!
+  \*****************************************************************/
+/***/ (() => {
+
+// set the background of the sidebar button
+document.getElementById("sideBar_vacations_requests").classList.add("active"); // set the background of the sidebar svg
+
+document.getElementById("sideBar_vacations_requests_svg").classList.add("active");
 
 /***/ }),
 

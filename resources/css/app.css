@@ -1,3 +1,125 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.bg-bloc-gray-200.active{
+    --tw-bg-opacity: 1;
+    background-color: rgb(229 231 235 / var(--tw-bg-opacity));
+}
+
+.bg-bloc-gray-200{}
+
+
+.sidebar_button_bg.active{
+    --tw-text-opacity: 1;
+    color: rgb(255 255 255 / var(--tw-text-opacity));
+    --tw-bg-opacity: 1;
+    background-color: rgb(75 85 99 / var(--tw-bg-opacity));
+}
+
+.sidebar_button_bg{}
+
+
+
+.svg-text-gray-400.active{
+    --tw-text-opacity: 1;
+    color: rgb(255 255 255 / var(--tw-text-opacity));
+}
+
+.svg-text-gray-400{
+    --tw-text-opacity: 1;
+    color: rgb(156 163 175 / var(--tw-text-opacity));
+}
+
+
+
+
+.show_error{
+    display: none;
+}
+
+.show_error.active{
+    display: block;
+}
+
+.show_block{
+    display: none;
+}
+
+.show_block.active{
+    display: block;
+}
+
+.push-notifications{
+    transform: translateY(-200px);
+    transition: .8s ease-in-out;
+}
+
+.push-notifications.active{
+    transform: translateY(50px);
+}
+
+.push-notifications-block{
+    position: fixed;
+    z-index: 30;
+    height: auto;
+    left: 50%;
+    margin-left:-138px
+}
+
+.push-notifications-container{
+    width: 276px;
+}
+
+
+/*----------------------------*/
+
+.pop_up_employee{
+    transform: translate(45%, -48.5%) scale(0);
+    transition: .4s ease-in-out;
+}
+
+
+.pop_up_employee.active{
+    transform: translateY(0%) scale(100%);
+    background-color: rgba(0, 0, 0, .8);
+}
+
+.pop_up {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    left: 0;
+    top: 0;
+    background-color: transparent;
+    z-index: 25;
+}
+
+.pop_up_container {
+    display: flex;
+    width: 100%;
+    height: 100%;
+}
+
+.pop_up_body_body {
+    margin: auto;
+    height: auto;
+    width: 1100px;
+    background-color: #fff;
+    border-radius: 10px;
+    position: relative;
+}
+/*{{--Elasticsearch--}}*/
+.absoluteCenter {
+    position: absolute;
+    width: 500px; /* Need a specific value to work */
+}
+
+.pl-50proc {
+    padding-left: 50%;
+}
+
+.pr-250px {
+    margin-right: 500px;
+}
+

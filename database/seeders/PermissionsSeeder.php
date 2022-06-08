@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use Spatie\Permission\Models\Permission;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Spatie\Permission\Models\Permission;
 use Illuminate\Database\Seeder;
 
 class PermissionsSeeder extends Seeder
@@ -13,7 +13,7 @@ class PermissionsSeeder extends Seeder
      *
      * @return void
      */
-    public function run()
+    public function run(): void
     {
         //Countries
         Permission::create(['name' => 'show countries']);

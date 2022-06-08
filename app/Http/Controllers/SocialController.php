@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Repositories\Interfaces\SocialRepositoryInterface;
+use App\Repositories\Interfaces\UserRepositoryInterface;
 use App\Repositories\Interfaces\DomainsRepositoryInterface;
 use Illuminate\Console\Application;
 use Illuminate\Http\RedirectResponse;
@@ -12,12 +12,13 @@ use Laravel\Socialite\Facades\Socialite;
 
 class SocialController extends Controller
 {
-    private SocialRepositoryInterface $socialRepository;
+
+    private UserRepositoryInterface $userRepository;
     private DomainsRepositoryInterface $domainsRepository;
 
-    public function __construct(SocialRepositoryInterface $socialRepository, DomainsRepositoryInterface $domainsRepository)
+    public function __construct(UserRepositoryInterface $userRepository, DomainsRepositoryInterface $domainsRepository)
     {
-        $this->socialRepository = $socialRepository;
+        $this->userRepository = $userRepository;
         $this->domainsRepository = $domainsRepository;
     }
 
@@ -33,16 +34,20 @@ class SocialController extends Controller
         }
 
         $user = Socialite::driver('google')->stateless()->user()->user;
-        $isUser = $this->socialRepository->searchEmail($user["email"]);
+        $isUser = $this->userRepository->searchEmail($user["email"]);
 
         if ($isUser) {
             Auth::login($isUser);
         } elseif ($this->checkDomain($user)) {
-            $createUser = $this->socialRepository->createUser(
+            $createUser = $this->userRepository->createUser(
+
                 $user["given_name"],
                 $user["family_name"],
                 $user["email"],
-                $user["picture"]);
+                $user["picture"],
+                null,
+                null,
+            );
 
             Auth::login($createUser);
         } else {

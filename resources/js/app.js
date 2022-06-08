@@ -1,4 +1,7 @@
 require('./bootstrap');
+require('./web');
+
+
 
 
 

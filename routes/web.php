@@ -3,6 +3,8 @@
 use App\Http\Controllers\CitiesController;
 use App\Http\Controllers\CountriesController;
 use App\Http\Controllers\HomePageController;
+use App\Http\Controllers\ListEmployeesController;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SocialController;
 use App\Http\Controllers\VacationController;
 use App\Http\Controllers\VacationRequestController;
@@ -42,9 +44,17 @@ Route::name('page.')->group(function () {
         return view('pages.overviewAllUserInVacationPage');
     })->middleware('auth')->name('overviewAllUserInVacation');
 
-    Route::get('/listOfAllEmployees', function () {
-        return view('pages.listOfAllEmployeesPage');
-    })->middleware('auth')->name('listOfAllEmployees');
+
+    Route::prefix('/listOfAllEmployees')->middleware('auth')->group(function () {
+        Route::get('/', [ListEmployeesController::class, 'listEmployees'])->name('listOfAllEmployees');
+        Route::post('/addUser', [ListEmployeesController::class, 'addUser']);
+        Route::post('/saveUser', [ListEmployeesController::class, 'saveUser']);
+        Route::post('/deleteUser', [ListEmployeesController::class, 'deleteUser']);
+        Route::post('/editUser', [ListEmployeesController::class, 'UserInformationForEdit']);
+        Route::post('/updateUser', [ListEmployeesController::class, 'updateUser']);
+        Route::get('/createEmployeeDataTable', [ListEmployeesController::class, 'createEmployeeDataTable']);
+        Route::post('/createEmployeeDataTable', [ListEmployeesController::class, 'getPaginateAndElasticsearchData']);
+    });
 
     Route::get('/publicHoliday', function () {
         return view('pages.publicHolidayPage');
@@ -54,9 +64,15 @@ Route::name('page.')->group(function () {
         return view('pages.manageHRandPMPage');
     })->middleware('auth')->name('manageHRandPM');
 
-//    Route::get('/settingsPage', function () {
-//        return view('pages.settingsPage');
-//    })->middleware('auth')->name('settingsPage');
+
+    Route::get('/settingsPage', function () {
+        return view('pages.settingsPage');
+    })->middleware('auth')->name('settingsPage');
+
+    Route::get('/profile', function () {
+        return view('pages.profile');
+    })->middleware('auth')->name('profile');
+
 });
 
 Route::prefix('vacations')->name('vacations.')->middleware('auth')->group(function () {
@@ -92,5 +108,7 @@ Route::middleware(['auth'])->group(function () {
 });
 
 //Roles
+
 Route::resource('settings/roles', \App\Http\Controllers\RoleController::class)->middleware('role:System Admin');
 Route::resource('settings/domains', \App\Http\Controllers\DomainsController::class)->middleware('role:System Admin');
+

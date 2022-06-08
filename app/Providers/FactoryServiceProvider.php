@@ -5,7 +5,6 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
-use App\Factories\HomePageFactory;
 use App\Factories\VacationFactory;
 use App\Factories\VacationRequestApprovalFactory;
 use App\Factories\VacationRequestFactory;
@@ -28,11 +27,6 @@ class FactoryServiceProvider extends ServiceProvider
         $this->app->bind(
             VacationFactory::class,
             VacationFactory::class
-        );
-
-        $this->app->bind(
-            HomePageFactory::class,
-            HomePageFactory::class
         );
 
         $this->app->bind(

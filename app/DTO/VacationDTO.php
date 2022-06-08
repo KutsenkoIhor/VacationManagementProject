@@ -9,39 +9,31 @@ use Carbon\Carbon;
 class VacationDTO implements \JsonSerializable
 {
     private int $id;
-    private int $userId;
     private Carbon $startDate;
     private Carbon $endDate;
+    private int $numberOfDays;
     private string $type;
-    private string $status;
+    private Carbon $createdAt;
+    private Carbon $updatedAt;
     private UserDTO $user;
+    private VacationRequestDTO $vacationRequest;
 
-    public function __construct(
-        int $id,
-        int $userId,
-        Carbon $startDate,
-        Carbon $endDate,
-        string $type,
-        string $status,
-        UserDTO $user
-    ) {
+    public function __construct(int $id, Carbon $startDate, Carbon $endDate, int $numberOfDays, string $type, Carbon $createdAt, Carbon $updatedAt, UserDTO $user, VacationRequestDTO $vacationRequest)
+    {
         $this->id = $id;
-        $this->userId = $userId;
         $this->startDate = $startDate;
         $this->endDate = $endDate;
+        $this->numberOfDays = $numberOfDays;
         $this->type = $type;
-        $this->status = $status;
+        $this->createdAt = $createdAt;
+        $this->updatedAt = $updatedAt;
         $this->user = $user;
+        $this->vacationRequest = $vacationRequest;
     }
 
     public function getId(): int
     {
         return $this->id;
-    }
-
-    public function getUserId(): int
-    {
-        return $this->userId;
     }
 
     public function getStartDate(): Carbon
@@ -54,14 +46,24 @@ class VacationDTO implements \JsonSerializable
         return $this->endDate;
     }
 
+    public function getNumberOfDays(): int
+    {
+        return $this->numberOfDays;
+    }
+
     public function getType(): string
     {
         return $this->type;
     }
 
-    public function getStatus(): string
+    public function getCreatedAt(): Carbon
     {
-        return $this->status;
+        return $this->createdAt;
+    }
+
+    public function getUpdatedAt(): Carbon
+    {
+        return $this->updatedAt;
     }
 
     public function getUser(): UserDTO
@@ -69,16 +71,23 @@ class VacationDTO implements \JsonSerializable
         return $this->user;
     }
 
+    public function getVacationRequest(): VacationRequestDTO
+    {
+        return $this->vacationRequest;
+    }
+
     public function jsonSerialize(): array
     {
         return [
-            'id'         => $this->getId(),
-            'user_id'    => $this->getUserId(),
-            'start_date' => $this->getStartDate(),
-            'end_date'   => $this->getEndDate(),
-            'type'       => $this->getType(),
-            'status'     => $this->getStatus(),
-            'user'       => $this->getUser()
+            'id'               => $this->getId(),
+            'start_date'       => $this->getStartDate(),
+            'end_date'         => $this->getEndDate(),
+            'number_of_days'   => $this->getNumberOfDays(),
+            'type'             => $this->getType(),
+            'created_at'       => $this->getCreatedAt(),
+            'updated_at'       => $this->getUpdatedAt(),
+            'user'             => $this->getUser(),
+            'vacation_request' => $this->getVacationRequest()
         ];
     }
 }

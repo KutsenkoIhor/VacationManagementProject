@@ -1,7 +1,12 @@
+## Migrate + seed
+
+```sh
+$ php artisan migrate:refresh --seed
+```
+
 ## Install composer packages
 
 ```sh
-$ cd laravel-socialite
 $ composer install
 ```
 

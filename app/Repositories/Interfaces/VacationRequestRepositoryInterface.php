@@ -18,7 +18,8 @@ interface VacationRequestRepositoryInterface
     ): VacationRequestDTO;
     public function getVacationRequestsByUserId(int $userId): array;
     public function getVacationRequestsForApproval(int $userId): array;
-    public function denyVacationRequest($vacationRequestId): void;
-    public function approveVacationRequest($vacationRequestId): void;
+    public function denyVacationRequest(int $vacationRequestId): void;
+    public function approveVacationRequest(int $vacationRequestId): void;
+    public function cancelVacationRequest(int $vacationRequestId);
 }
 

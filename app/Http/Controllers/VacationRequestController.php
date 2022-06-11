@@ -48,12 +48,12 @@ class VacationRequestController  extends Controller
         //TODO: validate amount of vacation request days
 
         $vacationRequestService->createVacationRequest(
-                $userId,
-                $startDate,
-                $endDate,
-                $vacationDaysNumberDTO->getNumberOfDays(),
-                $request->get('type')
-            );
+            $userId,
+            $startDate,
+            $endDate,
+            $vacationDaysNumberDTO->getNumberOfDays(),
+            $request->get('type')
+        );
 
         return redirect('/vacations/requestHistory');
     }
@@ -72,5 +72,10 @@ class VacationRequestController  extends Controller
         $vacationRequests = $this->vacationRequestService->getVacationRequestsForApproval($userId);
 
         return view('vacations/vacation_requests_for_approval', ['vacationRequests' => $vacationRequests]);
+    }
+
+    public function cancelVacationRequest(int $vacationRequestId): void
+    {
+        $this->vacationRequestService->cancelVacationRequest($vacationRequestId);
     }
 }

@@ -13,6 +13,7 @@
                         <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Vacation days</th>
                         <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Sick days</th>
                         <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Personal days</th>
+                        <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Working days</th>
                         <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-6">
                             <span class="sr-only">Edit</span>
                         </th>
@@ -36,12 +37,13 @@
                             <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{$userInformation['vacation days left']}}/{{$userInformation['vacation days per year']}}</td>
                             <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{$userInformation['personal days left']}}/{{$userInformation['personal days per year']}}</td>
                             <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{$userInformation['sick days left']}}/{{$userInformation['sick days per year']}}</td>
+                            <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{$userInformation['working days']}}/{{$userInformation['working days']}}</td>
 
                             <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6"></td>
 
                             <td class="relative whitespace-nowrap py-4 pl-3 text-right text-sm font-medium ">
                                         <span class="relative z-0 inline-flex shadow-sm rounded-md">
-                                          <button type="button" id="button-historyVacations-{{$userInformation['userId']}}" value="{{$userInformation['userId']}}" class="button-historyVacations-user mr-4  relative inline-flex items-center px-4 py-2 rounded-l-md rounded-r-md border text-gray-700 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500">History Vacations</button>
+                                          <button type="button" id="button-historyVacations-{{$userInformation['userId']}}" value="{{$userInformation['userId']}}" class="button-historyVacations-user mr-4  relative inline-flex items-center px-4 py-2 rounded-l-md rounded-r-md border text-gray-700 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500">Vacation History</button>
                                           <button type="button" id="button-edit-{{$userInformation['userId']}}" value="{{$userInformation['userId']}}" class="button-edit-user -ml-px relative inline-flex items-center px-4 py-2 rounded-l-md border text-gray-700 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500">Edit</button>
                                           <button type="button" id="button-delete-{{$userInformation['userId']}}" value="{{$userInformation['userId']}}" class="button-delete-user -ml-px relative inline-flex items-center px-4 py-2 rounded-r-md -mr-4 border text-gray-700 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500">Delete</button>
                                         </span>

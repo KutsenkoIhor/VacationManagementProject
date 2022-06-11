@@ -235,7 +235,6 @@
                     </a>
                     @endhasrole
 
-                    @hasrole('Employee')
                     <a href="{{ route('vacations.requestHistory') }}" id="sideBar_vacations_history"
                        class="sidebar_button_bg text-gray-300 hover:text-white hover:bg-gray-700 group flex items-center px-2 py-2 text-sm leading-6 font-medium rounded-md">
                         <svg id="sideBar_vacations_history_svg" class="mr-4 flex-shrink-0 h-6 w-6 svg-text-gray-400 group-hover:text-white" xmlns="http://www.w3.org/2000/svg"
@@ -245,7 +244,6 @@
                         </svg>
                         Vacation Request History
                     </a>
-                    @endhasrole
 
                     @hasanyrole('PM|HR')
                     <a href="{{ route('vacations.requests') }}" id="sideBar_vacations_requests"

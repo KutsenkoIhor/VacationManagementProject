@@ -13,4 +13,5 @@ interface VacationRepositoryInterface
     public function getUpcomingVacations(Carbon $startDate, Carbon $endDate): array;
     public function getNumberOfVacationDaysByUserIdPerMonth(int $userId): int;
     public function getVacationsPerYear(int $userId, Carbon $date, string $type): array;
+    public function getVacationsByUserId(int $userId): array;
 }

@@ -5,7 +5,9 @@ namespace App\Providers;
 use App\Events\ApproveVacationRequestEvent;
 use App\Events\CreateVacationRequestApprovalEvent;
 use App\Events\DenyVacationRequestEvent;
+use App\Events\VacationRequestCreatedEvent;
 use App\Listeners\ApproveVacationRequestListener;
+use App\Listeners\BypassApprovalListener;
 use App\Listeners\CheckVacationRequestListener;
 use App\Listeners\CreateVacationListener;
 use App\Listeners\DenyVacationRequestListener;
@@ -33,7 +35,9 @@ class EventServiceProvider extends ServiceProvider
         ApproveVacationRequestEvent::class => [
             ApproveVacationRequestListener::class,
             CreateVacationListener::class,
-            //TODO subsctract vacation days for user
+        ],
+        VacationRequestCreatedEvent::class => [
+            BypassApprovalListener::class
         ]
     ];
 

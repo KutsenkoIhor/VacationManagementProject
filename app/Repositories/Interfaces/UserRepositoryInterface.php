@@ -15,4 +15,5 @@ interface UserRepositoryInterface
     public function createUser(string|null $firstName, string|null $lastName, string|null $userEmail, string|null $userAvatar, int|null $countryId, int|null $cityId): object;
     public function updateOrCreate(string|null $firstName, string|null $lastName, string|null $userEmail, int|null $countryId, int|null $cityId);
     public function getUserModelById (int $userId): User;
+    public function hasAnyRole(int $userId, array $roles): bool;
 }

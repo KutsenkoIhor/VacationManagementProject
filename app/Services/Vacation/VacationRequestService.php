@@ -6,9 +6,9 @@ declare(strict_types=1);
 namespace App\Services\Vacation;
 
 use App\DTO\VacationRequestDTO;
+use App\Events\VacationRequestCreatedEvent;
 use App\Repositories\Interfaces\VacationRequestRepositoryInterface;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Auth;
 
 class VacationRequestService
 {
@@ -26,14 +26,17 @@ class VacationRequestService
         int $numberOfDays,
         string $type
     ): VacationRequestDTO {
-
-        return $this->vacationRequestRepository->createVacationRequest(
+        $vacationRequestDTO = $this->vacationRequestRepository->createVacationRequest(
             $userId,
             $startDate,
             $endDate,
             $numberOfDays,
             $type
         );
+
+        event(new VacationRequestCreatedEvent($vacationRequestDTO->getId(), $vacationRequestDTO->getUser()));
+
+        return $vacationRequestDTO;
     }
 
     public function getVacationRequestsByUserId(int $userId): array
@@ -54,5 +57,10 @@ class VacationRequestService
     public function approveVacationRequest(int $vacationRequestId): void
     {
         $this->vacationRequestRepository->approveVacationRequest($vacationRequestId);
+    }
+
+    public function cancelVacationRequest(int $vacationRequestId): void
+    {
+        $this->vacationRequestRepository->cancelVacationRequest($vacationRequestId);
     }
 }

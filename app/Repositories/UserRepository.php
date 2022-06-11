@@ -120,4 +120,9 @@ class UserRepository implements UserRepositoryInterface
     {
         return User::where('id', $userId)->first();
     }
+
+    public function hasAnyRole(int $userId, array $roles): bool
+    {
+        return User::findOrFail($userId)->hasAnyRole($roles);
+    }
 }

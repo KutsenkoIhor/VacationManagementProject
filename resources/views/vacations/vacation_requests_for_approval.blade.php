@@ -43,7 +43,7 @@
                                 @foreach($vacationRequests as $vacationRequest)
                                     <tr>
                                         <td class="whitespace-nowrap py-4 pl-4 pr-4 text-sm text-center text-gray-900 sm:pl-6">{{ $vacationRequest->getUser()->getFirstName()  }} {{ $vacationRequest->getUser()->getLastName() }}</td>
-                                        <td class="whitespace-nowrap p-4 text-sm text-center text-gray-600">{{ $vacationRequest->getType() }}</td>
+                                        <td class="whitespace-nowrap p-4 text-sm text-center text-gray-600">{{ str_replace("_", " ", ucfirst(strtolower($vacationRequest->getType()))) }}</td>
                                         <td class="whitespace-nowrap p-4 text-sm text-center text-gray-600">{{ $vacationRequest->getStartDate()->format('Y-m-d') }}</td>
                                         <td class="whitespace-nowrap p-4 text-sm text-center text-gray-600">{{ $vacationRequest->getEndDate()->format('Y-m-d') }}</td>
                                         <td class="whitespace-nowrap p-4 text-sm text-center text-gray-600">{{ $vacationRequest->getNumberOfDays() }}</td>

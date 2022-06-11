@@ -11,6 +11,7 @@ use App\Factories\VacationRequestFactory;
 use App\Models\VacationRequest;
 use App\Repositories\Interfaces\VacationRequestRepositoryInterface;
 use Carbon\Carbon;
+use http\Message;
 
 class VacationRequestRepository implements VacationRequestRepositoryInterface
 {
@@ -50,14 +51,14 @@ class VacationRequestRepository implements VacationRequestRepositoryInterface
     public function getVacationRequestsForApproval(int $userId): array
     {
         $vacationRequests = VacationRequest::where('is_approved', null)
-            ->with('user') //TODO think about performance
+            ->with('user')
             ->get();
 
 
         return $this->vacationRequestFactory->makeDTOFromModelCollection($vacationRequests);
     }
 
-    public function denyVacationRequest($vacationRequestId): void
+    public function denyVacationRequest(int $vacationRequestId): void
     {
         /** @var VacationRequest $vacationRequest */
         $vacationRequest = VacationRequest::findOrFail($vacationRequestId);
@@ -67,7 +68,7 @@ class VacationRequestRepository implements VacationRequestRepositoryInterface
         $vacationRequest->save();
     }
 
-    public function approveVacationRequest($vacationRequestId): void
+    public function approveVacationRequest(int $vacationRequestId): void
     {
         /** @var VacationRequest $vacationRequest */
         $vacationRequest = VacationRequest::findOrFail($vacationRequestId);
@@ -75,5 +76,13 @@ class VacationRequestRepository implements VacationRequestRepositoryInterface
         $vacationRequest->is_approved = true;
 
         $vacationRequest->save();
+    }
+
+    public function cancelVacationRequest(int $vacationRequestId)
+    {
+        /** @var VacationRequest $vacationRequest */
+        $vacationRequest = VacationRequest::findOrFail($vacationRequestId);
+
+        return $vacationRequest->is_approved == null ? $vacationRequest->delete() : throw new \Exception('You can`t cancel approved or denied vacation request!');
     }
 }

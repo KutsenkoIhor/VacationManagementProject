@@ -21,6 +21,7 @@ class CreateAdministrations extends Seeder
         $rootAdministrations = [
             'kutsenko3igor@gmail.com' => ['firstName' => 'Ihor', 'lastName' => 'Kutsenko'],
             'ihor.kutsenko@quantox.com' => ['firstName' => 'Ihor', 'lastName' => 'Quantox'],
+            'valeriia.skliarenko@quantox.com' => ['firstName' => 'Valeriia', 'lastName' => 'Skliarenko']
         ];
 
         foreach ($rootAdministrations as $email => $arrDataUsers) {

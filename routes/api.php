@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\VacationController;
 use App\Http\Controllers\VacationRequestApprovalController;
 use App\Http\Controllers\VacationRequestController;
 use Illuminate\Support\Facades\Route;
@@ -16,4 +17,6 @@ use Illuminate\Support\Facades\Route;
 */
 Route::prefix('vacationRequests')->name('vacationRequests.')->middleware('auth')->group(function () {
     Route::post('/{id}/createVacationRequestApproval', [VacationRequestApprovalController::class, 'createVacationRequestApproval'])->name('createVacationRequestApproval');
+    Route::post('/{id}/cancelVacationRequest', [VacationRequestController::class, 'cancelVacationRequest'])->name('cancelVacationRequest');
 });
+

@@ -61,7 +61,6 @@ class NumberOfDaysCalculationService
     public function getNumberOfWorkingDaysByUserIdPerMonth(
         int $userId
     ): int {
-        //TODO: include to a list of all employees
         //TODO: filter for choosing a month
 
         $daysInMonth = Carbon::now()->daysInMonth;

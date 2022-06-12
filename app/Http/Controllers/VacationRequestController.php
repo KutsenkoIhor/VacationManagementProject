@@ -7,12 +7,14 @@ namespace App\Http\Controllers;
 
 
 use App\Http\Requests\CreateVacationRequest;
+use App\Http\Requests\UpdateVacationRequest;
 use App\Services\Vacation\NumberOfDaysCalculationService;
 use App\Services\Vacation\VacationRequestService;
 use Carbon\Carbon;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
@@ -58,6 +60,32 @@ class VacationRequestController  extends Controller
         return redirect('/vacations/requestHistory');
     }
 
+    public function getVacationRequest(int $vacationRequestId): JsonResponse
+    {
+        return response()->json(
+            $this->vacationRequestService->getVacationRequest($vacationRequestId)
+        );
+    }
+
+    public function updateVacationRequest(
+        int $vacationRequestId,
+        UpdateVacationRequest $request,
+        VacationRequestService $vacationRequestService
+    ): JsonResponse
+    {
+        $startDate = Carbon::createFromFormat("Y-m-d", $request->get('start_date'));
+        $endDate = Carbon::createFromFormat("Y-m-d", $request->get('end_date'));
+
+        $vacationRequestService->updateVacationRequest(
+            $vacationRequestId,
+            $startDate,
+            $endDate,
+            $request->get('type')
+        );
+
+        return response()->json();
+    }
+
     public function getVacationRequestsByUserId(): Application|Factory|View
     {
         $userId = Auth::id();
@@ -77,5 +105,13 @@ class VacationRequestController  extends Controller
     public function cancelVacationRequest(int $vacationRequestId): void
     {
         $this->vacationRequestService->cancelVacationRequest($vacationRequestId);
+    }
+
+    public function getVacationRequestsForEditing(): Factory|View|Application
+    {
+        $userId = Auth::id();
+        $vacationRequests = $this->vacationRequestService->getVacationRequestsForEditing($userId);
+
+        return view('vacations/vacation_requests_for_editing', ['vacationRequests' => $vacationRequests]);
     }
 }

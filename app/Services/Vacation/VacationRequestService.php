@@ -39,6 +39,26 @@ class VacationRequestService
         return $vacationRequestDTO;
     }
 
+    public function getVacationRequest(int $vacationRequestId): VacationRequestDTO
+    {
+        return $this->vacationRequestRepository->getVacationRequest($vacationRequestId);
+    }
+
+    public function updateVacationRequest(
+        int $vacationRequestId,
+        Carbon $startDate,
+        Carbon $endDate,
+        string $type
+    ): VacationRequestDTO {
+
+        return $this->vacationRequestRepository->updateVacationRequest(
+            $vacationRequestId,
+            $startDate,
+            $endDate,
+            $type
+        );
+    }
+
     public function getVacationRequestsByUserId(int $userId): array
     {
         return $this->vacationRequestRepository->getVacationRequestsByUserId($userId);
@@ -47,6 +67,11 @@ class VacationRequestService
     public function getVacationRequestsForApproval(int $userId): array
     {
         return $this->vacationRequestRepository->getVacationRequestsForApproval($userId);
+    }
+
+    public function getVacationRequestsForEditing(int $userId): array
+    {
+        return $this->vacationRequestRepository->getVacationRequestsForEditing($userId);
     }
 
     public function denyVacationRequest(int $vacationRequestId): void

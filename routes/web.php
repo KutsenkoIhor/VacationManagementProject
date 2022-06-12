@@ -36,13 +36,13 @@ Route::name('page.')->group(function () {
         return view('pages.holidayRequestPage');
     })->middleware('auth')->name('holidayRequest');
 
-    Route::get('/vacationsHistory', function () {
-        return view('pages.vacationsHistoryPage');
-    })->middleware('auth')->name('vacationsHistory');
-
-    Route::get('/overviewAllUserInVacation', function () {
-        return view('pages.overviewAllUserInVacationPage');
-    })->middleware('auth')->name('overviewAllUserInVacation');
+//    Route::get('/vacationsHistory', function () {
+//        return view('pages.vacationsHistoryPage');
+//    })->middleware('auth')->name('vacationsHistory');
+//
+//    Route::get('/overviewAllUserInVacation', function () {
+//        return view('pages.overviewAllUserInVacationPage');
+//    })->middleware('auth')->name('overviewAllUserInVacation');
 
 
     Route::prefix('/listOfAllEmployees')->middleware('auth')->group(function () {
@@ -86,6 +86,8 @@ Route::prefix('vacations')->name('vacations.')->middleware('auth')->group(functi
     Route::get('/requestHistory', [VacationRequestController::class, 'getVacationRequestsByUserId'])->name('requestHistory');
 
     Route::get('/requests', [VacationRequestController::class, 'getVacationRequestsForApproval'])->name('requests');
+
+    Route::get('/requests/editing', [VacationRequestController::class, 'getVacationRequestsForEditing'])->name('editing');
 });
 
 

@@ -43,6 +43,29 @@ class VacationRequestRepository implements VacationRequestRepositoryInterface
         return $this->vacationRequestFactory->makeDTOFromModel($vacationRequest);
     }
 
+    public function getVacationRequest(int $vacationRequestId): VacationRequestDTO
+    {
+        return $this->vacationRequestFactory->makeDTOFromModel(VacationRequest::findOrFail($vacationRequestId));
+    }
+
+    public function updateVacationRequest(
+        int $vacationRequestId,
+        Carbon $startDate,
+        Carbon $endDate,
+        string $type
+    ): VacationRequestDTO {
+        /** @var VacationRequest $vacationRequest */
+        $vacationRequest = VacationRequest::findOrFail($vacationRequestId);
+
+        $vacationRequest->start_date = $startDate;
+        $vacationRequest->end_date = $endDate;
+        $vacationRequest->type = $type;
+
+        $vacationRequest->save();
+
+        return $this->vacationRequestFactory->makeDTOFromModel($vacationRequest);
+    }
+
     public function getVacationRequestsByUserId(int $userId): array
     {
         return $this->vacationRequestFactory->makeDTOFromModelCollection(VacationRequest::where('user_id', $userId)->get());
@@ -54,6 +77,13 @@ class VacationRequestRepository implements VacationRequestRepositoryInterface
             ->with('user')
             ->get();
 
+        return $this->vacationRequestFactory->makeDTOFromModelCollection($vacationRequests);
+    }
+
+    public function getVacationRequestsForEditing(int $userId): array
+    {
+        $vacationRequests = VacationRequest::with('user')
+            ->get();
 
         return $this->vacationRequestFactory->makeDTOFromModelCollection($vacationRequests);
     }
@@ -78,7 +108,7 @@ class VacationRequestRepository implements VacationRequestRepositoryInterface
         $vacationRequest->save();
     }
 
-    public function cancelVacationRequest(int $vacationRequestId)
+    public function cancelVacationRequest(int $vacationRequestId): bool
     {
         /** @var VacationRequest $vacationRequest */
         $vacationRequest = VacationRequest::findOrFail($vacationRequestId);

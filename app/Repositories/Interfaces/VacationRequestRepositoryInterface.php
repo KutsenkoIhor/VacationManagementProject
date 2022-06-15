@@ -24,8 +24,7 @@ interface VacationRequestRepositoryInterface
         Carbon $endDate,
         string $type
     ): VacationRequestDTO;
-    public function getVacationRequestsForApproval(int $userId): array;
-    public function getVacationRequestsForEditing(int $userId): array;
+    public function getEmployeesVacationRequests(int $userId): array;
     public function denyVacationRequest(int $vacationRequestId): void;
     public function approveVacationRequest(int $vacationRequestId): void;
     public function cancelVacationRequest(int $vacationRequestId): bool;

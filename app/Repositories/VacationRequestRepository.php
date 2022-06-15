@@ -63,7 +63,7 @@ class VacationRequestRepository implements VacationRequestRepositoryInterface
 
         $vacationRequest->save();
 
-        return $this->vacationRequestFactory->makeDTOFromModel($vacationRequest);
+        return $vacationRequest->is_approved == null ? $this->vacationRequestFactory->makeDTOFromModel($vacationRequest) : throw new \Exception('You can`t update approved or denied vacation request!');
     }
 
     public function getVacationRequestsByUserId(int $userId): array
@@ -71,16 +71,7 @@ class VacationRequestRepository implements VacationRequestRepositoryInterface
         return $this->vacationRequestFactory->makeDTOFromModelCollection(VacationRequest::where('user_id', $userId)->get());
     }
 
-    public function getVacationRequestsForApproval(int $userId): array
-    {
-        $vacationRequests = VacationRequest::where('is_approved', null)
-            ->with('user')
-            ->get();
-
-        return $this->vacationRequestFactory->makeDTOFromModelCollection($vacationRequests);
-    }
-
-    public function getVacationRequestsForEditing(int $userId): array
+    public function getEmployeesVacationRequests(int $userId): array
     {
         $vacationRequests = VacationRequest::with('user')
             ->get();

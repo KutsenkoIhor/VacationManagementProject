@@ -5,11 +5,11 @@ require('./web/GeneralHandler/generalHandler');
 
 //connect a page controllers
 currentPage === '/home' ? require('./web/Home/home') : null;
-currentPage === '/vacations' ? require('./web/Vacations/vacations') : null;
+// currentPage === '/vacations' ? require('./web/Vacations/vacations') : null;
+// currentPage === '/vacations' ? require('./web/VacationRequestCreation/vacationRequestCreation') : null;
 currentPage === '/vacations/requestHistory' ? require('./web/VacationRequestHistory/vacationRequestHistory') : null;
-currentPage === '/vacations/requests/editing' ? require('./web/VacationRequestEditing/vacationRequestEditing') : null;
-currentPage === '/vacations/requests' ? require('./web/VacationsRequests/vacationsRequests') : null;
-currentPage === '/vacations/upcoming' ? require('./web/VacationsOverview/vacationsOverview') : null;
+currentPage === '/vacations/requests' ? require('./web/VacationRequests/vacationRequests') : null;
+currentPage === '/vacations/upcoming' ? require('./web/VacationOverview/vacationOverview') : null;
 currentPage === '/listOfAllEmployees' ? require('./web/ListOfAllEmployees/listOfAllEmployees') : null;
 currentPage === '/publicHoliday' ? require('./web/PublicHoliday/publicHoliday') : null;
 currentPage === '/manageHRandPM' ? require('./web/ManageHRAndPM/manageHRAndPM') : null;

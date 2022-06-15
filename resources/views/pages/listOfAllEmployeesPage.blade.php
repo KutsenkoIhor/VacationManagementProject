@@ -450,7 +450,8 @@
 {{--                        <form method="" action="" onsubmit="return sendInputElasticsearch()">--}}
 {{--                            <input id="elasticsearchListUser" type="text" class="h-12 w-full border-0 bg-transparent pl-11 pr-4 text-gray-800 placeholder-gray-400 focus:ring-0 sm:text-sm" placeholder="Search..." role="combobox" aria-expanded="false" aria-controls="options">--}}
 {{--                        </form>--}}
-                        <input id="elasticsearchListUser" type="text" class="h-12 w-full border-0 bg-transparent pl-11 pr-4 text-gray-800 placeholder-gray-400 focus:ring-0 sm:text-sm" placeholder="Search..." role="combobox" aria-expanded="false" aria-controls="options">
+                        <input id="elasticsearchListUser" type="text" class="h-12 w-full border-0 bg-transparent pl-11 pr-4 text-gray-800
+                        holder-gray-400 focus:ring-0 sm:text-sm" placeholder="Search..." role="combobox" aria-expanded="false" aria-controls="options">
                     </label>
                 </div>
                 <ul class="elasticsearchOptionsListUser show_block max-h-72 scroll-py-2 overflow-y-auto py-2 text-sm text-gray-800" id="elasticsearchOptionsList" role="listbox">

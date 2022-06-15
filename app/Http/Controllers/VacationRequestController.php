@@ -35,7 +35,7 @@ class VacationRequestController  extends Controller
     public function createVacationRequest(
         CreateVacationRequest $request,
         VacationRequestService $vacationRequestService
-    ): Redirector|Application|RedirectResponse {
+    ): JsonResponse {
         $startDate = Carbon::createFromFormat("Y-m-d", $request->get('start_date'));
         $endDate = Carbon::createFromFormat("Y-m-d", $request->get('end_date'));
         $userId = Auth::id();
@@ -57,7 +57,7 @@ class VacationRequestController  extends Controller
             $request->get('type')
         );
 
-        return redirect('/vacations/requestHistory');
+        return response()->json();
     }
 
     public function getVacationRequest(int $vacationRequestId): JsonResponse
@@ -94,24 +94,16 @@ class VacationRequestController  extends Controller
         return view('vacations/vacation_request_history', ['vacationRequests' => $vacationRequests]);
     }
 
-    public function getVacationRequestsForApproval(): Factory|View|Application
-    {
-        $userId = Auth::id();
-        $vacationRequests = $this->vacationRequestService->getVacationRequestsForApproval($userId);
-
-        return view('vacations/vacation_requests_for_approval', ['vacationRequests' => $vacationRequests]);
-    }
-
     public function cancelVacationRequest(int $vacationRequestId): void
     {
         $this->vacationRequestService->cancelVacationRequest($vacationRequestId);
     }
 
-    public function getVacationRequestsForEditing(): Factory|View|Application
+    public function getEmployeesVacationRequests(): Factory|View|Application
     {
         $userId = Auth::id();
-        $vacationRequests = $this->vacationRequestService->getVacationRequestsForEditing($userId);
+        $vacationRequests = $this->vacationRequestService->getEmployeesVacationRequests($userId);
 
-        return view('vacations/vacation_requests_for_editing', ['vacationRequests' => $vacationRequests]);
+        return view('vacations/employees_vacation_requests', ['vacationRequests' => $vacationRequests]);
     }
 }

@@ -1,4 +1,8 @@
-if (window.location.pathname === '/vacations/requests/editing') {
+// // set the background of the sidebar button
+// document.getElementById("sideBar_vacations_requests").classList.add("active");
+// // set the background of the sidebar svg
+// document.getElementById("sideBar_vacations_requests_svg").classList.add("active");
+if (window.location.pathname === '/vacations/requests') {
     const modalWindowEditVacationRequest = document.getElementById("edit_vacation_request_modal");
     const buttonUpdateVacationRequest = document.getElementById("button-updateVacationRequest");
     const buttonCloseModalWindowEditVacationRequest = document.getElementById("close-modal-window-edit-vacation-request");
@@ -53,6 +57,7 @@ if (window.location.pathname === '/vacations/requests/editing') {
             url: "/api/vacationRequests/" + vacationRequestId,
             success: function (data) {
                 document.getElementById('vacation_request_id').value = vacationRequestId;
+                document.getElementById('user_email').value = data['user']['email'];
                 document.getElementById('edit_start_date').value = data['start_date'];
                 document.getElementById('edit_end_date').value = data['end_date'];
                 document.getElementById('edit_type').value = data['type'];

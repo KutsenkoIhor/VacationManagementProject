@@ -64,14 +64,9 @@ class VacationRequestService
         return $this->vacationRequestRepository->getVacationRequestsByUserId($userId);
     }
 
-    public function getVacationRequestsForApproval(int $userId): array
+    public function getEmployeesVacationRequests(int $userId): array
     {
-        return $this->vacationRequestRepository->getVacationRequestsForApproval($userId);
-    }
-
-    public function getVacationRequestsForEditing(int $userId): array
-    {
-        return $this->vacationRequestRepository->getVacationRequestsForEditing($userId);
+        return $this->vacationRequestRepository->getEmployeesVacationRequests($userId);
     }
 
     public function denyVacationRequest(int $vacationRequestId): void

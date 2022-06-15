@@ -2210,12 +2210,12 @@ var currentPage = window.location.pathname; //connect a common controller
 __webpack_require__(/*! ./web/GeneralHandler/generalHandler */ "./resources/js/web/GeneralHandler/generalHandler.js"); //connect a page controllers
 
 
-currentPage === '/home' ? __webpack_require__(/*! ./web/Home/home */ "./resources/js/web/Home/home.js") : null;
-currentPage === '/vacations' ? __webpack_require__(/*! ./web/Vacations/vacations */ "./resources/js/web/Vacations/vacations.js") : null;
+currentPage === '/home' ? __webpack_require__(/*! ./web/Home/home */ "./resources/js/web/Home/home.js") : null; // currentPage === '/vacations' ? require('./web/Vacations/vacations') : null;
+// currentPage === '/vacations' ? require('./web/VacationRequestCreation/vacationRequestCreation') : null;
+
 currentPage === '/vacations/requestHistory' ? __webpack_require__(/*! ./web/VacationRequestHistory/vacationRequestHistory */ "./resources/js/web/VacationRequestHistory/vacationRequestHistory.js") : null;
-currentPage === '/vacations/requests/editing' ? __webpack_require__(/*! ./web/VacationRequestEditing/vacationRequestEditing */ "./resources/js/web/VacationRequestEditing/vacationRequestEditing.js") : null;
-currentPage === '/vacations/requests' ? __webpack_require__(/*! ./web/VacationsRequests/vacationsRequests */ "./resources/js/web/VacationsRequests/vacationsRequests.js") : null;
-currentPage === '/vacations/upcoming' ? __webpack_require__(/*! ./web/VacationsOverview/vacationsOverview */ "./resources/js/web/VacationsOverview/vacationsOverview.js") : null;
+currentPage === '/vacations/requests' ? __webpack_require__(/*! ./web/VacationRequests/vacationRequests */ "./resources/js/web/VacationRequests/vacationRequests.js") : null;
+currentPage === '/vacations/upcoming' ? __webpack_require__(/*! ./web/VacationOverview/vacationOverview */ "./resources/js/web/VacationOverview/vacationOverview.js") : null;
 currentPage === '/listOfAllEmployees' ? __webpack_require__(/*! ./web/ListOfAllEmployees/listOfAllEmployees */ "./resources/js/web/ListOfAllEmployees/listOfAllEmployees.js") : null;
 currentPage === '/publicHoliday' ? __webpack_require__(/*! ./web/PublicHoliday/publicHoliday */ "./resources/js/web/PublicHoliday/publicHoliday.js") : null;
 currentPage === '/manageHRandPM' ? __webpack_require__(/*! ./web/ManageHRAndPM/manageHRAndPM */ "./resources/js/web/ManageHRAndPM/manageHRAndPM.js") : null;
@@ -2251,6 +2251,66 @@ currentPage === '/profile' ? __webpack_require__(/*! ./web/Profile/profile */ ".
 document.getElementById("sideBar_home").classList.add("active"); // set the background of the sidebar svg
 
 document.getElementById("sideBar_home_svg").classList.add("active");
+
+if (window.location.pathname === '/home') {
+  var checkClick = function checkClick() {
+    buttonCloseModalWindowCreateVacationRequest.addEventListener('click', function (e) {
+      e.preventDefault();
+      modalWindowCreateVacationRequest.classList.remove('active');
+    });
+    buttonCreateVacationRequest.addEventListener('click', function (e) {
+      e.preventDefault();
+      createVacationRequest();
+    });
+  };
+
+  var checkButtonCreateVacationRequest = function checkButtonCreateVacationRequest() {
+    var checkButtonCreateVacationRequest = document.getElementsByClassName('button-vacationRequest-create');
+    var idButton = "button-createVacationRequest";
+    var elementButtonCreateVacationRequest = document.getElementById(idButton);
+    elementButtonCreateVacationRequest.addEventListener('click', function (e) {
+      e.preventDefault();
+      showModalWindow(checkButtonCreateVacationRequest);
+    });
+  };
+
+  var showModalWindow = function showModalWindow() {
+    modalWindowCreateVacationRequest.classList.add('active');
+  };
+
+  var createVacationRequest = function createVacationRequest() {
+    var startDate = document.getElementById('create_start_date').value;
+    var endDate = document.getElementById('create_end_date').value;
+    var type = document.getElementById("create_type").value;
+    $.ajax({
+      method: "POST",
+      url: "/api/vacationRequests/createVacationRequest",
+      dataType: "json",
+      data: {
+        "start_date": startDate,
+        "end_date": endDate,
+        "type": type
+      },
+      success: function success(data) {
+        window.location.redirect('/vacations/requestHistory');
+      },
+      error: function error() {
+        alert('Error');
+      }
+    });
+  };
+
+  var modalWindowCreateVacationRequest = document.getElementById("create_vacation_request_modal");
+  var buttonCreateVacationRequest = document.getElementById("button-createVacationRequest");
+  var buttonCloseModalWindowCreateVacationRequest = document.getElementById("close-modal-window-create-vacation-request");
+  $.ajaxSetup({
+    headers: {
+      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+  });
+  checkClick();
+  checkButtonCreateVacationRequest();
+}
 
 /***/ }),
 
@@ -3262,13 +3322,43 @@ document.getElementById("sideBar_settings_page_svg").classList.add("active");
 
 /***/ }),
 
-/***/ "./resources/js/web/VacationRequestEditing/vacationRequestEditing.js":
+/***/ "./resources/js/web/VacationOverview/vacationOverview.js":
+/*!***************************************************************!*\
+  !*** ./resources/js/web/VacationOverview/vacationOverview.js ***!
+  \***************************************************************/
+/***/ (() => {
+
+// set the background of the sidebar button
+document.getElementById("sideBar_vacations_overview").classList.add("active"); // set the background of the sidebar svg
+
+document.getElementById("sideBar_vacations_overview_svg").classList.add("active");
+
+/***/ }),
+
+/***/ "./resources/js/web/VacationRequestHistory/vacationRequestHistory.js":
 /*!***************************************************************************!*\
-  !*** ./resources/js/web/VacationRequestEditing/vacationRequestEditing.js ***!
+  !*** ./resources/js/web/VacationRequestHistory/vacationRequestHistory.js ***!
   \***************************************************************************/
 /***/ (() => {
 
-if (window.location.pathname === '/vacations/requests/editing') {
+// set the background of the sidebar button
+document.getElementById("sideBar_vacations_history").classList.add("active"); // set the background of the sidebar svg
+
+document.getElementById("sideBar_vacations_history_svg").classList.add("active");
+
+/***/ }),
+
+/***/ "./resources/js/web/VacationRequests/vacationRequests.js":
+/*!***************************************************************!*\
+  !*** ./resources/js/web/VacationRequests/vacationRequests.js ***!
+  \***************************************************************/
+/***/ (() => {
+
+// // set the background of the sidebar button
+// document.getElementById("sideBar_vacations_requests").classList.add("active");
+// // set the background of the sidebar svg
+// document.getElementById("sideBar_vacations_requests_svg").classList.add("active");
+if (window.location.pathname === '/vacations/requests') {
   var checkClick = function checkClick() {
     buttonCloseModalWindowEditVacationRequest.addEventListener('click', function (e) {
       e.preventDefault();
@@ -3311,6 +3401,7 @@ if (window.location.pathname === '/vacations/requests/editing') {
       url: "/api/vacationRequests/" + vacationRequestId,
       success: function success(data) {
         document.getElementById('vacation_request_id').value = vacationRequestId;
+        document.getElementById('user_email').value = data['user']['email'];
         document.getElementById('edit_start_date').value = data['start_date'];
         document.getElementById('edit_end_date').value = data['end_date'];
         document.getElementById('edit_type').value = data['type'];
@@ -3355,58 +3446,6 @@ if (window.location.pathname === '/vacations/requests/editing') {
   checkClick();
   checkButtonsEditVacationRequest();
 }
-
-/***/ }),
-
-/***/ "./resources/js/web/VacationRequestHistory/vacationRequestHistory.js":
-/*!***************************************************************************!*\
-  !*** ./resources/js/web/VacationRequestHistory/vacationRequestHistory.js ***!
-  \***************************************************************************/
-/***/ (() => {
-
-// set the background of the sidebar button
-document.getElementById("sideBar_vacations_history").classList.add("active"); // set the background of the sidebar svg
-
-document.getElementById("sideBar_vacations_history_svg").classList.add("active");
-
-/***/ }),
-
-/***/ "./resources/js/web/Vacations/vacations.js":
-/*!*************************************************!*\
-  !*** ./resources/js/web/Vacations/vacations.js ***!
-  \*************************************************/
-/***/ (() => {
-
-// set the background of the sidebar button
-document.getElementById("sideBar_vacations").classList.add("active"); // set the background of the sidebar svg
-
-document.getElementById("sideBar_vacations_svg").classList.add("active");
-
-/***/ }),
-
-/***/ "./resources/js/web/VacationsOverview/vacationsOverview.js":
-/*!*****************************************************************!*\
-  !*** ./resources/js/web/VacationsOverview/vacationsOverview.js ***!
-  \*****************************************************************/
-/***/ (() => {
-
-// set the background of the sidebar button
-document.getElementById("sideBar_vacations_overview").classList.add("active"); // set the background of the sidebar svg
-
-document.getElementById("sideBar_vacations_overview_svg").classList.add("active");
-
-/***/ }),
-
-/***/ "./resources/js/web/VacationsRequests/vacationsRequests.js":
-/*!*****************************************************************!*\
-  !*** ./resources/js/web/VacationsRequests/vacationsRequests.js ***!
-  \*****************************************************************/
-/***/ (() => {
-
-// set the background of the sidebar button
-document.getElementById("sideBar_vacations_requests").classList.add("active"); // set the background of the sidebar svg
-
-document.getElementById("sideBar_vacations_requests_svg").classList.add("active");
 
 /***/ }),
 

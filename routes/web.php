@@ -76,18 +76,15 @@ Route::name('page.')->group(function () {
 });
 
 Route::prefix('vacations')->name('vacations.')->middleware('auth')->group(function () {
-    Route::post('/', [VacationRequestController::class, 'createVacationRequest'])->name('create');
-    Route::get('/', function () {
-        return view('vacations/creation');
-    })->name('create.form');
+//    Route::get('/', function () {
+//        return view('vacations/creation');
+//    })->name('create.form');
 
     Route::get('/upcoming', [VacationController::class, 'getUpcomingVacations'])->name('upcoming');
 
     Route::get('/requestHistory', [VacationRequestController::class, 'getVacationRequestsByUserId'])->name('requestHistory');
 
-    Route::get('/requests', [VacationRequestController::class, 'getVacationRequestsForApproval'])->name('requests');
-
-    Route::get('/requests/editing', [VacationRequestController::class, 'getVacationRequestsForEditing'])->name('editing');
+    Route::get('/requests', [VacationRequestController::class, 'getEmployeesVacationRequests'])->name('requests');
 });
 
 

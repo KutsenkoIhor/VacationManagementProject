@@ -6,7 +6,6 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <script src="{{asset('js/jquery.js')}}"></script>
-    @yield('custom_styles')
     <title>Vacation Management</title>
     <link rel="shortcut icon" href="{{"/image/vacation.svg"}}" type="image/svg">
 </head>
@@ -245,8 +244,8 @@
                         My Vacation Requests
                     </a>
 
-                    @hasanyrole('HR')
-                    <a href="{{ route('vacations.editing') }}" id="sideBar_vacation_requests_editing"
+                    @hasanyrole('PM|HR')
+                    <a href="{{ route('vacations.requests') }}" id="sideBar_vacation_requests_editing"
                        class="sidebar_button_bg text-gray-300 hover:text-white hover:bg-gray-700 group flex items-center px-2 py-2 text-sm leading-6 font-medium rounded-md">
                         <svg id="sideBar_vacation_request_editing_svg" class="mr-4 flex-shrink-0 h-6 w-6 svg-text-gray-400 group-hover:text-white" xmlns="http://www.w3.org/2000/svg"
                              fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
@@ -254,18 +253,6 @@
                                   d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
                         </svg>
                         Employees Vacation Requests
-                    </a>
-                    @endhasanyrole
-
-                    @hasanyrole('PM|HR')
-                    <a href="{{ route('vacations.requests') }}" id="sideBar_vacations_requests"
-                       class="sidebar_button_bg text-gray-300 hover:text-white hover:bg-gray-700 group flex items-center px-2 py-2 text-sm leading-6 font-medium rounded-md">
-                        <svg id="sideBar_vacations_requests_svg" class="mr-4 flex-shrink-0 h-6 w-6 svg-text-gray-400 group-hover:text-white" xmlns="http://www.w3.org/2000/svg"
-                             fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                  d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                        </svg>
-                        Vacation Approval
                     </a>
                     @endhasanyrole
 

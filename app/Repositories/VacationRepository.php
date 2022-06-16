@@ -4,14 +4,11 @@ declare(strict_types=1);
 
 namespace App\Repositories;
 
-
-use App\DTO\VacationDTO;
 use App\Factories\VacationFactory;
 use App\Models\Vacation;
 use App\Models\VacationRequest;
 use App\Repositories\Interfaces\VacationRepositoryInterface;
 use Carbon\Carbon;
-
 
 class VacationRepository implements VacationRepositoryInterface
 {

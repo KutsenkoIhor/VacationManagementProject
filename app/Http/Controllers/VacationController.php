@@ -29,9 +29,9 @@ class VacationController extends Controller
 
         //TODO:: add styles to css
         $typeMappingStyles = [
-            Vacation::TYPE_VACATIONS     => 'bg-purple-100',
-            Vacation::TYPE_SICK_DAYS     => 'bg-red-50',
-            Vacation::TYPE_PERSONAL_DAYS => 'bg-blue-100',
+            Vacation::TYPE_VACATIONS     => 'bg-indigo-100',
+            Vacation::TYPE_SICK_DAYS     => 'bg-red-100',
+            Vacation::TYPE_PERSONAL_DAYS => 'bg-green-100',
         ];
 
         return view('vacations/upcoming-vacations', ['typeMapping' => $typeMapping, 'typeMappingStyles' => $typeMappingStyles, 'startDate' => $startDate, 'endDate' => $endDate], $parameters);

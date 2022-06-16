@@ -81,6 +81,7 @@
                                                 </button>
                                             </form>
                                         </td>
+                                        @if($vacationRequest->isApproved() == null)
                                         @hasrole('HR')
                                         <td class="whitespace-nowrap py-4 pl-4 pr-4 text-center text-sm text-gray-600 sm:pr-6">
                                             <form method="POST">
@@ -103,6 +104,7 @@
                                             </form>
                                         </td>
                                         @endhasanyrole
+                                        @endif
                                     </tr>
                                 @endforeach
                                 </tbody>
@@ -129,7 +131,7 @@
                                                         <input type="hidden" id="vacation_request_id">
 
                                                         <div class="col-start-1 col-end-7">
-                                                            <label id="user_email" for="user_email" class="block text-sm font-medium text-gray-700">Email</label>
+                                                            <label id="user_email_lable" for="user_email" class="block text-sm font-medium text-gray-700">Email</label>
                                                             <div class="mt-1">
                                                                 <input id="user_email" class="text-gray-400 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
                                                             </div>

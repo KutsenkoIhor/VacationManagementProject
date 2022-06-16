@@ -5,8 +5,7 @@
         <div class="sm:flex-auto">
             <div class="flex justify-between">
                 <p class="text-lg text-gray-800">A list of all your vacation requests.</p>
-                <a class="flex justify-end px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
-                    Create vacation request</a>
+                @include('vacations.creation')
             </div>
             <div class="mt-3 flex flex-col">
                 <div class="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -105,4 +104,5 @@
             });
         });
     </script>
+
 @endsection

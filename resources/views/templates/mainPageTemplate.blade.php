@@ -343,11 +343,13 @@
         </main>
     </div>
 
+
 </div>
 </body>
 
 <script src="{{ asset('js/app.js') }}">
 </script>
 
+{{--TODO: remove--}}
 <script src="{{asset('https://unpkg.com/flowbite@1.4.2/dist/datepicker.js')}}"></script>
 </html>

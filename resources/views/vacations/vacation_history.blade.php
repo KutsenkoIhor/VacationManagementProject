@@ -38,11 +38,11 @@
                                 <tbody class="divide-y divide-gray-200 bg-white">
                                 @foreach($vacations as $vacation)
                                     <tr>
-                                        <td class="whitespace-nowrap py-4 pl-4 pr-4 text-sm text-center text-gray-600 sm:pl-6">{{ $vacationRequest->getStartDate()->format('Y-m-d') }}</td>
-                                        <td class="whitespace-nowrap p-4 text-sm text-center text-gray-600">{{ $vacationRequest->getEndDate()->format('Y-m-d') }}</td>
-                                        <td class="whitespace-nowrap p-4 text-sm text-center text-gray-600">{{ str_replace("_", " ", ucfirst(strtolower($vacationRequest->getType()))) }}</td>
-                                        <td class="whitespace-nowrap p-4 text-sm text-center text-gray-600">{{ $vacationRequest->getNumberOfDays() }}</td>
-                                        <td class="whitespace-nowrap p-4 text-sm text-center text-gray-600">{{ $vacationRequest->getCreatedAt() }}</td>
+                                        <td class="whitespace-nowrap py-4 pl-4 pr-4 text-sm text-center text-gray-600 sm:pl-6">{{ $vacation->getStartDate()->format('Y-m-d') }}</td>
+                                        <td class="whitespace-nowrap p-4 text-sm text-center text-gray-600">{{ $vacation->getEndDate()->format('Y-m-d') }}</td>
+                                        <td class="whitespace-nowrap p-4 text-sm text-center text-gray-600">{{ str_replace("_", " ", ucfirst(strtolower($vacation->getType()))) }}</td>
+                                        <td class="whitespace-nowrap p-4 text-sm text-center text-gray-600">{{ $vacation->getNumberOfDays() }}</td>
+                                        <td class="whitespace-nowrap p-4 text-sm text-center text-gray-600">{{ $vacation->getCreatedAt() }}</td>
                                     </tr>
                                 @endforeach
                                 </tbody>

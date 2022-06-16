@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Factories;
 
 use App\DTO\VacationRequestApprovalDTO;
-use App\Models\User;
 use App\Models\VacationRequestApproval;
 use Illuminate\Database\Eloquent\Collection;
 

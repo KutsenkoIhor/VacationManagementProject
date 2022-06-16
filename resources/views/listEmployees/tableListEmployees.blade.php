@@ -37,7 +37,7 @@
                             <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{$userInformation['vacation days left']}}/{{$userInformation['vacation days per year']}}</td>
                             <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{$userInformation['personal days left']}}/{{$userInformation['personal days per year']}}</td>
                             <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{$userInformation['sick days left']}}/{{$userInformation['sick days per year']}}</td>
-                            <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{$userInformation['working days']}}/{{$userInformation['working days']}}</td>
+                            <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{$userInformation['working days']}}</td>
 
                             <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6"></td>
 

@@ -5,8 +5,6 @@ require('./web/GeneralHandler/generalHandler');
 
 //connect a page controllers
 currentPage === '/home' ? require('./web/Home/home') : null;
-// currentPage === '/vacations' ? require('./web/Vacations/vacations') : null;
-// currentPage === '/vacations' ? require('./web/VacationRequestCreation/vacationRequestCreation') : null;
 currentPage === '/vacations/requestHistory' ? require('./web/VacationRequestHistory/vacationRequestHistory') : null;
 currentPage === '/vacations/requests' ? require('./web/VacationRequests/vacationRequests') : null;
 currentPage === '/vacations/upcoming' ? require('./web/VacationOverview/vacationOverview') : null;

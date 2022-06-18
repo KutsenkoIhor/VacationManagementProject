@@ -36,15 +36,6 @@ Route::name('page.')->group(function () {
         return view('pages.holidayRequestPage');
     })->middleware('auth')->name('holidayRequest');
 
-//    Route::get('/vacationsHistory', function () {
-//        return view('pages.vacationsHistoryPage');
-//    })->middleware('auth')->name('vacationsHistory');
-//
-//    Route::get('/overviewAllUserInVacation', function () {
-//        return view('pages.overviewAllUserInVacationPage');
-//    })->middleware('auth')->name('overviewAllUserInVacation');
-
-
     Route::prefix('/listOfAllEmployees')->middleware('auth')->group(function () {
         Route::get('/', [ListEmployeesController::class, 'listEmployees'])->name('listOfAllEmployees');
         Route::post('/addUser', [ListEmployeesController::class, 'addUser']);
@@ -76,9 +67,6 @@ Route::name('page.')->group(function () {
 });
 
 Route::prefix('vacations')->name('vacations.')->middleware('auth')->group(function () {
-//    Route::get('/', function () {
-//        return view('vacations/creation');
-//    })->name('create.form');
 
     Route::get('/upcoming', [VacationController::class, 'getUpcomingVacations'])->name('upcoming');
 

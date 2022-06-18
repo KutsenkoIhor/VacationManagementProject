@@ -5,7 +5,7 @@
         <div class="sm:flex-auto">
             <div class="flex justify-between">
                 <p class="text-lg text-gray-800">A list of all your vacation requests.</p>
-                @include('vacations.creation')
+                @include('vacations.creation_modal_window')
             </div>
             <div class="mt-3 flex flex-col">
                 <div class="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -61,6 +61,7 @@
                                             </span>
                                         </td>
 
+                                        @if($vacationRequest->isApproved() == null)
                                         @hasrole('Employee')
                                         <td class="whitespace-nowrap py-4 pl-4 pr-4 text-center text-sm text-gray-600 sm:pr-6">
                                             <form method="POST">
@@ -70,6 +71,7 @@
                                             </form>
                                         </td>
                                         @endhasrole
+                                        @endif
                                     </tr>
                                 @endforeach
                                 </tbody>
@@ -80,29 +82,5 @@
             </div>
         </div>
     </div>
-
-    <script>
-        $(document).ready(function () {
-            $(".cancelButton").click(function () {
-                const cancelConfirm = confirm("Are you sure?");
-                if (cancelConfirm) {
-                    const data = {};
-                    const vacation_request_id = $(this).attr("vacation-request-id");
-                    $.ajax({
-                        url: '/api/vacationRequests/' + vacation_request_id + '/cancelVacationRequest',
-                        type: 'POST',
-                        data: data,
-                        success: function () {
-                            alert('Successfully cancelled!');
-                            window.location.reload();
-                        },
-                        error: function () {
-                            alert('Error');
-                        }
-                    });
-                }
-            });
-        });
-    </script>
 
 @endsection

@@ -30,7 +30,7 @@
                                     <p class="text-sm font-medium text-gray-600">{{$userParameters->getEmail()}}</p>
                                 </div>
                             </div>
-                            @include('vacations.creation')
+                            @include('vacations.creation_modal_window')
                         </div>
                     </div>
                     <div

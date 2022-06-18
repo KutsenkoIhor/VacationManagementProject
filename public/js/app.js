@@ -2248,6 +2248,7 @@ currentPage === '/profile' ? __webpack_require__(/*! ./web/Profile/profile */ ".
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _VacationRequestCreation_vacationRequestCreation_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../VacationRequestCreation/vacationRequestCreation.js */ "./resources/js/web/VacationRequestCreation/vacationRequestCreation.js");
+/* harmony import */ var _VacationRequestCreation_vacationRequestCreation_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_VacationRequestCreation_vacationRequestCreation_js__WEBPACK_IMPORTED_MODULE_0__);
 // set the background of the sidebar button
 document.getElementById("sideBar_home").classList.add("active"); // set the background of the sidebar svg
 
@@ -3282,36 +3283,30 @@ document.getElementById("sideBar_vacations_overview_svg").classList.add("active"
 /*!*****************************************************************************!*\
   !*** ./resources/js/web/VacationRequestCreation/vacationRequestCreation.js ***!
   \*****************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ (() => {
 
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "checkClick": () => (/* binding */ checkClick),
-/* harmony export */   "createVacationRequest": () => (/* binding */ createVacationRequest),
-/* harmony export */   "openModalCreateVacationRequest": () => (/* binding */ openModalCreateVacationRequest),
-/* harmony export */   "showModalWindow": () => (/* binding */ showModalWindow)
-/* harmony export */ });
-var modalWindowCreateVacationRequest = document.getElementById("create_vacation_request_modal");
-var buttonCreateVacationRequest = document.getElementById("button-createVacationRequest");
-var buttonCloseModalWindowCreateVacationRequest = document.getElementById("close-modal-window-create-vacation-request");
+var createModalWindow = document.getElementById("create_vacation_request_modal");
+var createVacationRequestButton = document.getElementById("button-createVacationRequest");
+var closeModalButton = document.getElementById("close-modal-window-create-vacation-request");
 $.ajaxSetup({
   headers: {
     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
   }
 });
 checkClick();
+
 function checkClick() {
-  buttonCloseModalWindowCreateVacationRequest.addEventListener('click', function (e) {
+  closeModalButton.addEventListener('click', function (e) {
     e.preventDefault();
-    modalWindowCreateVacationRequest.classList.remove('active');
+    createModalWindow.classList.remove('active');
   });
-  buttonCreateVacationRequest.addEventListener('click', function (e) {
+  createVacationRequestButton.addEventListener('click', function (e) {
     e.preventDefault();
     createVacationRequest();
   });
 }
-function openModalCreateVacationRequest() {
+
+function openCreateModal() {
   var buttonOpenModalCreateVacationRequest = document.getElementsByClassName('button-vacationRequest-open');
   var idButton = "button-openModalCreateVacationRequest";
   var elementButtonOpenModalCreateVacationRequest = document.getElementById(idButton);
@@ -3320,10 +3315,13 @@ function openModalCreateVacationRequest() {
     showModalWindow(buttonOpenModalCreateVacationRequest);
   });
 }
-openModalCreateVacationRequest();
+
+openCreateModal();
+
 function showModalWindow() {
-  modalWindowCreateVacationRequest.classList.add('active');
+  createModalWindow.classList.add('active');
 }
+
 function createVacationRequest() {
   var startDate = document.getElementById('create_start_date').value;
   var endDate = document.getElementById('create_end_date').value;
@@ -3357,11 +3355,39 @@ function createVacationRequest() {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _VacationRequestCreation_vacationRequestCreation_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../VacationRequestCreation/vacationRequestCreation.js */ "./resources/js/web/VacationRequestCreation/vacationRequestCreation.js");
+/* harmony import */ var _VacationRequestCreation_vacationRequestCreation_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_VacationRequestCreation_vacationRequestCreation_js__WEBPACK_IMPORTED_MODULE_0__);
 // set the background of the sidebar button
 document.getElementById("sideBar_vacations_history").classList.add("active"); // set the background of the sidebar svg
 
 document.getElementById("sideBar_vacations_history_svg").classList.add("active");
 
+
+function cancelVacationRequest() {
+  $(document).ready(function () {
+    $(".cancelButton").click(function () {
+      var cancelConfirm = confirm("Are you sure?");
+
+      if (cancelConfirm) {
+        var data = {};
+        var vacation_request_id = $(this).attr("vacation-request-id");
+        $.ajax({
+          url: '/api/vacationRequests/' + vacation_request_id + '/cancelVacationRequest',
+          type: 'POST',
+          data: data,
+          success: function success() {
+            alert('Successfully cancelled!');
+            window.location.reload();
+          },
+          error: function error() {
+            alert('Error');
+          }
+        });
+      }
+    });
+  });
+}
+
+cancelVacationRequest();
 
 /***/ }),
 
@@ -3371,44 +3397,45 @@ document.getElementById("sideBar_vacations_history_svg").classList.add("active")
   \***************************************************************/
 /***/ (() => {
 
-// // set the background of the sidebar button
-// document.getElementById("sideBar_vacations_requests").classList.add("active");
-// // set the background of the sidebar svg
-// document.getElementById("sideBar_vacations_requests_svg").classList.add("active");
+// set the background of the sidebar button
+document.getElementById("sideBar_vacation_requests_editing").classList.add("active"); // set the background of the sidebar svg
+
+document.getElementById("sideBar_vacation_request_editing_svg").classList.add("active");
+
 if (window.location.pathname === '/vacations/requests') {
   var checkClick = function checkClick() {
-    buttonCloseModalWindowEditVacationRequest.addEventListener('click', function (e) {
+    closeModalButton.addEventListener('click', function (e) {
       e.preventDefault();
-      modalWindowEditVacationRequest.classList.remove('active');
+      editModalWindow.classList.remove('active');
     });
-    buttonUpdateVacationRequest.addEventListener('click', function (e) {
+    updateVacationRequestButton.addEventListener('click', function (e) {
       e.preventDefault();
-      updateVacationRequestDetails();
+      updateVacationRequest();
     });
   };
 
-  var checkButtonsEditVacationRequest = function checkButtonsEditVacationRequest() {
-    var checkButtonEditVacationRequest = document.getElementsByClassName('button-vacationRequest-edit');
+  var checkEditButtons = function checkEditButtons() {
+    var checkEditButton = document.getElementsByClassName('button-vacationRequest-edit');
 
     var _loop = function _loop(i) {
-      var idButton = "button-editVacationRequest-" + checkButtonEditVacationRequest[i]['value'];
+      var idButton = "button-editVacationRequest-" + checkEditButton[i]['value'];
 
       if (idButton !== 'button-editVacationRequest-undefined') {
         var elementButtonEditVacationRequest = document.getElementById(idButton);
         elementButtonEditVacationRequest.addEventListener('click', function (e) {
           e.preventDefault();
-          showModalWindow(checkButtonEditVacationRequest[i]['value']);
+          showModalWindow(checkEditButton[i]['value']);
         });
       }
     };
 
-    for (var i in checkButtonEditVacationRequest) {
+    for (var i in checkEditButton) {
       _loop(i);
     }
   };
 
   var showModalWindow = function showModalWindow(vacationRequestId) {
-    modalWindowEditVacationRequest.classList.add('active');
+    editModalWindow.classList.add('active');
     getVacationRequest(vacationRequestId);
   };
 
@@ -3429,7 +3456,7 @@ if (window.location.pathname === '/vacations/requests') {
     });
   };
 
-  var updateVacationRequestDetails = function updateVacationRequestDetails() {
+  var updateVacationRequest = function updateVacationRequest() {
     var vacationRequestId = document.getElementById('vacation_request_id').value;
     var startDate = document.getElementById('edit_start_date').value;
     var endDate = document.getElementById('edit_end_date').value;
@@ -3452,16 +3479,65 @@ if (window.location.pathname === '/vacations/requests') {
     });
   };
 
-  var modalWindowEditVacationRequest = document.getElementById("edit_vacation_request_modal");
-  var buttonUpdateVacationRequest = document.getElementById("button-updateVacationRequest");
-  var buttonCloseModalWindowEditVacationRequest = document.getElementById("close-modal-window-edit-vacation-request");
+  var changeStatus = function changeStatus() {
+    $(document).ready(function () {
+      $(".changeStatusButton").click(function () {
+        var data = {};
+        var vacation_request_id = $(this).attr("vacation-request-id");
+        data.is_approved = $(this).val();
+        $.ajax({
+          url: '/api/vacationRequests/' + vacation_request_id + '/createVacationRequestApproval',
+          type: 'POST',
+          data: data,
+          success: function success() {
+            alert('Successfully changed!');
+            window.location.reload();
+          },
+          error: function error() {
+            alert('Error');
+          }
+        });
+      });
+    });
+  };
+
+  var cancelVacationRequest = function cancelVacationRequest() {
+    $(document).ready(function () {
+      $(".cancelButton").click(function () {
+        var cancelConfirm = confirm("Are you sure?");
+
+        if (cancelConfirm) {
+          var data = {};
+          var vacation_request_id = $(this).attr("vacation-request-id");
+          $.ajax({
+            url: '/api/vacationRequests/' + vacation_request_id + '/cancelVacationRequest',
+            type: 'POST',
+            data: data,
+            success: function success() {
+              alert('Successfully cancelled!');
+              window.location.reload();
+            },
+            error: function error() {
+              alert('Error');
+            }
+          });
+        }
+      });
+    });
+  };
+
+  var editModalWindow = document.getElementById("edit_vacation_request_modal");
+  var updateVacationRequestButton = document.getElementById("button-updateVacationRequest");
+  var closeModalButton = document.getElementById("close-edit-modal-window");
   $.ajaxSetup({
     headers: {
       'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
     }
   });
   checkClick();
-  checkButtonsEditVacationRequest();
+  checkEditButtons();
+  changeStatus();
+  cancelVacationRequest();
 }
 
 /***/ }),
@@ -20947,6 +21023,18 @@ process.umask = function() { return 0; };
 /******/ 				}
 /******/ 			}
 /******/ 			return result;
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/compat get default export */
+/******/ 	(() => {
+/******/ 		// getDefaultExport function for compatibility with non-harmony modules
+/******/ 		__webpack_require__.n = (module) => {
+/******/ 			var getter = module && module.__esModule ?
+/******/ 				() => (module['default']) :
+/******/ 				() => (module);
+/******/ 			__webpack_require__.d(getter, { a: getter });
+/******/ 			return getter;
 /******/ 		};
 /******/ 	})();
 /******/ 	

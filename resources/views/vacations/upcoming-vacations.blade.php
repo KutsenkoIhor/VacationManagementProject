@@ -3,53 +3,22 @@
 @section('content')
 
     <form action="/vacations/upcoming" method="GET">
-        <div class="mt-2 flex space-x-4 px-3 py-2 bg-white">
+        <div class="mt-2 flex flex-nowrap space-x-4 px-0.5 py-2 bg-white">
             <div class="grid grid-cols-5 gap-4">
-
-{{--                <div class="relative">--}}
-{{--                    <div class="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">--}}
-{{--                        <svg class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor"--}}
-{{--                             viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">--}}
-{{--                            <path fill-rule="evenodd"--}}
-{{--                                  d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"--}}
-{{--                                  clip-rule="evenodd"></path>--}}
-{{--                        </svg>--}}
-{{--                    </div>--}}
-{{--                    <input datepicker datepicker-autohide datepicker-format="yyyy-mm-dd" type="text"--}}
-{{--                           value="{{$startDate}}"--}}
-{{--                           name="start_date" id="start_date"--}}
-{{--                           class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"--}}
-{{--                           placeholder="Start date">--}}
-{{--                </div>--}}
-
-{{--                <div class="relative">--}}
-{{--                    <div class="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">--}}
-{{--                        <svg class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor"--}}
-{{--                             viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">--}}
-{{--                            <path fill-rule="evenodd"--}}
-{{--                                  d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"--}}
-{{--                                  clip-rule="evenodd"></path>--}}
-{{--                        </svg>--}}
-{{--                    </div>--}}
-{{--                    <input datepicker datepicker-autohide datepicker-format="yyyy-mm-dd" type="text"--}}
-{{--                           value="{{$endDate}}"--}}
-{{--                           name="end_date" id="end_date"--}}
-{{--                           class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"--}}
-{{--                           placeholder="End date">--}}
-                <div class="sm:col-span-2">
-                    <div class="mt-1">
+                <div class="sm:col-span-2 inline-block relative w-72">
+                    <div class="-mt-2">
                         <input type="date" name="start_date" id="start_date" value="{{$startDate->format('Y-m-d')}}" class="text-gray-400 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
                     </div>
                 </div>
 
-                <div class="sm:col-span-2">
-                    <div class="mt-1">
+                <div class="sm:col-span-2 inline-block relative w-72">
+                    <div class="-mt-2">
                         <input type="date" name="end_date" id="end_date" value="{{$endDate->format('Y-m-d')}}" class="text-gray-400 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
                     </div>
                 </div>
 
-                <div class="mt-1">
-                <button type="submit" class="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm">
+                <div class="-mt-2">
+                <button type="submit" class="rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm">
                     Apply filter
                 </button>
                 </div>

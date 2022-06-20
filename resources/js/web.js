@@ -10,8 +10,9 @@ currentPage === '/vacations/requestHistory' ? require('./web/VacationsHistory/va
 currentPage === '/vacations/requests' ? require('./web/VacationsRequests/vacationsRequests') : null;
 currentPage === '/vacations/upcoming' ? require('./web/VacationsOverview/vacationsOverview') : null;
 currentPage === '/listOfAllEmployees' ? require('./web/ListOfAllEmployees/listOfAllEmployees') : null;
+currentPage === '/managementPM' ? require('./web/ManagePM/managePM') : null;
+currentPage === '/managementHR' ? require('./web/ManageHR/manageHR') : null;
 currentPage === '/publicHoliday' ? require('./web/PublicHoliday/publicHoliday') : null;
-currentPage === '/manageHRandPM' ? require('./web/ManageHRAndPM/manageHRAndPM') : null;
 currentPage === '/settingsPage' ? require('./web/SettingsPage/settingsPage') : null;
 currentPage === '/profile' ? require('./web/Profile/profile') : null;
 

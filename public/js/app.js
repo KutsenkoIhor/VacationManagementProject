@@ -2216,8 +2216,9 @@ currentPage === '/vacations/requestHistory' ? __webpack_require__(/*! ./web/Vaca
 currentPage === '/vacations/requests' ? __webpack_require__(/*! ./web/VacationsRequests/vacationsRequests */ "./resources/js/web/VacationsRequests/vacationsRequests.js") : null;
 currentPage === '/vacations/upcoming' ? __webpack_require__(/*! ./web/VacationsOverview/vacationsOverview */ "./resources/js/web/VacationsOverview/vacationsOverview.js") : null;
 currentPage === '/listOfAllEmployees' ? __webpack_require__(/*! ./web/ListOfAllEmployees/listOfAllEmployees */ "./resources/js/web/ListOfAllEmployees/listOfAllEmployees.js") : null;
+currentPage === '/managementPM' ? __webpack_require__(/*! ./web/ManagePM/managePM */ "./resources/js/web/ManagePM/managePM.js") : null;
+currentPage === '/managementHR' ? __webpack_require__(/*! ./web/ManageHR/manageHR */ "./resources/js/web/ManageHR/manageHR.js") : null;
 currentPage === '/publicHoliday' ? __webpack_require__(/*! ./web/PublicHoliday/publicHoliday */ "./resources/js/web/PublicHoliday/publicHoliday.js") : null;
-currentPage === '/manageHRandPM' ? __webpack_require__(/*! ./web/ManageHRAndPM/manageHRAndPM */ "./resources/js/web/ManageHRAndPM/manageHRAndPM.js") : null;
 currentPage === '/settingsPage' ? __webpack_require__(/*! ./web/SettingsPage/settingsPage */ "./resources/js/web/SettingsPage/settingsPage.js") : null;
 currentPage === '/profile' ? __webpack_require__(/*! ./web/Profile/profile */ "./resources/js/web/Profile/profile.js") : null;
 
@@ -2237,6 +2238,82 @@ currentPage === '/profile' ? __webpack_require__(/*! ./web/Profile/profile */ ".
 //         buttonSideBar[i].classList.remove("active")
 //     }
 // }
+$.ajaxSetup({
+  headers: {
+    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+  }
+});
+sideBarButtonIllumination();
+
+function sideBarButtonIllumination() {
+  var currentPage = window.location.pathname;
+  currentPage === '/home' ? sideBarButtonHome() : null;
+  currentPage === '/vacations' ? sideBarVacations() : null;
+  currentPage === '/vacations/requestHistory' ? sideBarButtonVacationsHistory() : null;
+  currentPage === '/vacations/requests' ? sideBarButtonVacationsRequests() : null;
+  currentPage === '/vacations/upcoming' ? sideBarButtonVacationsUpcoming() : null;
+  currentPage === '/listOfAllEmployees' ? sideBarButtonListOfAllEmployees() : null;
+  currentPage === '/managementPM' ? sideBarButtonManagementPM() : null;
+  currentPage === '/managementHR' ? sideBarButtonManagementHR() : null;
+  currentPage === '/publicHoliday' ? sideBarButtonPublicHoliday() : null;
+  currentPage === '/settingsPage' ? sideBarButtonSettingsPage() : null;
+  currentPage === '/profile' ? sideBarButtonProfile() : null;
+}
+
+function sideBarButtonHome() {
+  document.getElementById("sideBar_home").classList.add("active");
+  document.getElementById("sideBar_home_svg").classList.add("active");
+}
+
+function sideBarVacations() {
+  document.getElementById("sideBar_vacations").classList.add("active");
+  document.getElementById("sideBar_vacations_svg").classList.add("active");
+}
+
+function sideBarButtonVacationsHistory() {
+  document.getElementById("sideBar_vacations_history").classList.add("active");
+  document.getElementById("sideBar_vacations_history_svg").classList.add("active");
+}
+
+function sideBarButtonVacationsRequests() {
+  document.getElementById("sideBar_vacations_requests").classList.add("active");
+  document.getElementById("sideBar_vacations_requests_svg").classList.add("active");
+}
+
+function sideBarButtonVacationsUpcoming() {
+  document.getElementById("sideBar_vacations_overview").classList.add("active");
+  document.getElementById("sideBar_vacations_overview_svg").classList.add("active");
+}
+
+function sideBarButtonListOfAllEmployees() {
+  document.getElementById("sideBar_list_of_all_employees").classList.add("active");
+  document.getElementById("sideBar_list_of_all_employees_svg").classList.add("active");
+}
+
+function sideBarButtonManagementPM() {
+  document.getElementById("sideBar_PM_manage").classList.add("active");
+  document.getElementById("sideBar_PM_manage_svg").classList.add("active");
+}
+
+function sideBarButtonManagementHR() {
+  document.getElementById("sideBar_HR_manage").classList.add("active");
+  document.getElementById("sideBar_HR_manage_svg").classList.add("active");
+}
+
+function sideBarButtonPublicHoliday() {
+  document.getElementById("sideBar_public_holiday").classList.add("active");
+  document.getElementById("sideBar_public_holiday_svg").classList.add("active");
+}
+
+function sideBarButtonSettingsPage() {
+  document.getElementById("sideBar_settings_page").classList.add("active");
+  document.getElementById("sideBar_settings_page_svg").classList.add("active");
+}
+
+function sideBarButtonProfile() {
+  document.getElementById("sideBar_profile").classList.add("active");
+  document.getElementById("sideBar_profile_svg").classList.add("active");
+}
 
 /***/ }),
 
@@ -2246,10 +2323,7 @@ currentPage === '/profile' ? __webpack_require__(/*! ./web/Profile/profile */ ".
   \***************************************/
 /***/ (() => {
 
-// set the background of the sidebar button
-document.getElementById("sideBar_home").classList.add("active"); // set the background of the sidebar svg
 
-document.getElementById("sideBar_home_svg").classList.add("active");
 
 /***/ }),
 
@@ -2259,11 +2333,7 @@ document.getElementById("sideBar_home_svg").classList.add("active");
   \*******************************************************************/
 /***/ (() => {
 
-// set the background of the sidebar button
-document.getElementById("sideBar_list_of_all_employees").classList.add("active"); // set the background of the sidebar svg
-
-document.getElementById("sideBar_list_of_all_employees_svg").classList.add("active"); //-----------------------------------------/listOfAllEmployees/-----------------------------------------
-
+//-----------------------------------------/listOfAllEmployees/-----------------------------------------
 if (window.location.pathname === '/listOfAllEmployees') {
   var checkClick = function checkClick() {
     firstPage.addEventListener('click', function (e) {
@@ -3181,43 +3251,347 @@ if (window.location.pathname === '/listOfAllEmployees') {
 
 /***/ }),
 
-/***/ "./resources/js/web/ManageHRAndPM/manageHRAndPM.js":
-/*!*********************************************************!*\
-  !*** ./resources/js/web/ManageHRAndPM/manageHRAndPM.js ***!
-  \*********************************************************/
+/***/ "./resources/js/web/ManageHR/manageHR.js":
+/*!***********************************************!*\
+  !*** ./resources/js/web/ManageHR/manageHR.js ***!
+  \***********************************************/
 /***/ (() => {
 
-// set the background of the sidebar button
-document.getElementById("sideBar_manage_HR_and_PM").classList.add("active"); // set the background of the sidebar svg
-
-document.getElementById("sideBar_manage_HR_and_PM_svg").classList.add("active");
-initializeStartBlocManagePM();
-document.getElementById('button-Manage-PM').addEventListener('click', function (e) {
+document.getElementById("bloc-manage-HR").classList.add('active');
+document.getElementById('button-select-HR').addEventListener('click', function (e) {
   e.preventDefault();
-  initializeStartBlocManagePM();
-});
-document.getElementById('button-Manage-HR').addEventListener('click', function (e) {
-  e.preventDefault();
-  initializeStartBlocManageHR();
-});
-
-function initializeStartBlocManagePM() {
-  clearBlocManagePMAndHR();
-  document.getElementById("bloc-manage-PM").classList.add('active');
-  document.getElementById('button-Manage-PM').classList.add('active');
-}
-
-function initializeStartBlocManageHR() {
-  clearBlocManagePMAndHR();
-  document.getElementById('button-Manage-HR').classList.add('active');
-  document.getElementById("bloc-manage-HR").classList.add('active');
-}
-
-function clearBlocManagePMAndHR() {
-  document.getElementById("bloc-manage-PM").classList.remove('active');
   document.getElementById("bloc-manage-HR").classList.remove('active');
-  document.getElementById('button-Manage-PM').classList.remove('active');
-  document.getElementById('button-Manage-HR').classList.remove('active');
+  document.getElementById("bloc-team-HR").classList.add('active');
+});
+
+/***/ }),
+
+/***/ "./resources/js/web/ManagePM/managePM.js":
+/*!***********************************************!*\
+  !*** ./resources/js/web/ManagePM/managePM.js ***!
+  \***********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _teamPM__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./teamPM */ "./resources/js/web/ManagePM/teamPM.js");
+document.getElementById("bloc-manage-PM").classList.add('active');
+
+var lastPage;
+var currentPage;
+var arrUsersId = [];
+var searchResults = [];
+startAjax();
+
+function startAjax() {
+  var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
+  $.ajax({
+    method: "GET",
+    url: "/managementPM/listPm?page=" + page,
+    dataType: "json",
+    data: {
+      "userId": JSON.stringify(arrUsersId)
+    },
+    success: function success(data) {
+      lastPage = data['dataForPagination']['last_page'];
+      currentPage = data['dataForPagination']['current_page'];
+      createTablePm(data['dataForCreateTable']);
+      createPaginationDescription();
+      checkBlocTeam(data['dataForCreateTable']);
+      startElasticsearch(data['dataForElasticsearch']);
+      console.log(data);
+    },
+    error: function error(er) {
+      console.log(er);
+    }
+  });
+}
+
+checkButtons();
+
+function checkButtons() {
+  document.getElementById("elasticsearchListUser").addEventListener('keypress', function (e) {
+    if (e.which === 13) {
+      e.preventDefault();
+      arrUsersId = searchResults;
+      startAjax();
+    }
+  });
+  $(document).click(function (e) {
+    if (!$(e.target).closest('.box-elasticsearchUser').length) {
+      document.getElementById("elasticsearchOptionsList").classList.remove("active");
+      document.getElementById("elasticsearchNotFound").classList.remove("active"); // document.getElementById("elasticsearchListUser").value = '';
+    }
+  });
+  document.getElementById('button-clear-search').addEventListener('click', function (e) {
+    e.preventDefault();
+    arrUsersId = [];
+    document.getElementById("elasticsearchOptionsList").classList.remove("active");
+    document.getElementById("elasticsearchNotFound").classList.remove("active");
+    document.getElementById("elasticsearchListUser").value = '';
+    startAjax();
+  });
+  document.getElementById('first-page-table-user').addEventListener('click', function (e) {
+    e.preventDefault();
+    startAjax(1);
+  });
+  document.getElementById('next-page-table-user').addEventListener('click', function (e) {
+    e.preventDefault();
+
+    if (currentPage < lastPage) {
+      startAjax(currentPage + 1);
+    }
+  });
+  document.getElementById('previous-page-table-user').addEventListener('click', function (e) {
+    e.preventDefault();
+
+    if (currentPage > 1) {
+      startAjax(currentPage - 1);
+    }
+  });
+  document.getElementById('last-page-table-user').addEventListener('click', function (e) {
+    e.preventDefault();
+    startAjax(lastPage);
+  });
+}
+
+function checkBlocTeam(arrPmInformation) {
+  var _loop = function _loop(id) {
+    document.getElementById("button-select-PM" + id).addEventListener('click', function (e) {
+      e.preventDefault();
+      document.getElementById("bloc-manage-PM").classList.remove('active');
+      document.getElementById("bloc-team-PM").classList.add('active');
+      (0,_teamPM__WEBPACK_IMPORTED_MODULE_0__.teamPm)(id);
+    });
+  };
+
+  for (var id in arrPmInformation) {
+    _loop(id);
+  }
+}
+
+function createTablePm(arrPmInformation) {
+  document.getElementById("table-PM").innerHTML = "";
+
+  for (var id in arrPmInformation) {
+    // console.log(arrPmInformation[id])
+    var divMain = document.createElement('div');
+    divMain.id = "button-select-PM" + id;
+    divMain.classList.add('relative', 'rounded-lg', 'border', 'border-gray-300', 'bg-white', 'px-6', 'py-5', 'shadow-sm', 'flex', 'items-center', 'space-x-3', 'hover:ring-2', 'hover:ring-offset-2', 'hover:ring-indigo-500');
+    document.getElementById("table-PM").appendChild(divMain);
+    var div1 = document.createElement('div');
+    div1.classList.add('flex-shrink-0');
+    divMain.appendChild(div1);
+    var imgPm = document.createElement('img');
+    imgPm.classList.add('h-10', 'w-10', 'rounded-full');
+
+    if (arrPmInformation[id]['googleAvatar'] !== null) {
+      imgPm.src = arrPmInformation[id]['googleAvatar'];
+    } else {
+      imgPm.src = 'image/AvatarsWithPlaceholderIcon.png';
+    }
+
+    div1.appendChild(imgPm);
+    var div2 = document.createElement('div');
+    div2.classList.add('flex-1', 'min-w-0');
+    divMain.appendChild(div2);
+    div2.innerHTML = "<a href=\"#\" class=\"focus:outline-none\">\n" + "   <span class=\"absolute inset-0\" aria-hidden=\"true\"></span>\n" + "   <p class=\"text-sm font-medium text-gray-900\">" + arrPmInformation[id]['name'] + "</p>\n" + "   <p class=\"text-sm text-gray-500 truncate\">" + arrPmInformation[id]['email'] + "</p>\n" + "</a>\n";
+
+    if (arrPmInformation[id]['numberOfPersons']) {
+      var div3 = document.createElement('div');
+      div3.classList.add('hidden', 'sm:block', 'flex', '-space-x-1', 'relative', 'z-0', 'overflow-hidden');
+      divMain.appendChild(div3);
+
+      for (var i in arrPmInformation[id]['teamAvatar']) {
+        var imgTeam = document.createElement('img');
+        imgTeam.classList.add('relative', 'z-0', 'inline-block', 'h-6', 'w-6', 'rounded-full', 'ring-2', 'ring-white');
+
+        if (arrPmInformation[id]['teamAvatar'][i] !== null) {
+          imgTeam.src = arrPmInformation[id]['teamAvatar'][i];
+        } else {
+          imgTeam.src = 'image/AvatarsWithPlaceholderIcon.png';
+        }
+
+        div3.appendChild(imgTeam);
+      }
+
+      var span = document.createElement('span');
+      span.classList.add('pl-4', 'text-xs', 'leading-6', 'text-gray-600');
+      span.textContent = '+' + arrPmInformation[id]['numberOfPersons'];
+      div3.appendChild(span);
+    }
+  }
+}
+
+function createPaginationDescription() {
+  document.getElementById("text-number-page").textContent = currentPage + '/' + lastPage;
+}
+
+function startElasticsearch(data) {
+  var elasticsearchWindow = document.getElementById("elasticsearchListUser");
+  var elementElasticsearchOptionsList = document.getElementById("elasticsearchOptionsList");
+  var elementElasticsearchNotFound = document.getElementById("elasticsearchNotFound");
+  var listUser = [];
+
+  for (var i in data) {
+    listUser['email_' + i] = data[i]['email'];
+    listUser['name__' + i] = data[i]['name'];
+  }
+
+  elasticsearchWindow.oninput = function () {
+    searchResults = [];
+    var checkNotFound = true;
+    elementElasticsearchOptionsList.innerHTML = '';
+    var strSearch = this.value.trim().toLowerCase(); //remove the space and change everything to lowercase
+
+    if (strSearch !== '') {
+      for (var _i in listUser) {
+        var letterLover = listUser[_i].toLowerCase();
+
+        if (letterLover.search(strSearch) !== -1) {
+          checkNotFound = false;
+          searchResults[_i.slice(6)] = _i.slice(6);
+          var li = document.createElement('li');
+          li.textContent = listUser[_i];
+          li.classList.add('cursor-default', 'select-none', 'px-4', 'py-2', 'hover:bg-gray-100');
+          li.id = _i;
+          elementElasticsearchOptionsList.appendChild(li);
+          elementElasticsearchOptionsList.classList.add("active");
+        }
+      }
+
+      if (checkNotFound) {
+        elementElasticsearchOptionsList.classList.remove("active");
+        elementElasticsearchNotFound.classList.add("active");
+      }
+    } else {
+      elementElasticsearchOptionsList.classList.remove("active");
+      elementElasticsearchNotFound.classList.remove("active");
+    }
+  };
+}
+
+/***/ }),
+
+/***/ "./resources/js/web/ManagePM/teamPM.js":
+/*!*********************************************!*\
+  !*** ./resources/js/web/ManagePM/teamPM.js ***!
+  \*********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "teamPm": () => (/* binding */ teamPm)
+/* harmony export */ });
+var idPM;
+function teamPm(idPm) {
+  $.ajax({
+    method: "POST",
+    url: "/managementPM/teamPm",
+    dataType: "json",
+    data: {
+      "pmId": idPm
+    },
+    success: function success(data) {
+      createBlocPm(data['pm']);
+      createBlocTeam(data['team']);
+      idPM = idPm;
+      checkButtonsDeleteEmployee(data['team']);
+    },
+    error: function error(er) {
+      console.log(er);
+    }
+  });
+}
+checkButtonsAddEmployee();
+
+function checkButtonsAddEmployee() {
+  document.getElementById('add-employee-in-team').addEventListener('click', function (e) {
+    e.preventDefault();
+    var email = document.getElementById('email-employee-in-team').value;
+    console.log(email);
+    $.ajax({
+      method: "POST",
+      url: "/managementPM/teamPm/addEmployee",
+      dataType: "json",
+      data: {
+        "emailEmployee": email,
+        "idPm": idPM
+      },
+      success: function success(data) {
+        if (data) {
+          teamPm(idPM);
+          document.getElementById('add-employee-in-team-email-error').classList.remove('active');
+        }
+      },
+      error: function error(_error) {
+        validate(_error['responseJSON']['errors']);
+      }
+    });
+  });
+}
+
+function checkButtonsDeleteEmployee(arrTeamInformation) {
+  var _loop = function _loop(idEmployee) {
+    document.getElementById("button-select-employee" + idEmployee).addEventListener('click', function (e) {
+      e.preventDefault();
+      $.ajax({
+        method: "POST",
+        url: "/managementPM/teamPm/deleteEmployee",
+        dataType: "json",
+        data: {
+          "idEmployee": idEmployee,
+          "idPm": idPM
+        },
+        success: function success(data) {
+          if (data) {
+            teamPm(idPM);
+          }
+        },
+        error: function error(er) {
+          console.log(er);
+        }
+      });
+    });
+  };
+
+  for (var idEmployee in arrTeamInformation) {
+    _loop(idEmployee);
+  }
+}
+
+function createBlocPm(informationPm) {
+  if (informationPm['avatar']) {
+    document.getElementById("bloc-pm-information").innerHTML = "<img src=\"" + informationPm['avatar'] + "\" class=\"mx-auto h-16 w-16 rounded-full\" alt=\"\">\n" + "<h2 class=\"mt-3 font-semibold text-gray-900\">" + informationPm['name'] + "</h2>\n" + "<p class=\"text-sm leading-6 text-gray-500\">" + informationPm['email'] + "</p>";
+  } else {
+    document.getElementById("bloc-pm-information").innerHTML = "<img src=\"image/AvatarsWithPlaceholderIcon.png\" class=\"mx-auto h-16 w-16 rounded-full\" alt=\"\">\n" + "<h2 class=\"mt-3 font-semibold text-gray-900\">" + informationPm['name'] + "</h2>\n" + "<p class=\"text-sm leading-6 text-gray-500\">" + informationPm['email'] + "</p>";
+  }
+}
+
+function createBlocTeam(informationTeam) {
+  document.getElementById("bloc-team-information").innerHTML = "";
+
+  for (var id in informationTeam) {
+    if (informationTeam[id]['avatar']) {
+      var tr = document.createElement('tr');
+      document.getElementById("bloc-team-information").appendChild(tr);
+      tr.innerHTML = "   <td class=\"whitespace-nowrap py-4 pl-4 pr-3 text-sm sm:pl-6\">\n" + "       <div class=\"flex items-center\">\n" + "           <div class=\"hidden sm:block h-10 w-10 flex-shrink-0\">\n" + "               <img class=\"h-10 w-10 rounded-full\" src=\"" + informationTeam[id]['avatar'] + "\" alt=\"\">\n" + "           </div>\n" + "           <div class=\"ml-4\">\n" + "               <div class=\"font-medium text-gray-900\">" + informationTeam[id]['name'] + "</div>\n" + "               <div class=\"text-gray-500\">" + informationTeam[id]['email'] + "</div>\n" + "           </div>\n" + "       </div>\n" + "   </td>\n" + "   <td class=\"hidden sm:block whitespace-nowrap px-3 py-7 text-sm text-gray-500\">" + informationTeam[id]['country'] + "</td>\n" + "\n" + "   <td class=\"relative py-3.5 pl-3 pr-4 sm:pr-6 text-right text-sm font-medium\">\n" + "       <button type=\"button\" id=\"button-select-employee" + id + "\" class=\"inline-flex items-center rounded-md border border-gray-300 bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-30\">Delete<span class=\"sr-only\">, Hobby</span></button>\n" + "   </td>";
+    } else {
+      var _tr = document.createElement('tr');
+
+      document.getElementById("bloc-team-information").appendChild(_tr);
+      _tr.innerHTML = "   <td class=\"whitespace-nowrap py-4 pl-4 pr-3 text-sm sm:pl-6\">\n" + "       <div class=\"flex items-center\">\n" + "           <div class=\"hidden sm:block h-10 w-10 flex-shrink-0\">\n" + "               <img class=\"h-10 w-10 rounded-full\" src=\"image/AvatarsWithPlaceholderIcon.png\" alt=\"\">\n" + "           </div>\n" + "           <div class=\"ml-4\">\n" + "               <div class=\"font-medium text-gray-900\">" + informationTeam[id]['name'] + "</div>\n" + "               <div class=\"text-gray-500\">" + informationTeam[id]['email'] + "</div>\n" + "           </div>\n" + "       </div>\n" + "   </td>\n" + "   <td class=\"hidden sm:block whitespace-nowrap px-3 py-7 text-sm text-gray-500\">" + informationTeam[id]['country'] + "</td>\n" + "\n" + "   <td class=\"relative py-3.5 pl-3 pr-4 sm:pr-6 text-right text-sm font-medium\">\n" + "       <button type=\"button\" id=\"button-select-employee" + id + "\" class=\"inline-flex items-center rounded-md border border-gray-300 bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-30\">Delete<span class=\"sr-only\">, Hobby</span></button>\n" + "   </td>";
+    }
+  }
+}
+
+function validate(er) {
+  if (er['emailEmployee']) {
+    console.log(er['emailEmployee']);
+    document.getElementById('add-employee-in-team-email-error').textContent = er['emailEmployee'];
+    document.getElementById('add-employee-in-team-email-error').classList.add('active');
+  }
 }
 
 /***/ }),
@@ -3228,10 +3602,7 @@ function clearBlocManagePMAndHR() {
   \*********************************************/
 /***/ (() => {
 
-// set the background of the sidebar button
-document.getElementById("sideBar_profile").classList.add("active"); // set the background of the sidebar svg
 
-document.getElementById("sideBar_profile_svg").classList.add("active");
 
 /***/ }),
 
@@ -3241,10 +3612,7 @@ document.getElementById("sideBar_profile_svg").classList.add("active");
   \*********************************************************/
 /***/ (() => {
 
-// set the background of the sidebar button
-document.getElementById("sideBar_public_holiday").classList.add("active"); // set the background of the sidebar svg
 
-document.getElementById("sideBar_public_holiday_svg").classList.add("active");
 
 /***/ }),
 
@@ -3254,10 +3622,7 @@ document.getElementById("sideBar_public_holiday_svg").classList.add("active");
   \*******************************************************/
 /***/ (() => {
 
-// set the background of the sidebar button
-document.getElementById("sideBar_settings_page").classList.add("active"); // set the background of the sidebar svg
 
-document.getElementById("sideBar_settings_page_svg").classList.add("active");
 
 /***/ }),
 
@@ -3267,10 +3632,7 @@ document.getElementById("sideBar_settings_page_svg").classList.add("active");
   \*************************************************/
 /***/ (() => {
 
-// set the background of the sidebar button
-document.getElementById("sideBar_vacations").classList.add("active"); // set the background of the sidebar svg
 
-document.getElementById("sideBar_vacations_svg").classList.add("active");
 
 /***/ }),
 
@@ -3280,10 +3642,7 @@ document.getElementById("sideBar_vacations_svg").classList.add("active");
   \***************************************************************/
 /***/ (() => {
 
-// set the background of the sidebar button
-document.getElementById("sideBar_vacations_history").classList.add("active"); // set the background of the sidebar svg
 
-document.getElementById("sideBar_vacations_history_svg").classList.add("active");
 
 /***/ }),
 
@@ -3293,10 +3652,7 @@ document.getElementById("sideBar_vacations_history_svg").classList.add("active")
   \*****************************************************************/
 /***/ (() => {
 
-// set the background of the sidebar button
-document.getElementById("sideBar_vacations_overview").classList.add("active"); // set the background of the sidebar svg
 
-document.getElementById("sideBar_vacations_overview_svg").classList.add("active");
 
 /***/ }),
 
@@ -3306,10 +3662,7 @@ document.getElementById("sideBar_vacations_overview_svg").classList.add("active"
   \*****************************************************************/
 /***/ (() => {
 
-// set the background of the sidebar button
-document.getElementById("sideBar_vacations_requests").classList.add("active"); // set the background of the sidebar svg
 
-document.getElementById("sideBar_vacations_requests_svg").classList.add("active");
 
 /***/ }),
 
@@ -20794,6 +21147,18 @@ process.umask = function() { return 0; };
 /******/ 				}
 /******/ 			}
 /******/ 			return result;
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/define property getters */
+/******/ 	(() => {
+/******/ 		// define getter functions for harmony exports
+/******/ 		__webpack_require__.d = (exports, definition) => {
+/******/ 			for(var key in definition) {
+/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+/******/ 				}
+/******/ 			}
 /******/ 		};
 /******/ 	})();
 /******/ 	

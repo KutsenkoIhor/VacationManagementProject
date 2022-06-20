@@ -2,8 +2,11 @@
 
 use App\Http\Controllers\CitiesController;
 use App\Http\Controllers\CountriesController;
+use App\Http\Controllers\DomainsController;
 use App\Http\Controllers\HomePageController;
+use App\Http\Controllers\HrManagementController;
 use App\Http\Controllers\ListEmployeesController;
+use App\Http\Controllers\PmManagementController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SocialController;
 use App\Http\Controllers\VacationController;
@@ -56,14 +59,21 @@ Route::name('page.')->group(function () {
         Route::post('/createEmployeeDataTable', [ListEmployeesController::class, 'getPaginateAndElasticsearchData']);
     });
 
+    Route::prefix('/managementPM')->middleware('auth')->group(function () {
+        Route::get('/',[PmManagementController::class, 'listPm'])->name('listPm');
+        Route::get('/listPm',[PmManagementController::class, 'createListPm']);
+        Route::post('/teamPm',[PmManagementController::class, 'createTeamPm']);
+        Route::post('/teamPm/addEmployee', [PmManagementController::class, 'addEmployeeInTeam']);
+        Route::post('/teamPm/deleteEmployee', [PmManagementController::class, 'removeEmployeeFromTeam']);
+    });
+
+    Route::prefix('/managementHR')->middleware('auth')->group(function () {
+        Route::get('/',[HRManagementController::class, 'listHr'])->name('listHr');
+    });
+
     Route::get('/publicHoliday', function () {
         return view('pages.publicHolidayPage');
     })->middleware('auth')->name('publicHoliday');
-
-    Route::get('/manageHRandPM', function () {
-        return view('pages.manageHRandPMPage');
-    })->middleware('auth')->name('manageHRandPM');
-
 
     Route::get('/settingsPage', function () {
         return view('pages.settingsPage');
@@ -109,6 +119,6 @@ Route::middleware(['auth'])->group(function () {
 
 //Roles
 
-Route::resource('settings/roles', \App\Http\Controllers\RoleController::class)->middleware('role:System Admin');
-Route::resource('settings/domains', \App\Http\Controllers\DomainsController::class)->middleware('role:System Admin');
+Route::resource('settings/roles', RoleController::class)->middleware('role:System Admin');
+Route::resource('settings/domains', DomainsController::class)->middleware('role:System Admin');
 

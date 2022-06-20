@@ -1,8 +1,3 @@
-// set the background of the sidebar button
-document.getElementById("sideBar_vacation_requests_editing").classList.add("active");
-// set the background of the sidebar svg
-document.getElementById("sideBar_vacation_request_editing_svg").classList.add("active");
-
 if (window.location.pathname === '/vacations/requests') {
 
     const editModalWindow = document.getElementById("edit_vacation_request_modal");
@@ -95,6 +90,7 @@ if (window.location.pathname === '/vacations/requests') {
             }
         });
     }
+
 
     function changeStatus() {
         $(document).ready(function () {

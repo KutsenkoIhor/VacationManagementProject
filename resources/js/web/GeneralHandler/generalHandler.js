@@ -23,9 +23,8 @@ function sideBarButtonIllumination()
     let currentPage = window.location.pathname;
 
     currentPage === '/home' ? sideBarButtonHome() : null;
-    currentPage === '/vacations' ? sideBarVacations() : null;
-    currentPage === '/vacations/requestHistory' ? sideBarButtonVacationsHistory() : null;
-    currentPage === '/vacations/requests' ? sideBarButtonVacationsRequests() : null;
+    currentPage === '/vacations/requestHistory' ? sideBarButtonVacationRequestHistory() : null;
+    currentPage === '/vacations/requests' ? sideBarButtonVacationRequests() : null;
     currentPage === '/vacations/upcoming' ? sideBarButtonVacationsUpcoming() : null;
     currentPage === '/listOfAllEmployees' ? sideBarButtonListOfAllEmployees() : null;
     currentPage === '/managementPM' ? sideBarButtonManagementPM() : null;
@@ -41,20 +40,13 @@ function sideBarButtonHome()
     document.getElementById("sideBar_home_svg").classList.add("active");
 }
 
-function sideBarVacations()
-{
-    document.getElementById("sideBar_vacations").classList.add("active");
-    document.getElementById("sideBar_vacations_svg").classList.add("active");
-}
-
-
-function sideBarButtonVacationsHistory()
+function sideBarButtonVacationRequestHistory()
 {
     document.getElementById("sideBar_vacations_history").classList.add("active");
     document.getElementById("sideBar_vacations_history_svg").classList.add("active");
 }
 
-function sideBarButtonVacationsRequests()
+function sideBarButtonVacationRequests()
 {
     document.getElementById("sideBar_vacations_requests").classList.add("active");
     document.getElementById("sideBar_vacations_requests_svg").classList.add("active");

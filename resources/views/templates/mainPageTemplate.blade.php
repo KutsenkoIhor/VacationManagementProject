@@ -245,9 +245,9 @@
                     </a>
 
                     @hasanyrole('PM|HR')
-                    <a href="{{ route('vacations.requests') }}" id="sideBar_vacation_requests_editing"
+                    <a href="{{ route('vacations.requests') }}" id="sideBar_vacations_requests"
                        class="sidebar_button_bg text-gray-300 hover:text-white hover:bg-gray-700 group flex items-center px-2 py-2 text-sm leading-6 font-medium rounded-md">
-                        <svg id="sideBar_vacation_request_editing_svg" class="mr-4 flex-shrink-0 h-6 w-6 svg-text-gray-400 group-hover:text-white" xmlns="http://www.w3.org/2000/svg"
+                        <svg id="sideBar_vacations_requests_svg" class="mr-4 flex-shrink-0 h-6 w-6 svg-text-gray-400 group-hover:text-white" xmlns="http://www.w3.org/2000/svg"
                              fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                   d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>

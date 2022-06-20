@@ -294,19 +294,19 @@
 </div>
 
 {{--Modal window Viewing a user's vacation history--}}
-    <div id="pop_up_viewing_user's_vacation_history" class="pop_up pop_up_employee">
-    <div class="pop_up_container">
-        <div class="pop_up_body_body">
-            <div  class="px-4 sm:px-6 lg:px-8  mb-8 ">
-                <div class="mt-8 flex flex-col">
-                    <div class="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
-                        <div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
-                            <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
-                                <table class="min-w-full divide-y divide-gray-300">
-                                    <div class="p-6">
-                                        <form class="space-y-8 divide-y divide-gray-200">
-                                            <h3 class="text-lg leading-6 font-medium text-gray-900">Viewing a user's vacation history</h3>
-                                            <div class="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+{{--    <div id="pop_up_viewing_user's_vacation_history" class="pop_up pop_up_employee">--}}
+{{--    <div class="pop_up_container">--}}
+{{--        <div class="pop_up_body_body">--}}
+{{--            <div  class="px-4 sm:px-6 lg:px-8  mb-8 ">--}}
+{{--                <div class="mt-8 flex flex-col">--}}
+{{--                    <div class="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">--}}
+{{--                        <div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">--}}
+{{--                            <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">--}}
+{{--                                <table class="min-w-full divide-y divide-gray-300">--}}
+{{--                                    <div class="p-6">--}}
+{{--                                        <form class="space-y-8 divide-y divide-gray-200">--}}
+{{--                                            <h3 class="text-lg leading-6 font-medium text-gray-900">Viewing a user's vacation history</h3>--}}
+{{--                                            <div class="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">--}}
 
 {{--                                                <div class="sm:col-span-2">--}}
 {{--                                                    <label for="edit_email" class="block text-sm font-medium text-gray-700"> Email</label>--}}
@@ -419,24 +419,24 @@
 {{--                                                @endforeach--}}
 {{--                                                <p class="mt-2 text-sm text-red-600 show_error" id="roles_edit_error">Select at least one role.</p>--}}
 
-                                            </div>
-                                            <div class="pt-5">
-                                                <div class="flex justify-end">
-                                                    <button id="close-modal-window-history-vacation-user" type="button" class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Cancel</button>
+{{--                                            </div>--}}
+{{--                                            <div class="pt-5">--}}
+{{--                                                <div class="flex justify-end">--}}
+{{--                                                    <button id="close-modal-window-history-vacation-user" type="button" class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Cancel</button>--}}
 {{--                                                    <button id="update_pop_up_employee" type="button" class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Update</button>--}}
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+{{--                                                </div>--}}
+{{--                                            </div>--}}
+{{--                                        </form>--}}
+{{--                                    </div>--}}
+{{--                                </table>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
+{{--            </div>--}}
+{{--        </div>--}}
+{{--    </div>--}}
+{{--</div>--}}
 
 {{--Elasticsearch--}}
     <div class="box-elasticsearchUser pt-10 px-4 sm:px-6 lg:px-8 pr-250px" id="box-elasticsearchListUser">

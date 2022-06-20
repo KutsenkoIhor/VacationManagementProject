@@ -123,3 +123,10 @@
     margin-right: 500px;
 }
 
+.absolute-center {
+    left:50%;
+    transform:translate(-50%);
+}
+
+
+

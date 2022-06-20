@@ -18,4 +18,6 @@ interface UserRepositoryInterface
     public function hasAnyRole(int $userId, array $roles): bool;
     public function hasRole(int $userId, string $role): bool;
     public function getUsersAssignedToHr(array $cityIDs): array;
+    public function getUserModelsWhereIdInArr($arrIdUser): object;
+    public function getUserIdByEmail(string $email): int;
 }

@@ -294,7 +294,7 @@
 </div>
 
 {{--Modal window Viewing a user's vacation history--}}
-<div id="pop_up_viewing_user's_vacation_history" class="pop_up pop_up_employee">
+    <div id="pop_up_viewing_user's_vacation_history" class="pop_up pop_up_employee">
     <div class="pop_up_container">
         <div class="pop_up_body_body">
             <div  class="px-4 sm:px-6 lg:px-8  mb-8 ">
@@ -308,122 +308,122 @@
                                             <h3 class="text-lg leading-6 font-medium text-gray-900">Viewing a user's vacation history</h3>
                                             <div class="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
 
-                                                {{--                                                <div class="sm:col-span-2">--}}
-                                                {{--                                                    <label for="edit_email" class="block text-sm font-medium text-gray-700"> Email</label>--}}
-                                                {{--                                                    <div class="mt-1">--}}
-                                                {{--                                                        <input id="edit_email" name="email" type="email" readonly autocomplete="email" class="text-gray-400 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">--}}
-                                                {{--                                                    </div>--}}
-                                                {{--                                                    <p class="mt-2 text-sm text-red-600 show_error" id="email-edit_error"></p>--}}
-                                                {{--                                                </div>--}}
+{{--                                                <div class="sm:col-span-2">--}}
+{{--                                                    <label for="edit_email" class="block text-sm font-medium text-gray-700"> Email</label>--}}
+{{--                                                    <div class="mt-1">--}}
+{{--                                                        <input id="edit_email" name="email" type="email" readonly autocomplete="email" class="text-gray-400 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">--}}
+{{--                                                    </div>--}}
+{{--                                                    <p class="mt-2 text-sm text-red-600 show_error" id="email-edit_error"></p>--}}
+{{--                                                </div>--}}
 
-                                                {{--                                                <br>--}}
-                                                {{--                                                <br>--}}
-                                                {{--                                                <div></div>--}}
-                                                {{--                                                <div></div>--}}
+{{--                                                <br>--}}
+{{--                                                <br>--}}
+{{--                                                <div></div>--}}
+{{--                                                <div></div>--}}
 
-                                                {{--                                                <div class="sm:col-span-2">--}}
-                                                {{--                                                    <label for="edit_first_name" class="block text-sm font-medium text-gray-700"> First name </label>--}}
-                                                {{--                                                    <div class="mt-1">--}}
-                                                {{--                                                        <input type="text" name="create_first_name" id="edit_first_name" autocomplete="given-name" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">--}}
-                                                {{--                                                    </div>--}}
-                                                {{--                                                    <p class="mt-2 text-sm text-red-600 show_error" id="first_name_edit_error"></p>--}}
-                                                {{--                                                </div>--}}
+{{--                                                <div class="sm:col-span-2">--}}
+{{--                                                    <label for="edit_first_name" class="block text-sm font-medium text-gray-700"> First name </label>--}}
+{{--                                                    <div class="mt-1">--}}
+{{--                                                        <input type="text" name="create_first_name" id="edit_first_name" autocomplete="given-name" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">--}}
+{{--                                                    </div>--}}
+{{--                                                    <p class="mt-2 text-sm text-red-600 show_error" id="first_name_edit_error"></p>--}}
+{{--                                                </div>--}}
 
-                                                {{--                                                <br>--}}
+{{--                                                <br>--}}
 
-                                                {{--                                                <div class="sm:col-span-2">--}}
-                                                {{--                                                    <label for="edit_last_name" class="block text-sm font-medium text-gray-700"> Last name </label>--}}
-                                                {{--                                                    <div class="mt-1">--}}
-                                                {{--                                                        <input type="text" name="edit_last_name" id="edit_last_name" autocomplete="family-name" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">--}}
-                                                {{--                                                    </div>--}}
-                                                {{--                                                    <p class="mt-2 text-sm text-red-600 show_error" id="last_name_edit_error"></p>--}}
-                                                {{--                                                </div>--}}
+{{--                                                <div class="sm:col-span-2">--}}
+{{--                                                    <label for="edit_last_name" class="block text-sm font-medium text-gray-700"> Last name </label>--}}
+{{--                                                    <div class="mt-1">--}}
+{{--                                                        <input type="text" name="edit_last_name" id="edit_last_name" autocomplete="family-name" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">--}}
+{{--                                                    </div>--}}
+{{--                                                    <p class="mt-2 text-sm text-red-600 show_error" id="last_name_edit_error"></p>--}}
+{{--                                                </div>--}}
 
 
-                                                {{--                                                <div class="sm:col-span-2">--}}
-                                                {{--                                                    <label for="list_country_admin_edit" class="block text-sm font-medium text-gray-700"> Country </label>--}}
-                                                {{--                                                    <div class="mt-1">--}}
-                                                {{--                                                        <select id="list_country_admin_edit" name="country" autocomplete="country-name" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">--}}
-                                                {{--                                                            @foreach ($arrData['countries'] as $role)--}}
-                                                {{--                                                                <option>{{$role}}</option>--}}
-                                                {{--                                                            @endforeach--}}
-                                                {{--                                                        </select>--}}
-                                                {{--                                                    </div>--}}
-                                                {{--                                                </div>--}}
+{{--                                                <div class="sm:col-span-2">--}}
+{{--                                                    <label for="list_country_admin_edit" class="block text-sm font-medium text-gray-700"> Country </label>--}}
+{{--                                                    <div class="mt-1">--}}
+{{--                                                        <select id="list_country_admin_edit" name="country" autocomplete="country-name" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">--}}
+{{--                                                            @foreach ($arrData['countries'] as $role)--}}
+{{--                                                                <option>{{$role}}</option>--}}
+{{--                                                            @endforeach--}}
+{{--                                                        </select>--}}
+{{--                                                    </div>--}}
+{{--                                                </div>--}}
 
-                                                {{--                                                <br>--}}
+{{--                                                <br>--}}
 
-                                                {{--                                                <div class="sm:col-span-2">--}}
-                                                {{--                                                    <label for="list_city_admin_edit" class="block text-sm font-medium text-gray-700"> City </label>--}}
-                                                {{--                                                    <div class="mt-1">--}}
-                                                {{--                                                        <select id="list_city_admin_edit" name="city" autocomplete="country-name" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">--}}
-                                                {{--                                                            <option></option>--}}
-                                                {{--                                                        </select>--}}
-                                                {{--                                                    </div>--}}
-                                                {{--                                                </div>--}}
-                                                {{--                                                <div class="sm:col-span-2">--}}
-                                                {{--                                                    <label for="edit_role_list_admin_edit" class="block text-sm font-medium text-gray-700"> Days off has available per year </label>--}}
-                                                {{--                                                    <div class="mt-1">--}}
-                                                {{--                                                        <select id="edit_role_list_admin_edit" name="edit_role_list_admin" autocomplete="role-name" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">--}}
-                                                {{--                                                            @foreach ($arrData['arr']['roles'] as $role)--}}
-                                                {{--                                                                <option>{{$role}}</option>--}}
-                                                {{--                                                            @endforeach--}}
-                                                {{--                                                        </select>--}}
-                                                {{--                                                    </div>--}}
-                                                {{--                                                </div>--}}
-                                                {{--                                                <br>--}}
+{{--                                                <div class="sm:col-span-2">--}}
+{{--                                                    <label for="list_city_admin_edit" class="block text-sm font-medium text-gray-700"> City </label>--}}
+{{--                                                    <div class="mt-1">--}}
+{{--                                                        <select id="list_city_admin_edit" name="city" autocomplete="country-name" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">--}}
+{{--                                                            <option></option>--}}
+{{--                                                        </select>--}}
+{{--                                                    </div>--}}
+{{--                                                </div>--}}
+{{--                                                <div class="sm:col-span-2">--}}
+{{--                                                    <label for="edit_role_list_admin_edit" class="block text-sm font-medium text-gray-700"> Days off has available per year </label>--}}
+{{--                                                    <div class="mt-1">--}}
+{{--                                                        <select id="edit_role_list_admin_edit" name="edit_role_list_admin" autocomplete="role-name" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">--}}
+{{--                                                            @foreach ($arrData['arr']['roles'] as $role)--}}
+{{--                                                                <option>{{$role}}</option>--}}
+{{--                                                            @endforeach--}}
+{{--                                                        </select>--}}
+{{--                                                    </div>--}}
+{{--                                                </div>--}}
+{{--                                                <br>--}}
 
-                                                {{--                                                <div class="sm:col-span-1">--}}
-                                                {{--                                                    <label for="Vacation_days_list_admin_edit" class="block text-sm font-medium text-gray-700"> Vacation days </label>--}}
-                                                {{--                                                    <div class="mt-1">--}}
-                                                {{--                                                        <input type="text" name="Vacation_days_list_admin" id="Vacation_days_list_admin_edit" autocomplete="family-name" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">--}}
-                                                {{--                                                    </div>--}}
-                                                {{--                                                    <p class="mt-2 text-sm text-red-600 show_error" id="vacation_days_edit_error"></p>--}}
-                                                {{--                                                </div>--}}
+{{--                                                <div class="sm:col-span-1">--}}
+{{--                                                    <label for="Vacation_days_list_admin_edit" class="block text-sm font-medium text-gray-700"> Vacation days </label>--}}
+{{--                                                    <div class="mt-1">--}}
+{{--                                                        <input type="text" name="Vacation_days_list_admin" id="Vacation_days_list_admin_edit" autocomplete="family-name" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">--}}
+{{--                                                    </div>--}}
+{{--                                                    <p class="mt-2 text-sm text-red-600 show_error" id="vacation_days_edit_error"></p>--}}
+{{--                                                </div>--}}
 
-                                                {{--                                                <div class="sm:col-span-1">--}}
-                                                {{--                                                    <label for="Sick_days_list_admin_edit" class="block text-sm font-medium text-gray-700"> Sick days </label>--}}
-                                                {{--                                                    <div class="mt-1">--}}
-                                                {{--                                                        <input type="text" name="Sick_days_list_admin" id="Sick_days_list_admin_edit" autocomplete="family-name" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">--}}
-                                                {{--                                                    </div>--}}
-                                                {{--                                                    <p class="mt-2 text-sm text-red-600 show_error" id="sick_days_edit_error"></p>--}}
-                                                {{--                                                </div>--}}
+{{--                                                <div class="sm:col-span-1">--}}
+{{--                                                    <label for="Sick_days_list_admin_edit" class="block text-sm font-medium text-gray-700"> Sick days </label>--}}
+{{--                                                    <div class="mt-1">--}}
+{{--                                                        <input type="text" name="Sick_days_list_admin" id="Sick_days_list_admin_edit" autocomplete="family-name" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">--}}
+{{--                                                    </div>--}}
+{{--                                                    <p class="mt-2 text-sm text-red-600 show_error" id="sick_days_edit_error"></p>--}}
+{{--                                                </div>--}}
 
-                                                {{--                                                <div class="sm:col-span-1">--}}
-                                                {{--                                                    <label for="Personal_days_list_admin_edit" class="block text-sm font-medium text-gray-700"> Personal days </label>--}}
-                                                {{--                                                    <div class="mt-1">--}}
-                                                {{--                                                        <input type="text" name="Personal_days_list_admin" id="Personal_days_list_admin_edit" autocomplete="family-name" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">--}}
-                                                {{--                                                    </div>--}}
-                                                {{--                                                    <p class="mt-2 text-sm text-red-600 show_error" id="personal_days_edit_error"></p>--}}
-                                                {{--                                                </div>--}}
+{{--                                                <div class="sm:col-span-1">--}}
+{{--                                                    <label for="Personal_days_list_admin_edit" class="block text-sm font-medium text-gray-700"> Personal days </label>--}}
+{{--                                                    <div class="mt-1">--}}
+{{--                                                        <input type="text" name="Personal_days_list_admin" id="Personal_days_list_admin_edit" autocomplete="family-name" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">--}}
+{{--                                                    </div>--}}
+{{--                                                    <p class="mt-2 text-sm text-red-600 show_error" id="personal_days_edit_error"></p>--}}
+{{--                                                </div>--}}
 
-                                                {{--                                                <div class="sm:col-span-6 pt-3">--}}
-                                                {{--                                                    <legend class="block text-sm font-medium text-gray-800">Roles</legend>--}}
-                                                {{--                                                    <div class="mt-4 border-t border-gray-200 divide-y divide-gray-200">--}}
-                                                {{--                                                    </div>--}}
-                                                {{--                                                </div>--}}
+{{--                                                <div class="sm:col-span-6 pt-3">--}}
+{{--                                                    <legend class="block text-sm font-medium text-gray-800">Roles</legend>--}}
+{{--                                                    <div class="mt-4 border-t border-gray-200 divide-y divide-gray-200">--}}
+{{--                                                    </div>--}}
+{{--                                                </div>--}}
 
-                                                {{--                                                @foreach ($arrData['arr']['roles'] as $role)--}}
-                                                {{--                                                    <div class="sm:col-span-2 ">--}}
-                                                {{--                                                        <div id = "{{$role . "_box_edit"}}"  class=" arr-check-box pr-2 pl-2 rounded-lg bg-white overflow-hidden shadow hover:bg-gray-50">--}}
-                                                {{--                                                            <div class="relative flex items-start py-4 ">--}}
-                                                {{--                                                                <div class="min-w-0 flex-1 text-sm">--}}
-                                                {{--                                                                    <label for="{{$role . "_checkbox_edit"}}" class="font-medium text-gray-700 select-none">{{$role}}</label>--}}
-                                                {{--                                                                </div>--}}
-                                                {{--                                                                <div class="ml-3 flex items-center h-5 ">--}}
-                                                {{--                                                                    <input id="{{$role . "_checkbox_edit"}}"  name="my-checkBox" type="checkbox" value="{{$role}}" class=" create_checkbox_edit_user focus:ring-indigo-500 h-5 w-5 text-indigo-600 border-gray-300 rounded">--}}
-                                                {{--                                                                </div>--}}
-                                                {{--                                                            </div>--}}
-                                                {{--                                                        </div>--}}
-                                                {{--                                                    </div>--}}
-                                                {{--                                                @endforeach--}}
-                                                {{--                                                <p class="mt-2 text-sm text-red-600 show_error" id="roles_edit_error">Select at least one role.</p>--}}
+{{--                                                @foreach ($arrData['arr']['roles'] as $role)--}}
+{{--                                                    <div class="sm:col-span-2 ">--}}
+{{--                                                        <div id = "{{$role . "_box_edit"}}"  class=" arr-check-box pr-2 pl-2 rounded-lg bg-white overflow-hidden shadow hover:bg-gray-50">--}}
+{{--                                                            <div class="relative flex items-start py-4 ">--}}
+{{--                                                                <div class="min-w-0 flex-1 text-sm">--}}
+{{--                                                                    <label for="{{$role . "_checkbox_edit"}}" class="font-medium text-gray-700 select-none">{{$role}}</label>--}}
+{{--                                                                </div>--}}
+{{--                                                                <div class="ml-3 flex items-center h-5 ">--}}
+{{--                                                                    <input id="{{$role . "_checkbox_edit"}}"  name="my-checkBox" type="checkbox" value="{{$role}}" class=" create_checkbox_edit_user focus:ring-indigo-500 h-5 w-5 text-indigo-600 border-gray-300 rounded">--}}
+{{--                                                                </div>--}}
+{{--                                                            </div>--}}
+{{--                                                        </div>--}}
+{{--                                                    </div>--}}
+{{--                                                @endforeach--}}
+{{--                                                <p class="mt-2 text-sm text-red-600 show_error" id="roles_edit_error">Select at least one role.</p>--}}
 
                                             </div>
                                             <div class="pt-5">
                                                 <div class="flex justify-end">
                                                     <button id="close-modal-window-history-vacation-user" type="button" class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Cancel</button>
-                                                    {{--                                                    <button id="update_pop_up_employee" type="button" class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Update</button>--}}
+{{--                                                    <button id="update_pop_up_employee" type="button" class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Update</button>--}}
                                                 </div>
                                             </div>
                                         </form>
@@ -447,11 +447,7 @@
                         <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
                     </svg>
                     <label>
-{{--                        <form method="" action="" onsubmit="return sendInputElasticsearch()">--}}
-{{--                            <input id="elasticsearchListUser" type="text" class="h-12 w-full border-0 bg-transparent pl-11 pr-4 text-gray-800 placeholder-gray-400 focus:ring-0 sm:text-sm" placeholder="Search..." role="combobox" aria-expanded="false" aria-controls="options">--}}
-{{--                        </form>--}}
-                        <input id="elasticsearchListUser" type="text" class="h-12 w-full border-0 bg-transparent pl-11 pr-4 text-gray-800
-                        holder-gray-400 focus:ring-0 sm:text-sm" placeholder="Search..." role="combobox" aria-expanded="false" aria-controls="options">
+                        <input id="elasticsearchListUser" type="text" class="h-12 w-full border-0 bg-transparent pl-11 pr-4 text-gray-800 placeholder-gray-400 focus:ring-0 sm:text-sm" placeholder="Search..." role="combobox" aria-expanded="false" aria-controls="options">
                     </label>
                 </div>
                 <ul class="elasticsearchOptionsListUser show_block max-h-72 scroll-py-2 overflow-y-auto py-2 text-sm text-gray-800" id="elasticsearchOptionsList" role="listbox">

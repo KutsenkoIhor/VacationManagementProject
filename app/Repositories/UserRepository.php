@@ -6,6 +6,7 @@ use App\DTO\UserDTO;
 use App\Factories\UserFactory;
 use App\Models\User;
 use App\Repositories\Interfaces\UserRepositoryInterface;
+use Illuminate\Database\Eloquent\Collection;
 
 class UserRepository implements UserRepositoryInterface
 {
@@ -119,6 +120,16 @@ class UserRepository implements UserRepositoryInterface
     public function getUserModelById (int $userId): User
     {
         return User::where('id', $userId)->first();
+    }
+
+    public function getUserModelsWhereIdInArr($arrIdUser): object
+    {
+        return User::whereIn('id', $arrIdUser)->orderBy('updated_at', 'DESC')->paginate(3);
+    }
+
+    public function getUserIdByEmail(string $email): int
+    {
+        return User::where('email', $email)->first()->id;
     }
 
     public function hasAnyRole(int $userId, array $roles): bool

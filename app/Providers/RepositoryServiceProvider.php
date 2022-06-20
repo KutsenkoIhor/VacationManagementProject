@@ -6,12 +6,15 @@ use App\Repositories\CitiesRepository;
 use App\Repositories\CityHrRepository;
 use App\Repositories\CountriesRepository;
 use App\Repositories\CountryHolidayRepository;
+use App\Repositories\DomainsRepository;
+use App\Repositories\EmployeesAndPmRepository;
 use App\Repositories\Interfaces\CitiesRepositoryInterface;
 use App\Repositories\Interfaces\CityHrRepositoryInterface;
 use App\Repositories\Interfaces\CountriesRepositoryInterface;
 use App\Repositories\Interfaces\CountryHolidayRepositoryInterface;
-use App\Repositories\Interfaces\RoleRepositoryInterface;
 use App\Repositories\Interfaces\DomainsRepositoryInterface;
+use App\Repositories\Interfaces\EmployeesAndPmRepositoryInterface;
+use App\Repositories\Interfaces\RoleRepositoryInterface;
 use App\Repositories\Interfaces\UserRepositoryInterface;
 use App\Repositories\Interfaces\VacationDaysLeftRepositoryInterface;
 use App\Repositories\Interfaces\VacationDaysPerYearRepositoryInterface;
@@ -25,7 +28,6 @@ use App\Repositories\VacationDaysPerYearRepository;
 use App\Repositories\VacationRepository;
 use App\Repositories\VacationRequestApprovalRepository;
 use App\Repositories\VacationRequestRepository;
-use App\Repositories\DomainsRepository;
 use Illuminate\Support\ServiceProvider;
 
 class RepositoryServiceProvider extends ServiceProvider
@@ -95,6 +97,11 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(
             CityHrRepositoryInterface::class,
             CityHrRepository::class
+        );
+
+        $this->app->bind(
+            EmployeesAndPmRepositoryInterface::class,
+            EmployeesAndPmRepository::class
         );
     }
 

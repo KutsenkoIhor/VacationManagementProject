@@ -69,6 +69,7 @@
                                                 class="inline-flex rounded-full bg-indigo-100 px-2 text-xs font-semibold leading-5 text-indigo-800">{{ $vacationRequest->isApproved() }}
                                             </span>
                                         </td>
+                                        @if($vacationRequest->isApproved() == null)
                                         <td class="whitespace-nowrap py-4 pl-4 pr-4 text-center text-sm text-gray-600 sm:pr-6">
                                             <form method="POST">
                                                 <button id="changeStatusButton" type="button" vacation-request-id="{{$vacationRequest->getId()}}"
@@ -81,7 +82,6 @@
                                                 </button>
                                             </form>
                                         </td>
-                                        @if($vacationRequest->isApproved() == null)
                                         @hasrole('HR')
                                         <td class="whitespace-nowrap py-4 pl-4 pr-4 text-center text-sm text-gray-600 sm:pr-6">
                                             <form method="POST">

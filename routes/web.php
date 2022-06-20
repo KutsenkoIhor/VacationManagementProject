@@ -70,7 +70,7 @@ Route::prefix('vacations')->name('vacations.')->middleware('auth')->group(functi
 
     Route::get('/upcoming', [VacationController::class, 'getUpcomingVacations'])->name('upcoming');
 
-    Route::get('/userHistory/{id}', [VacationController::class, 'getVacationsByUserId'])->name('userHistory');
+    Route::get('/history/{id}', [VacationController::class, 'getVacationsByUserId'])->name('history');
 
     Route::get('/requestHistory', [VacationRequestController::class, 'getVacationRequestsByUserId'])->name('requestHistory');
 

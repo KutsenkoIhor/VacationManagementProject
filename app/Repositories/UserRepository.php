@@ -125,4 +125,16 @@ class UserRepository implements UserRepositoryInterface
     {
         return User::findOrFail($userId)->hasAnyRole($roles);
     }
+
+    public function hasRole(int $userId, string $role): bool
+    {
+        return User::findOrFail($userId)->hasRole($role);
+    }
+
+    public function getUsersAssignedToHr(array $cityIDs): array
+    {
+        return User::whereIn('city_id', $cityIDs)
+            ->pluck('id')
+            ->all();
+    }
 }

@@ -9,13 +9,14 @@ use App\Http\Requests\UpdateVacationRequest;
 use App\Services\Vacation\NumberOfDaysCalculationService;
 use App\Services\Vacation\VacationRequestService;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 
-class VacationRequestController  extends Controller
+class VacationRequestController extends Controller
 {
     private VacationRequestService $vacationRequestService;
     private NumberOfDaysCalculationService $numberOfDaysCalculationService;
@@ -84,8 +85,7 @@ class VacationRequestController  extends Controller
 
     public function getVacationRequestsByUserId(): Application|Factory|View
     {
-        $userId = Auth::id();
-        $vacationRequests = $this->vacationRequestService->getVacationRequestsByUserId($userId);
+        $vacationRequests = $this->vacationRequestService->getVacationRequestsByUserId(Auth::id());
 
         return view('vacations/vacation_request_history', ['vacationRequests' => $vacationRequests]);
     }
@@ -97,8 +97,13 @@ class VacationRequestController  extends Controller
 
     public function getEmployeesVacationRequests(): Factory|View|Application
     {
-        $userId = Auth::id();
-        $vacationRequests = $this->vacationRequestService->getEmployeesVacationRequests($userId);
+        $vacationRequests = $this->vacationRequestService->getEmployeesVacationRequests(Auth::id());
+
+        try {
+            $this->vacationRequestService->getEmployeesVacationRequests(Auth::id());
+        } catch (Exception $e) {
+            return redirect(route('page.homePage'));
+        }
 
         return view('vacations/employees_vacation_requests', ['vacationRequests' => $vacationRequests]);
     }

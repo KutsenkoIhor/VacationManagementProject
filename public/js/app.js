@@ -3255,14 +3255,212 @@ if (window.location.pathname === '/listOfAllEmployees') {
 /*!***********************************************!*\
   !*** ./resources/js/web/ManageHR/manageHR.js ***!
   \***********************************************/
-/***/ (() => {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _powersOfHR__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./powersOfHR */ "./resources/js/web/ManageHR/powersOfHR.js");
 
 document.getElementById("bloc-manage-HR").classList.add('active');
-document.getElementById('button-select-HR').addEventListener('click', function (e) {
-  e.preventDefault();
-  document.getElementById("bloc-manage-HR").classList.remove('active');
-  document.getElementById("bloc-team-HR").classList.add('active');
-});
+var lastPage;
+var currentPage;
+var arrUsersId = [];
+var searchResults = [];
+startAjax();
+
+function startAjax() {
+  var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
+  $.ajax({
+    method: "GET",
+    url: "/managementHR/listHr?page=" + page,
+    dataType: "json",
+    data: {
+      "userId": JSON.stringify(arrUsersId)
+    },
+    success: function success(data) {
+      lastPage = data['dataForPagination']['last_page'];
+      currentPage = data['dataForPagination']['current_page'];
+      createTablePm(data['dataForCreateTable']);
+      createPaginationDescription();
+      checkBlocTeam(data['dataForCreateTable']);
+      startElasticsearch(data['dataForElasticsearch']);
+    },
+    error: function error(er) {}
+  });
+}
+
+checkButtons();
+
+function checkButtons() {
+  document.getElementById("elasticsearchListUser").addEventListener('keypress', function (e) {
+    if (e.which === 13) {
+      e.preventDefault();
+      arrUsersId = searchResults;
+      startAjax();
+    }
+  });
+  $(document).click(function (e) {
+    if (!$(e.target).closest('.box-elasticsearchUser').length) {
+      document.getElementById("elasticsearchOptionsList").classList.remove("active");
+      document.getElementById("elasticsearchNotFound").classList.remove("active"); // document.getElementById("elasticsearchListUser").value = '';
+    }
+  });
+  document.getElementById('button-clear-search').addEventListener('click', function (e) {
+    e.preventDefault();
+    arrUsersId = [];
+    document.getElementById("elasticsearchOptionsList").classList.remove("active");
+    document.getElementById("elasticsearchNotFound").classList.remove("active");
+    document.getElementById("elasticsearchListUser").value = '';
+    startAjax();
+  });
+  document.getElementById('first-page-table-user').addEventListener('click', function (e) {
+    e.preventDefault();
+    startAjax(1);
+  });
+  document.getElementById('next-page-table-user').addEventListener('click', function (e) {
+    e.preventDefault();
+
+    if (currentPage < lastPage) {
+      startAjax(currentPage + 1);
+    }
+  });
+  document.getElementById('previous-page-table-user').addEventListener('click', function (e) {
+    e.preventDefault();
+
+    if (currentPage > 1) {
+      startAjax(currentPage - 1);
+    }
+  });
+  document.getElementById('last-page-table-user').addEventListener('click', function (e) {
+    e.preventDefault();
+    startAjax(lastPage);
+  });
+}
+
+function checkBlocTeam(arrPmInformation) {
+  var _loop = function _loop(id) {
+    document.getElementById("button-select-HR" + id).addEventListener('click', function (e) {
+      e.preventDefault();
+      document.getElementById("bloc-manage-HR").classList.remove('active');
+      document.getElementById("bloc-team-HR").classList.add('active');
+      (0,_powersOfHR__WEBPACK_IMPORTED_MODULE_0__.powersOfHr)(id);
+    });
+  };
+
+  for (var id in arrPmInformation) {
+    _loop(id);
+  }
+}
+
+function createTablePm(arrHrInformation) {
+  document.getElementById("table-HR").innerHTML = "";
+
+  for (var id in arrHrInformation) {
+    var divMain = document.createElement('div');
+    divMain.id = "button-select-HR" + id;
+    divMain.classList.add('relative', 'rounded-lg', 'border', 'border-gray-300', 'bg-white', 'px-6', 'py-5', 'shadow-sm', 'flex', 'items-center', 'space-x-3', 'hover:ring-2', 'hover:ring-offset-2', 'hover:ring-indigo-500');
+    document.getElementById("table-HR").appendChild(divMain);
+    var div1 = document.createElement('div');
+    div1.classList.add('flex-shrink-0');
+    divMain.appendChild(div1);
+    var imgHr = document.createElement('img');
+    imgHr.classList.add('h-10', 'w-10', 'rounded-full');
+
+    if (arrHrInformation[id]['googleAvatar'] !== null) {
+      imgHr.src = arrHrInformation[id]['googleAvatar'];
+    } else {
+      imgHr.src = 'image/AvatarsWithPlaceholderIcon.png';
+    }
+
+    div1.appendChild(imgHr);
+    var div2 = document.createElement('div');
+    div2.classList.add('flex-1', 'min-w-0');
+    divMain.appendChild(div2);
+    div2.innerHTML = "<a href=\"#\" class=\"focus:outline-none\">\n" + "   <span class=\"absolute inset-0\" aria-hidden=\"true\"></span>\n" + "   <p class=\"text-sm font-medium text-gray-900\">" + arrHrInformation[id]['name'] + "</p>\n" + "   <p class=\"text-sm text-gray-500 truncate\">" + arrHrInformation[id]['email'] + "</p>\n" + "</a>\n";
+  }
+}
+
+function createPaginationDescription() {
+  document.getElementById("text-number-page").textContent = currentPage + '/' + lastPage;
+}
+
+function startElasticsearch(data) {
+  var elasticsearchWindow = document.getElementById("elasticsearchListUser");
+  var elementElasticsearchOptionsList = document.getElementById("elasticsearchOptionsList");
+  var elementElasticsearchNotFound = document.getElementById("elasticsearchNotFound");
+  var listUser = [];
+
+  for (var i in data) {
+    listUser['email_' + i] = data[i]['email'];
+    listUser['name__' + i] = data[i]['name'];
+  }
+
+  elasticsearchWindow.oninput = function () {
+    searchResults = [];
+    var checkNotFound = true;
+    elementElasticsearchOptionsList.innerHTML = '';
+    var strSearch = this.value.trim().toLowerCase(); //remove the space and change everything to lowercase
+
+    if (strSearch !== '') {
+      for (var _i in listUser) {
+        var letterLover = listUser[_i].toLowerCase();
+
+        if (letterLover.search(strSearch) !== -1) {
+          checkNotFound = false;
+          searchResults[_i.slice(6)] = _i.slice(6);
+          var li = document.createElement('li');
+          li.textContent = listUser[_i];
+          li.classList.add('cursor-default', 'select-none', 'px-4', 'py-2', 'hover:bg-gray-100');
+          li.id = _i;
+          elementElasticsearchOptionsList.appendChild(li);
+          elementElasticsearchOptionsList.classList.add("active");
+        }
+      }
+
+      if (checkNotFound) {
+        elementElasticsearchOptionsList.classList.remove("active");
+        elementElasticsearchNotFound.classList.add("active");
+      }
+    } else {
+      elementElasticsearchOptionsList.classList.remove("active");
+      elementElasticsearchNotFound.classList.remove("active");
+    }
+  };
+}
+
+/***/ }),
+
+/***/ "./resources/js/web/ManageHR/powersOfHR.js":
+/*!*************************************************!*\
+  !*** ./resources/js/web/ManageHR/powersOfHR.js ***!
+  \*************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "powersOfHr": () => (/* binding */ powersOfHr)
+/* harmony export */ });
+var idHR;
+function powersOfHr(idHr) {
+  $.ajax({
+    method: "POST",
+    url: "/managementHR/powersOfHr",
+    dataType: "json",
+    data: {
+      "hrId": idHr
+    },
+    success: function success(data) {
+      console.log(data); // createBlocPm(data['pm']);
+      // createBlocTeam(data['team'])
+
+      idHR = idHr; // checkButtonsDeleteEmployee(data['team'])
+    },
+    error: function error(er) {
+      console.log(er);
+    }
+  });
+}
 
 /***/ }),
 

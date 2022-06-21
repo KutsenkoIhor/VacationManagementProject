@@ -69,6 +69,8 @@ Route::name('page.')->group(function () {
 
     Route::prefix('/managementHR')->middleware('auth')->group(function () {
         Route::get('/',[HRManagementController::class, 'listHr'])->name('listHr');
+        Route::get('/listHr',[HrManagementController::class, 'createListHr']);
+        Route::post('/powersOfHr',[HrManagementController::class, 'locationManagementHr']);
     });
 
     Route::get('/publicHoliday', function () {

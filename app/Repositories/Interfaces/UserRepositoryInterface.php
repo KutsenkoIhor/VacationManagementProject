@@ -16,5 +16,6 @@ interface UserRepositoryInterface
     public function updateOrCreate(string|null $firstName, string|null $lastName, string|null $userEmail, int|null $countryId, int|null $cityId);
     public function getUserModelById (int $userId): User;
     public function getUserModelsWhereIdInArr($arrIdUser): object;
+    public function getUserModelsWhereIdInArrHr($arrIdUser): object;
     public function getUserIdByEmail(string $email): int;
 }

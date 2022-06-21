@@ -127,6 +127,11 @@ class UserRepository implements UserRepositoryInterface
         return User::whereIn('id', $arrIdUser)->orderBy('updated_at', 'DESC')->paginate(3);
     }
 
+    public function getUserModelsWhereIdInArrHr($arrIdUser): object
+    {
+        return User::whereIn('id', $arrIdUser)->orderBy('updated_at', 'DESC')->paginate(3);
+    }
+
     public function getUserIdByEmail(string $email): int
     {
         return User::where('email', $email)->first()->id;

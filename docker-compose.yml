@@ -29,7 +29,7 @@ services:
         restart: unless-stopped
         tty: true
         ports:
-            - "84:80"
+            - "80:80"
             - "443:443"
         volumes:
             - ./:/var/www
@@ -44,16 +44,16 @@ services:
         restart: unless-stopped
         tty: true
         ports:
-            - "3310:3306"
+            - "3307:3306"
         expose:
-            - "3310"
+            - "3307"
         environment:
-            MYSQL_DATABASE: laravel
+            MYSQL_DATABASE: vacations
             MYSQL_USER: laraveluser
             MYSQL_PASSWORD: 123456
             MYSQL_ROOT_PASSWORD: 123456
         volumes:
-            - ./docker/mysql:/var/lib/mysql/
+            - dbdata:/var/lib/mysql/
         networks:
             - app-network
 

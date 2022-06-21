@@ -2,22 +2,21 @@
 
 declare(strict_types=1);
 
-
 namespace App\Http\Controllers;
 
-
 use App\Http\Requests\CreateVacationRequest;
+use App\Http\Requests\UpdateVacationRequest;
 use App\Services\Vacation\NumberOfDaysCalculationService;
 use App\Services\Vacation\VacationRequestService;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Routing\Redirector;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 
-class VacationRequestController  extends Controller
+class VacationRequestController extends Controller
 {
     private VacationRequestService $vacationRequestService;
     private NumberOfDaysCalculationService $numberOfDaysCalculationService;
@@ -33,7 +32,7 @@ class VacationRequestController  extends Controller
     public function createVacationRequest(
         CreateVacationRequest $request,
         VacationRequestService $vacationRequestService
-    ): Redirector|Application|RedirectResponse {
+    ): JsonResponse {
         $startDate = Carbon::createFromFormat("Y-m-d", $request->get('start_date'));
         $endDate = Carbon::createFromFormat("Y-m-d", $request->get('end_date'));
         $userId = Auth::id();
@@ -48,29 +47,64 @@ class VacationRequestController  extends Controller
         //TODO: validate amount of vacation request days
 
         $vacationRequestService->createVacationRequest(
-                $userId,
-                $startDate,
-                $endDate,
-                $vacationDaysNumberDTO->getNumberOfDays(),
-                $request->get('type')
-            );
+            $userId,
+            $startDate,
+            $endDate,
+            $vacationDaysNumberDTO->getNumberOfDays(),
+            $request->get('type')
+        );
 
-        return redirect('/vacations/requestHistory');
+        return response()->json();
+    }
+
+    public function getVacationRequest(int $vacationRequestId): JsonResponse
+    {
+        return response()->json(
+            $this->vacationRequestService->getVacationRequest($vacationRequestId)
+        );
+    }
+
+    public function updateVacationRequest(
+        int $vacationRequestId,
+        UpdateVacationRequest $request,
+        VacationRequestService $vacationRequestService
+    ): JsonResponse
+    {
+        $startDate = Carbon::createFromFormat("Y-m-d", $request->get('start_date'));
+        $endDate = Carbon::createFromFormat("Y-m-d", $request->get('end_date'));
+
+        $vacationRequestService->updateVacationRequest(
+            $vacationRequestId,
+            $startDate,
+            $endDate,
+            $request->get('type')
+        );
+
+        return response()->json();
     }
 
     public function getVacationRequestsByUserId(): Application|Factory|View
     {
-        $userId = Auth::id();
-        $vacationRequests = $this->vacationRequestService->getVacationRequestsByUserId($userId);
+        $vacationRequests = $this->vacationRequestService->getVacationRequestsByUserId(Auth::id());
 
         return view('vacations/vacation_request_history', ['vacationRequests' => $vacationRequests]);
     }
 
-    public function getVacationRequestsForApproval(): Factory|View|Application
+    public function cancelVacationRequest(int $vacationRequestId): void
     {
-        $userId = Auth::id();
-        $vacationRequests = $this->vacationRequestService->getVacationRequestsForApproval($userId);
+        $this->vacationRequestService->cancelVacationRequest($vacationRequestId);
+    }
 
-        return view('vacations/vacation_requests_for_approval', ['vacationRequests' => $vacationRequests]);
+    public function getEmployeesVacationRequests(): Factory|View|Application
+    {
+        $vacationRequests = $this->vacationRequestService->getEmployeesVacationRequests(Auth::id());
+
+        try {
+            $this->vacationRequestService->getEmployeesVacationRequests(Auth::id());
+        } catch (Exception $e) {
+            return redirect(route('page.homePage'));
+        }
+
+        return view('vacations/employees_vacation_requests', ['vacationRequests' => $vacationRequests]);
     }
 }

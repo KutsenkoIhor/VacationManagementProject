@@ -799,8 +799,10 @@ if(window.location.pathname === '/listOfAllEmployees'){
 
     function reviewHistoryVacationUser(userId)
     {
-        modalWindowVacationHistory.classList.add('active')
+        // modalWindowVacationHistory.classList.add('active')
         console.log(userId);
+
+        location.assign('/vacations/history/' + userId);
     }
 
     function updateUser()

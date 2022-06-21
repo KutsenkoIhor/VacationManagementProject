@@ -3,11 +3,13 @@
 namespace App\Providers;
 
 use App\Repositories\CitiesRepository;
+use App\Repositories\CityHrRepository;
 use App\Repositories\CountriesRepository;
 use App\Repositories\CountryHolidayRepository;
 use App\Repositories\DomainsRepository;
 use App\Repositories\EmployeesAndPmRepository;
 use App\Repositories\Interfaces\CitiesRepositoryInterface;
+use App\Repositories\Interfaces\CityHrRepositoryInterface;
 use App\Repositories\Interfaces\CountriesRepositoryInterface;
 use App\Repositories\Interfaces\CountryHolidayRepositoryInterface;
 use App\Repositories\Interfaces\DomainsRepositoryInterface;
@@ -90,6 +92,11 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(
             VacationRequestRepositoryInterface::class,
             VacationRequestRepository::class
+        );
+
+        $this->app->bind(
+            CityHrRepositoryInterface::class,
+            CityHrRepository::class
         );
 
         $this->app->bind(

@@ -54,4 +54,9 @@ class VacationService
     {
         $this->vacationRepository->createVacation($vacationRequestId);
     }
+
+    public function getVacationsByUserId(int $userId): array
+    {
+        return $this->vacationRepository->getVacationsByUserId($userId);
+    }
 }

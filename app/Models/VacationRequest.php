@@ -40,6 +40,8 @@ class VacationRequest extends Model
         'is_approved'   => 'bool'
     ];
 
+    protected $dates = ['deleted_at'];
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id', 'id');

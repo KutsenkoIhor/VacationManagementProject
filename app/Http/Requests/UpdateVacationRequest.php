@@ -8,7 +8,7 @@ use App\Models\VacationRequest;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class CreateVacationRequest extends FormRequest
+class UpdateVacationRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.

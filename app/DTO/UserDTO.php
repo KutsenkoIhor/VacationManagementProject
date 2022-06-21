@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\DTO;
 
-class UserDTO
+class UserDTO implements \JsonSerializable
 {
     private int $id;
     private int|null $countryId;
@@ -88,5 +88,18 @@ class UserDTO
     public function getGoogleAvatar(): string|null
     {
         return $this->googleAvatar;
+    }
+
+    public function jsonSerialize()
+    {
+        return [
+            'id'             => $this->getId(),
+            'country_id'     => $this->getCountryId(),
+            'city_id'        => $this->getCityId(),
+            'first_name'     => $this->getFirstName(),
+            'last_name'      => $this->getLastName(),
+            'email'          => $this->getEmail(),
+            'google_avatar'  => $this->getGoogleAvatar(),
+        ];
     }
 }

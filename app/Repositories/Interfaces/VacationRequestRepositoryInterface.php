@@ -17,8 +17,17 @@ interface VacationRequestRepositoryInterface
         string $type
     ): VacationRequestDTO;
     public function getVacationRequestsByUserId(int $userId): array;
-    public function getVacationRequestsForApproval(int $userId): array;
-    public function denyVacationRequest($vacationRequestId): void;
-    public function approveVacationRequest($vacationRequestId): void;
+    public function getVacationRequest(int $vacationRequestId): VacationRequestDTO;
+    public function updateVacationRequest(
+        int $vacationRequestId,
+        Carbon $startDate,
+        Carbon $endDate,
+        string $type
+    ): VacationRequestDTO;
+    public function getEmployeesVacationRequestsForHR(int $userId, array $usersFromCity): array;
+    public function getEmployeesVacationRequestsForPM(int $userId): array;
+    public function denyVacationRequest(int $vacationRequestId): void;
+    public function approveVacationRequest(int $vacationRequestId): void;
+    public function cancelVacationRequest(int $vacationRequestId): bool;
 }
 

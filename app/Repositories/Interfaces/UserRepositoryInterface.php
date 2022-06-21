@@ -17,4 +17,7 @@ interface UserRepositoryInterface
     public function getUserModelById (int $userId): User;
     public function getUserModelsWhereIdInArr($arrIdUser): object;
     public function getUserIdByEmail(string $email): int;
+    public function hasAnyRole(int $userId, array $roles): bool;
+    public function hasRole(int $userId, string $role): bool;
+    public function getUsersAssignedToHr(array $cityIDs): array;
 }

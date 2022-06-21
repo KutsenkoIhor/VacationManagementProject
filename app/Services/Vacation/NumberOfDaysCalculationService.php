@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-
 namespace App\Services\Vacation;
 
 use App\DTO\VacationDaysNumberDTO;
@@ -61,7 +60,6 @@ class NumberOfDaysCalculationService
     public function getNumberOfWorkingDaysByUserIdPerMonth(
         int $userId
     ): int {
-        //TODO: include to a list of all employees
         //TODO: filter for choosing a month
 
         $daysInMonth = Carbon::now()->daysInMonth;

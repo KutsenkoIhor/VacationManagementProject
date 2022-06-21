@@ -109,7 +109,7 @@ class VacationRequestRepository implements VacationRequestRepositoryInterface
         $vacationRequest->save();
     }
 
-    public function approveVacationRequest(int $vacationRequestId): void
+    public function approveVacationRequest(int $vacationRequestId): VacationRequestDTO
     {
         /** @var VacationRequest $vacationRequest */
         $vacationRequest = VacationRequest::findOrFail($vacationRequestId);
@@ -117,6 +117,8 @@ class VacationRequestRepository implements VacationRequestRepositoryInterface
         $vacationRequest->is_approved = true;
 
         $vacationRequest->save();
+
+        return $this->vacationRequestFactory->makeDTOFromModel($vacationRequest);
     }
 
     public function cancelVacationRequest(int $vacationRequestId): bool

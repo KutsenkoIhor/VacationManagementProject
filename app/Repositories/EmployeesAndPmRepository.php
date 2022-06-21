@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\EmployeePm;
+use App\Models\User;
 use App\Repositories\Interfaces\EmployeesAndPmRepositoryInterface;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
@@ -35,4 +36,8 @@ class EmployeesAndPmRepository implements EmployeesAndPmRepositoryInterface
         ])->first();
     }
 
+    public function getPMModelById(int $idEmployee): User
+    {
+        return EmployeePm::where('employee_id', $idEmployee)->firstOrFail()->getPm;
+    }
 }

@@ -14,7 +14,7 @@ if(window.location.pathname === '/listOfAllEmployees'){
     const elementErrorSickDays = document.getElementById("sick_days_error");
     const elementErrorPersonalDays = document.getElementById("personal_days_error");
     const buttonCloseModalWindowEditUser = document.getElementById("close-modal-window-edit-user");
-    const buttonCloseModalWindowVacationHistoryUser = document.getElementById("close-modal-window-history-vacation-user");
+    // const buttonCloseModalWindowVacationHistoryUser = document.getElementById("close-modal-window-history-vacation-user");
     const elementErrorRolesEdit = document.getElementById("roles_edit_error");
     const elementErrorEmailEdit = document.getElementById("email-edit_error");
     const elementErrorLastNameEdit = document.getElementById("last_name_edit_error");
@@ -23,7 +23,7 @@ if(window.location.pathname === '/listOfAllEmployees'){
     const elementErrorSickDaysEdit = document.getElementById("sick_days_edit_error");
     const elementErrorPersonalDaysEdit = document.getElementById("personal_days_edit_error");
     const modalWindowEditUser = document.getElementById('pop_up_edit_user');
-    const modalWindowVacationHistory = document.getElementById("pop_up_viewing_user's_vacation_history");
+    // const modalWindowVacationHistory = document.getElementById("pop_up_viewing_user's_vacation_history");
     const elementCountry = document.getElementById("list_country_admin");
     const elementCity = document.getElementById("list_city_admin");
     const checkboxes = document.getElementsByClassName('create_checkbox');
@@ -119,10 +119,10 @@ if(window.location.pathname === '/listOfAllEmployees'){
             clearErrorModalWindowEditUser();
         })
 
-        buttonCloseModalWindowVacationHistoryUser.addEventListener('click', function (e){
-            e.preventDefault();
-            modalWindowVacationHistory.classList.remove('active');
-        })
+        // buttonCloseModalWindowVacationHistoryUser.addEventListener('click', function (e){
+        //     e.preventDefault();
+        //     modalWindowVacationHistory.classList.remove('active');
+        // })
 
         updateEmployee.addEventListener('click', function (e){
             e.preventDefault();

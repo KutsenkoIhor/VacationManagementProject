@@ -95,9 +95,9 @@ class VacationRequestService
         $this->vacationRepositoryInterface->denyVacationRequest($vacationRequestId);
     }
 
-    public function approveVacationRequest(int $vacationRequestId): void
+    public function approveVacationRequest(int $vacationRequestId): VacationRequestDTO
     {
-        $this->vacationRepositoryInterface->approveVacationRequest($vacationRequestId);
+        return $this->vacationRepositoryInterface->approveVacationRequest($vacationRequestId);
     }
 
     public function cancelVacationRequest(int $vacationRequestId): void

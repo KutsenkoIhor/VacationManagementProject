@@ -6,51 +6,50 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\AddCityRequest;
 use App\Http\Requests\EditCityRequest;
-use App\Repositories\Interfaces\CitiesRepositoryInterface;
-use App\Repositories\Interfaces\CountriesRepositoryInterface;
+use App\Services\Settings\CitiesService;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Routing\Redirector;
 
 
 class CitiesController extends Controller
 {
-    private CitiesRepositoryInterface $citiesRepository;
-    private CountriesRepositoryInterface $countriesRepository;
+    private CitiesService $citiesService;
 
-
-    public function __construct(CitiesRepositoryInterface $citiesRepository, CountriesRepositoryInterface $countriesRepository)
+    public function __construct(CitiesService $citiesService)
 
     {
-        $this->citiesRepository = $citiesRepository;
-        $this->countriesRepository = $countriesRepository;
+        $this->citiesService = $citiesService;
     }
 
-    public function index()
+    public function index(): Factory|View|Application
     {
 
-        $cities = $this->citiesRepository->all();
-//        foreach ($cities as $city){
-//            $city->country = $this->countriesRepository->getCountryTitle((int) $city->country_id);
-//        }
+        $cities = $this->citiesService->all();
 
         return view('settings.cities.index', ['cities' => $cities]);
     }
 
-    public function addCityForm()
+    public function addCityForm(): Factory|View|Application
     {
-        $countries = $this->countriesRepository->all();
+        $countries = $this->citiesService->getCountries();
+
         return view('settings.cities.create', ['countries' => $countries]);
     }
 
-    public function addCity(AddCityRequest $request)
+    public function addCity(AddCityRequest $request): Redirector|RedirectResponse|Application
     {
-        $this->citiesRepository->add($request);
+        $this->citiesService->store($request);
 
         return redirect(route('cities.index'))->with('status', 'City added!');
     }
 
-    public function editCityForm(int $id)
+    public function editCityForm(int $id): Factory|View|Application
     {
-        $city = $this->citiesRepository->getById((int) $id);
-        $countries = $this->countriesRepository->all();
+        $city = $this->citiesService->getById($id);
+        $countries = $this->citiesService->getCountries();
 
         return view('settings.cities.edit',[
             'city' => $city,
@@ -58,16 +57,16 @@ class CitiesController extends Controller
         ]);
     }
 
-    public function editCity(int $id, EditCityRequest $request)
+    public function editCity(int $id, EditCityRequest $request): Redirector|RedirectResponse|Application
     {
-        $this->citiesRepository->update((int) $id, $request);
+        $this->citiesService->update($id, $request);
 
         return redirect(route('cities.index'))->with('status', 'City edited!');
     }
 
-    public function deleteCity(int $id)
+    public function deleteCity(int $id): Redirector|RedirectResponse|Application
     {
-        $this->citiesRepository->delete((int) $id);
+        $this->citiesService->delete($id);
 
         return redirect(route('cities.index'))->with('status', 'City deleted!');
     }

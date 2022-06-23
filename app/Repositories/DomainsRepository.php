@@ -19,7 +19,7 @@ class DomainsRepository implements DomainsRepositoryInterface
         $this->domainFactory = $domainFactory;
     }
 
-    public function all()
+    public function all(): array
     {
         return $this->domainFactory->makeDTOFromModelCollection(Domain::all());
     }
@@ -29,22 +29,22 @@ class DomainsRepository implements DomainsRepositoryInterface
         return $this->domainFactory->makeDTOFromModel(Domain::where('id', $id)->first());
     }
 
-    public function store($request): void
+    public function store(string $name): void
     {
         Domain::create([
-            'name' => $request->name,
+            'name' => $name,
         ]);
     }
 
-    public function update(int $id, $request): void
+    public function update(int $id, string $name): void
     {
         $domain = Domain::where('id', $id)->first();
         $domain->update([
-            'name' => $request->name,
+            'name' => $name,
         ]);
     }
 
-    public function delete(int $id)
+    public function delete(int $id): void
     {
         Domain::findOrFail($id)->delete();
     }

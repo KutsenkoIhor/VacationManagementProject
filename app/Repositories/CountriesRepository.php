@@ -36,23 +36,24 @@ class CountriesRepository implements CountriesRepositoryInterface
         return $this->countryFactory->makeDTOFromModel(Country::findOrFail($id));
     }
 
-    public function add($request): void
+    public function store(string $title): void
     {
-        Country::create($request->all());
+        Country::create([
+            'title' => $title,
+        ]);
     }
 
-    public function update(int $id, $request): void
+    public function update(int $id, string $title): void
     {
         $country = Country::findOrFail($id);
-        $country->update($request->all());
+
+        $country->update([
+            'title' => $title,
+        ]);
     }
 
-    public function delete(int $id)
+    public function delete(int $id): void
     {
-        if (City::where('country_id', $id)->first()){
-            return false;
-        }
-
         Country::findOrFail($id)->delete();
     }
 

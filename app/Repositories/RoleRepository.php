@@ -26,7 +26,7 @@ class RoleRepository implements RoleRepositoryInterface
         return Permission::all();
     }
 
-    public function store($request)
+    public function store($request): void
     {
         $newRole = Role::create([
             'name' => $request->name,
@@ -39,7 +39,7 @@ class RoleRepository implements RoleRepositoryInterface
         $newRole->syncPermissions($permissions);
     }
 
-    public function update(int $id, $request)
+    public function update(int $id, $request): void
     {
         $role = Role::where('id', $id)->first();
         $role->update([
@@ -53,7 +53,7 @@ class RoleRepository implements RoleRepositoryInterface
         $role->syncPermissions($permissions);
     }
 
-    public function delete(int $id)
+    public function delete(int $id): void
     {
         Role::findOrFail($id)->delete();
     }

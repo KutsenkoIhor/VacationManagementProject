@@ -7,7 +7,7 @@ namespace App\DTO;
 
 use Carbon\Carbon;
 
-class VacationRequestDTO
+class VacationRequestDTO implements \JsonSerializable
 {
     private int $id;
     private Carbon $startDate;
@@ -90,8 +90,8 @@ class VacationRequestDTO
     {
         return [
             'id'             => $this->getId(),
-            'start_date'     => $this->getStartDate(),
-            'end_date'       => $this->getEndDate(),
+            'start_date'     => $this->getStartDate()->format('Y-m-d'),
+            'end_date'       => $this->getEndDate()->format('Y-m-d'),
             'number_of_days' => $this->getNumberOfDays(),
             'type'           => $this->getType(),
             'is_approved'    => $this->isApproved(),

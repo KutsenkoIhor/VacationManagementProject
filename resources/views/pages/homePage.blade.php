@@ -1,7 +1,7 @@
 @extends('templates.mainPageTemplate')
 
 @section('content')
-<pre>
+    <pre>
     USER:
         Employee, HR, PM, System Administrator
     TASK:
@@ -30,20 +30,17 @@
                                     <p class="text-sm font-medium text-gray-600">{{$userParameters->getEmail()}}</p>
                                 </div>
                             </div>
-                            <div class="mt-5 flex justify-center sm:mt-0">
-                                <a href="{{route('vacations.create.form')}}"
-                                   class="flex justify-center items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
-                                    Create vacation request</a>
-                            </div>
+                            @include('vacations.creation_modal_window')
                         </div>
                     </div>
                     <div
                         class="border-t border-gray-200 bg-gray-50 grid grid-cols-1 divide-y divide-gray-200 sm:grid-cols-3 sm:divide-y-0 sm:divide-x">
                         @foreach($vacationDaysLeft as $type => $vacationDayLeft)
-                        <div class="px-6 py-5 text-sm font-medium text-center">
-                            <span class="text-gray-900">{{ $vacationDayLeft }} {{ (str_replace("_", " ", ucfirst(strtolower($type)))) }} left
+                            <div class="px-6 py-5 text-sm font-medium text-center">
+                            <span
+                                class="text-gray-900">{{ $vacationDayLeft }} {{ (str_replace("_", " ", ucfirst(strtolower($type)))) }} left
                             </span>
-                        </div>
+                            </div>
                         @endforeach
 
                     </div>

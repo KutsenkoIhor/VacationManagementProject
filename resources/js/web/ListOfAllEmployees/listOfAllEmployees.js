@@ -1,7 +1,4 @@
-// set the background of the sidebar button
-document.getElementById("sideBar_list_of_all_employees").classList.add("active");
-// set the background of the sidebar svg
-document.getElementById("sideBar_list_of_all_employees_svg").classList.add("active");
+
 
 //-----------------------------------------/listOfAllEmployees/-----------------------------------------
 if(window.location.pathname === '/listOfAllEmployees'){
@@ -403,6 +400,7 @@ if(window.location.pathname === '/listOfAllEmployees'){
             }
         });
 
+
         $.ajax({
             method: "POST",
             url: url,
@@ -801,8 +799,10 @@ if(window.location.pathname === '/listOfAllEmployees'){
 
     function reviewHistoryVacationUser(userId)
     {
-        modalWindowVacationHistory.classList.add('active')
+        // modalWindowVacationHistory.classList.add('active')
         console.log(userId);
+
+        location.assign('/vacations/history/' + userId);
     }
 
     function updateUser()

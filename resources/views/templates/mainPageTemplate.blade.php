@@ -6,7 +6,6 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <script src="{{asset('js/jquery.js')}}"></script>
-    @yield('custom_styles')
     <title>Vacation Management</title>
     <link rel="shortcut icon" href="{{"/image/vacation.svg"}}" type="image/svg">
 </head>
@@ -223,19 +222,18 @@
                         Home
                     </a>
 
-                    @hasrole('Employee')
-                    <a href="{{route('vacations.create.form')}}" id="sideBar_vacations"
-                       class="sidebar_button_bg text-gray-300 hover:text-white hover:bg-gray-700 group flex items-center px-2 py-2 text-sm leading-6 font-medium rounded-md">
-                        <svg id="sideBar_vacations_svg" class="mr-4 h-6 w-6 svg-text-gray-400 group-hover:text-white" xmlns="http://www.w3.org/2000/svg" fill="none"
-                             viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                  d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                        </svg>
-                        Vacation Request
-                    </a>
-                    @endhasrole
+{{--                    @hasrole('Employee')--}}
+{{--                    <a href="{{route('vacations.create.form')}}" id="sideBar_vacations"--}}
+{{--                       class="sidebar_button_bg text-gray-300 hover:text-white hover:bg-gray-700 group flex items-center px-2 py-2 text-sm leading-6 font-medium rounded-md">--}}
+{{--                        <svg id="sideBar_vacations_svg" class="mr-4 h-6 w-6 svg-text-gray-400 group-hover:text-white" xmlns="http://www.w3.org/2000/svg" fill="none"--}}
+{{--                             viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">--}}
+{{--                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"--}}
+{{--                                  d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>--}}
+{{--                        </svg>--}}
+{{--                        Vacation Request--}}
+{{--                    </a>--}}
+{{--                    @endhasrole--}}
 
-                    @hasrole('Employee')
                     <a href="{{ route('vacations.requestHistory') }}" id="sideBar_vacations_history"
                        class="sidebar_button_bg text-gray-300 hover:text-white hover:bg-gray-700 group flex items-center px-2 py-2 text-sm leading-6 font-medium rounded-md">
                         <svg id="sideBar_vacations_history_svg" class="mr-4 flex-shrink-0 h-6 w-6 svg-text-gray-400 group-hover:text-white" xmlns="http://www.w3.org/2000/svg"
@@ -243,9 +241,8 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                   d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
                         </svg>
-                        Vacation Request History
+                        My Vacation Requests
                     </a>
-                    @endhasrole
 
                     @hasanyrole('PM|HR')
                     <a href="{{ route('vacations.requests') }}" id="sideBar_vacations_requests"
@@ -255,7 +252,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                   d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
                         </svg>
-                        Vacation Requests
+                        Employees Vacation Requests
                     </a>
                     @endhasanyrole
 
@@ -279,27 +276,37 @@
                         List of all employees
                     </a>
 
+                    <a href="{{route('page.listPm')}}" id="sideBar_PM_manage"
+                       class="sidebar_button_bg text-gray-300 hover:text-white hover:bg-gray-700 group flex items-center px-2 py-2 text-sm leading-6 font-medium rounded-md">
+                        <svg id="sideBar_PM_manage_svg" class="mr-4 flex-shrink-0 h-6 w-6 svg-text-gray-400 group-hover:text-white" xmlns="http://www.w3.org/2000/svg"
+                             fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                        </svg>
+                        PM management
+                    </a>
+
+                    <a href="{{route('page.listHr')}}" id="sideBar_HR_manage"
+                       class="sidebar_button_bg text-gray-300 hover:text-white hover:bg-gray-700 group flex items-center px-2 py-2 text-sm leading-6 font-medium rounded-md">
+                        <svg id="sideBar_HR_manage_svg" class="mr-4 flex-shrink-0 h-6 w-6 svg-text-gray-400 group-hover:text-white" xmlns="http://www.w3.org/2000/svg"
+                             fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                        </svg>
+                        HR management
+                    </a>
+
                     @role('System Admin')
                     <a href="{{route('holidays.index')}}" id="sideBar_public_holiday"
                        class="sidebar_button_bg text-gray-300 hover:text-white hover:bg-gray-700 group flex items-center px-2 py-2 text-sm leading-6 font-medium rounded-md">
-                        <svg id="sideBar_public_holiday_svg" class="mr-4 flex-shrink-0 h-6 w-6 svg-text-gray-400 group-hover:text-white" xmlns="http://www.w3.org/2000/svg"
+                        <svg id="sideBar_Public_holidays_svg" class="mr-4 flex-shrink-0 h-6 w-6 svg-text-gray-400 group-hover:text-white" xmlns="http://www.w3.org/2000/svg"
                              fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                  d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                         </svg>
                         Public Holidays
                     </a>
                     @endrole
 
-                    <a href="{{route('page.manageHRandPM')}}" id="sideBar_manage_HR_and_PM"
-                       class="sidebar_button_bg text-gray-300 hover:text-white hover:bg-gray-700 group flex items-center px-2 py-2 text-sm leading-6 font-medium rounded-md">
-                        <svg id="sideBar_manage_HR_and_PM_svg" class="svg-text-gray-400 group-hover:text-white mr-4 flex-shrink-0 h-6 w-6 " xmlns="http://www.w3.org/2000/svg"
-                             fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                  d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-                        </svg>
-                        Manage HRs and PMs
-                    </a>
 
                     @if(auth()->user()->can('show countries') || auth()->user()->can('show cities'))
 
@@ -329,7 +336,7 @@
                             Settings
                         </a>
 
-                        @endif
+                    @endif
 
                 </div>
                 <div class="mt-6 pt-6">
@@ -367,11 +374,10 @@
         </main>
     </div>
 
+
 </div>
 </body>
 
 <script src="{{ asset('js/app.js') }}">
 </script>
-
-{{--<script src="{{asset('https://unpkg.com/flowbite@1.4.2/dist/datepicker.js')}}"></script>--}}
 </html>

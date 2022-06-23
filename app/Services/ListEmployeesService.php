@@ -15,6 +15,7 @@ use App\Repositories\Interfaces\RoleRepositoryInterface;
 use App\Repositories\Interfaces\UserRepositoryInterface;
 use App\Repositories\Interfaces\VacationDaysLeftRepositoryInterface;
 use App\Repositories\Interfaces\VacationDaysPerYearRepositoryInterface;
+use App\Services\Vacation\NumberOfDaysCalculationService;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -32,6 +33,7 @@ class ListEmployeesService
     private VacationDaysLeftRepositoryInterface $vacationDaysLeftRepository;
     private VacationDaysPerYearRepositoryInterface $vacationDaysPerYearRepository;
     private ListEmployeesHandler $listEmployeesHandler;
+    private NumberOfDaysCalculationService $service;
 
 
     public function __construct(
@@ -46,6 +48,7 @@ class ListEmployeesService
         VacationDaysLeftRepositoryInterface    $vacationDaysLeftRepository,
         VacationDaysPerYearRepositoryInterface $vacationDaysPerYearRepository,
         ListEmployeesHandler                   $listEmployeesHandler,
+        NumberOfDaysCalculationService         $service
     )
     {
         $this->roleFactory = $roleFactory;
@@ -59,6 +62,7 @@ class ListEmployeesService
         $this->vacationDaysLeftRepository = $vacationDaysLeftRepository;
         $this->vacationDaysPerYearRepository = $vacationDaysPerYearRepository;
         $this->listEmployeesHandler = $listEmployeesHandler;
+        $this->service = $service;
     }
 
     /**
@@ -130,6 +134,7 @@ class ListEmployeesService
         $userInformation['vacation days per year'] = $userModel->vacationDaysPerYear ? $userModel->vacationDaysPerYear->vacations : null;
         $userInformation['personal days per year'] = $userModel->vacationDaysPerYear ? $userModel->vacationDaysPerYear->personal_days : null;
         $userInformation['sick days per year'] = $userModel->vacationDaysPerYear ? $userModel->vacationDaysPerYear->sick_days: null;
+
         return $userInformation;
     }
 
@@ -314,6 +319,7 @@ class ListEmployeesService
             $userInformation[$userID]['vacation days per year'] = $userModel->vacationDaysPerYear ? $userModel->vacationDaysPerYear->vacations : null;
             $userInformation[$userID]['personal days per year'] = $userModel->vacationDaysPerYear ? $userModel->vacationDaysPerYear->personal_days : null;
             $userInformation[$userID]['sick days per year'] = $userModel->vacationDaysPerYear ? $userModel->vacationDaysPerYear->sick_days: null;
+            $userInformation[$userID]['working days'] = $this->service->getNumberOfWorkingDaysByUserIdPerMonth($userID);
         }
         $dataInformation = [];
         $dataInformation['userInfo'] = $userInformation;

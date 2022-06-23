@@ -2,11 +2,13 @@
 
 use App\Http\Controllers\CitiesController;
 use App\Http\Controllers\CountriesController;
-use App\Http\Controllers\HomePageController;
-use App\Http\Controllers\ListEmployeesController;
-use App\Http\Controllers\RoleController;
 use App\Http\Controllers\DomainsController;
+use App\Http\Controllers\HomePageController;
+use App\Http\Controllers\HrManagementController;
+use App\Http\Controllers\ListEmployeesController;
+use App\Http\Controllers\PmManagementController;
 use App\Http\Controllers\PublicHolidaysController;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SocialController;
 use App\Http\Controllers\VacationController;
 use App\Http\Controllers\VacationRequestController;
@@ -38,15 +40,6 @@ Route::name('page.')->group(function () {
         return view('pages.holidayRequestPage');
     })->middleware('auth')->name('holidayRequest');
 
-    Route::get('/vacationsHistory', function () {
-        return view('pages.vacationsHistoryPage');
-    })->middleware('auth')->name('vacationsHistory');
-
-    Route::get('/overviewAllUserInVacation', function () {
-        return view('pages.overviewAllUserInVacationPage');
-    })->middleware('auth')->name('overviewAllUserInVacation');
-
-
     Route::prefix('/listOfAllEmployees')->middleware('auth')->group(function () {
         Route::get('/', [ListEmployeesController::class, 'listEmployees'])->name('listOfAllEmployees');
         Route::post('/addUser', [ListEmployeesController::class, 'addUser']);
@@ -58,12 +51,23 @@ Route::name('page.')->group(function () {
         Route::post('/createEmployeeDataTable', [ListEmployeesController::class, 'getPaginateAndElasticsearchData']);
     });
 
-    Route::get('/manageHRandPM', function () {
-        return view('pages.manageHRandPMPage');
-    })->middleware('auth')->name('manageHRandPM');
+    Route::prefix('/managementPM')->middleware('auth')->group(function () {
+        Route::get('/',[PmManagementController::class, 'listPm'])->name('listPm');
+        Route::get('/listPm',[PmManagementController::class, 'createListPm']);
+        Route::post('/teamPm',[PmManagementController::class, 'createTeamPm']);
+        Route::post('/teamPm/addEmployee', [PmManagementController::class, 'addEmployeeInTeam']);
+        Route::post('/teamPm/deleteEmployee', [PmManagementController::class, 'removeEmployeeFromTeam']);
+    });
 
+    Route::prefix('/managementHR')->middleware('auth')->group(function () {
+        Route::get('/',[HrManagementController::class, 'listHr'])->name('listHr');
+    });
 
-    Route::get('Page', function () {
+    Route::get('/publicHoliday', function () {
+        return view('pages.publicHolidayPage');
+    })->middleware('auth')->name('publicHoliday');
+
+    Route::get('/settingsPage', function () {
         return view('pages.settingsPage');
     })->middleware('auth')->name('settingsPage');
 
@@ -74,16 +78,14 @@ Route::name('page.')->group(function () {
 });
 
 Route::prefix('vacations')->name('vacations.')->middleware('auth')->group(function () {
-    Route::post('/', [VacationRequestController::class, 'createVacationRequest'])->name('create');
-    Route::get('/', function () {
-        return view('vacations/creation');
-    })->name('create.form');
 
     Route::get('/upcoming', [VacationController::class, 'getUpcomingVacations'])->name('upcoming');
 
+    Route::get('/history/{id}', [VacationController::class, 'getVacationsByUserId'])->name('history');
+
     Route::get('/requestHistory', [VacationRequestController::class, 'getVacationRequestsByUserId'])->name('requestHistory');
 
-    Route::get('/requests', [VacationRequestController::class, 'getVacationRequestsForApproval'])->name('requests');
+    Route::get('/requests', [VacationRequestController::class, 'getEmployeesVacationRequests'])->name('requests');
 });
 
 

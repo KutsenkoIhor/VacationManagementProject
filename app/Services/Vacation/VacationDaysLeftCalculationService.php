@@ -2,22 +2,21 @@
 
 declare(strict_types=1);
 
-
 namespace App\Services\Vacation;
 
 use App\Models\Vacation;
 use App\Models\VacationDaysPerYear;
-use App\Repositories\VacationRepository;
+use App\Repositories\Interfaces\VacationRepositoryInterface;
 use Carbon\Carbon;
 
 class VacationDaysLeftCalculationService
 {
-    private VacationRepository $repository;
+    private VacationRepositoryInterface $interface;
     private NumberOfDaysCalculationService $service;
 
-    public function __construct(VacationRepository $repository, NumberOfDaysCalculationService $service)
+    public function __construct(VacationRepositoryInterface $interface, NumberOfDaysCalculationService $service)
     {
-        $this->repository = $repository;
+        $this->interface = $interface;
         $this->service = $service;
     }
 
@@ -35,7 +34,7 @@ class VacationDaysLeftCalculationService
 
     private function calculateVacationDaysLeft(int $userId, Carbon $date, string $type, int $default): int
     {
-        $vacationsPerYear = $this->repository->getVacationsPerYear($userId, $date, $type);
+        $vacationsPerYear = $this->interface->getVacationsPerYear($userId, $date, $type);
 
         $numberOfDaysSum = 0;
 

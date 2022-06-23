@@ -4,13 +4,11 @@ declare(strict_types=1);
 
 namespace App\Repositories;
 
-
 use App\Factories\VacationFactory;
 use App\Models\Vacation;
 use App\Models\VacationRequest;
 use App\Repositories\Interfaces\VacationRepositoryInterface;
 use Carbon\Carbon;
-
 
 class VacationRepository implements VacationRepositoryInterface
 {
@@ -43,7 +41,7 @@ class VacationRepository implements VacationRepositoryInterface
         return $this->vacationFactory->makeDTOFromModelCollection(
             Vacation::whereBetween('start_date', [$startDate, $endDate])
                 ->orWhereBetween('end_date', [$startDate,  $endDate])
-                ->with('user') //TODO think about performance
+                ->with('user')
                 ->get()
         );
     }
@@ -71,5 +69,12 @@ class VacationRepository implements VacationRepositoryInterface
             })
             ->get()
             ->toArray();
+    }
+
+    public function getVacationsByUserId(int $userId): array
+    {
+        //TODO: include to a list of all employees
+        //TODO: think about filter (f.e. per month)
+        return $this->vacationFactory->makeDTOFromModelCollection(Vacation::where('user_id', $userId)->get());
     }
 }

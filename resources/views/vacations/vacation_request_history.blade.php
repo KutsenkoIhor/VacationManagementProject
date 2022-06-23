@@ -1,11 +1,12 @@
 @extends('templates.mainPageTemplate')
 
 @section('content')
-
     <div class="sm:flex sm:items-center">
         <div class="sm:flex-auto">
-            <p class="mt-2 text-lg text-gray-800">A list of all your vacation requests.</p>
-
+            <div class="flex justify-between">
+                <p class="text-lg text-gray-800">A list of all your vacation requests.</p>
+                @include('vacations.creation_modal_window')
+            </div>
             <div class="mt-3 flex flex-col">
                 <div class="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
                     <div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
@@ -37,6 +38,13 @@
                                         class="py-3.5 pl-4 pr-4 text-center text-xs font-medium uppercase text-gray-700 sm:pr-6">
                                         Is_approved
                                     </th>
+
+                                    @hasrole('Employee')
+                                    <th scope="col"
+                                        class="py-3.5 pl-4 pr-4 text-center text-xs font-medium uppercase text-gray-700 sm:pr-6">
+                                        Cancel
+                                    </th>
+                                    @endhasrole
                                 </tr>
                                 </thead>
                                 <tbody class="divide-y divide-gray-200 bg-white">
@@ -44,14 +52,26 @@
                                     <tr>
                                         <td class="whitespace-nowrap py-4 pl-4 pr-4 text-sm text-center text-gray-600 sm:pl-6">{{ $vacationRequest->getStartDate()->format('Y-m-d') }}</td>
                                         <td class="whitespace-nowrap p-4 text-sm text-center text-gray-600">{{ $vacationRequest->getEndDate()->format('Y-m-d') }}</td>
-                                        <td class="whitespace-nowrap p-4 text-sm text-center text-gray-600">{{ $vacationRequest->getType() }}</td>
+                                        <td class="whitespace-nowrap p-4 text-sm text-center text-gray-600">{{ str_replace("_", " ", ucfirst(strtolower($vacationRequest->getType()))) }}</td>
                                         <td class="whitespace-nowrap p-4 text-sm text-center text-gray-600">{{ $vacationRequest->getNumberOfDays() }}</td>
                                         <td class="whitespace-nowrap p-4 text-sm text-center text-gray-600">{{ $vacationRequest->getCreatedAt() }}</td>
                                         <td class="whitespace-nowrap p-4 text-sm text-center text-gray-600">
-                                    <span
-                                        class="inline-flex rounded-full bg-indigo-100 px-2 text-xs font-semibold leading-5 text-indigo-800">{{ $vacationRequest->isApproved() }}
-                                    </span>
+                                            <span
+                                                class="inline-flex rounded-full bg-indigo-100 px-2 text-xs font-semibold leading-5 text-indigo-800">{{ $vacationRequest->isApproved() }}
+                                            </span>
                                         </td>
+
+                                        @if($vacationRequest->isApproved() == null)
+                                        @hasrole('Employee')
+                                        <td class="whitespace-nowrap py-4 pl-4 pr-4 text-center text-sm text-gray-600 sm:pr-6">
+                                            <form method="POST">
+                                                <button type="button" vacation-request-id="{{$vacationRequest->getId()}}"
+                                                        class="cancelButton inline-flex rounded-full bg-red-100 px-2 text-sm leading-5 text-red-900">Cancel
+                                                </button>
+                                            </form>
+                                        </td>
+                                        @endhasrole
+                                        @endif
                                     </tr>
                                 @endforeach
                                 </tbody>
@@ -61,5 +81,6 @@
                 </div>
             </div>
         </div>
+    </div>
 
 @endsection

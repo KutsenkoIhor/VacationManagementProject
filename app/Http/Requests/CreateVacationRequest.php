@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Http\Requests;
 
-use App\Models\Vacation;
 use App\Models\VacationRequest;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -19,7 +18,6 @@ class CreateVacationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            '_token'  => 'required|string',
 //            'start_date'     => 'required|date|after_or_equal:now', //TODO fix
             'start_date'     => 'required|date_format:"Y-m-d"',
             'end_date'       => 'required|date_format:"Y-m-d"|after:start_date',

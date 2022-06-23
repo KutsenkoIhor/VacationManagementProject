@@ -7,6 +7,7 @@ namespace App\Notifications;
 use App\DTO\VacationRequestDTO;
 use App\Mail\ApproveVacationRequestEmail;
 use Illuminate\Bus\Queueable;
+use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
 class ApproveVacationRequestNotification extends Notification
@@ -27,6 +28,15 @@ class ApproveVacationRequestNotification extends Notification
 
     public function toMail()
     {
-        return new ApproveVacationRequestEmail($this->vacationRequestDTO);
+        return (new MailMessage())
+            ->view(
+                'emails.approve_vacation_request_email',
+                [
+                    'last_name'  => $this->vacationRequestDTO->getUser()->getLastName(),
+                    'first_name' => $this->vacationRequestDTO->getUser()->getFirstName(),
+                    'start_date' => $this->vacationRequestDTO->getStartDate()->format('Y-m-d'),
+                    'end_date'   =>  $this->vacationRequestDTO->getEndDate()->format('Y-m-d')
+                ]
+            );
     }
 }

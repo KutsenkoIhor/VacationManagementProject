@@ -4,7 +4,6 @@
     <meta charset="utf-8" />
 </head>
 <body>
-<h2>Test Email</h2>
-<p>Vacation request id: {{ $vac_id }}</p>
+<p>Vacation request for {{ $last_name }} {{ $first_name }} from {{ $start_date }} to {{ $end_date }} got approved!</p>
 </body>
 </html>

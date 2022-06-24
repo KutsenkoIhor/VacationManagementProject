@@ -13,8 +13,8 @@ interface CountriesRepositoryInterface
     public function all();
     public function allCollection(): Collection;
     public function getById(int $id): CountryDTO;
-    public function add($request): void;
-    public function update(int $id, $request): void;
+    public function store(string $title): void;
+    public function update(int $id, string $title): void;
     public function delete(int $id);
     public function orderBy(string $colum): Collection;
     public function searchByCountry(string $country): Country;

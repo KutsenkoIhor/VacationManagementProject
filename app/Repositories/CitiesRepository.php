@@ -29,15 +29,21 @@ class CitiesRepository implements CitiesRepositoryInterface
         return $this->cityFactory->makeDTOFromModel(City::findOrFail($id));
     }
 
-    public function add($request): void
+    public function store(string $title, int $country_id): void
     {
-        City::create($request->all());
+        City::create([
+            'title' => $title,
+            'country_id' => $country_id,
+        ]);
     }
 
-    public function update(int $id, $request): void
+    public function update(int $id, string $title, int $country_id): void
     {
         $city = City::findOrFail($id);
-        $city->update($request->all());
+        $city->update([
+            'title' => $title,
+            'country_id' => $country_id,
+        ]);
     }
 
     public function delete(int $id): void
@@ -61,5 +67,10 @@ class CitiesRepository implements CitiesRepositoryInterface
     public function searchIdByCity(string $city): int|null
     {
         return City::where('title', $city)->first()->id;
+    }
+
+    public function searchCityByCountryId(int $countryId)
+    {
+        return City::where('country_id', $countryId)->first();
     }
 }

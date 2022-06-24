@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('country_holidays', function (Blueprint $table) {
             $table->id();
+            $table->string('title');
             $table->unsignedBigInteger('country_id');
             $table->dateTime('holiday_date');
 

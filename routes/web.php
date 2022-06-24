@@ -7,6 +7,7 @@ use App\Http\Controllers\HomePageController;
 use App\Http\Controllers\HrManagementController;
 use App\Http\Controllers\ListEmployeesController;
 use App\Http\Controllers\PmManagementController;
+use App\Http\Controllers\PublicHolidaysController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SocialController;
 use App\Http\Controllers\VacationController;
@@ -59,7 +60,7 @@ Route::name('page.')->group(function () {
     });
 
     Route::prefix('/managementHR')->middleware('auth')->group(function () {
-        Route::get('/',[HRManagementController::class, 'listHr'])->name('listHr');
+        Route::get('/',[HrManagementController::class, 'listHr'])->name('listHr');
     });
 
     Route::get('/publicHoliday', function () {
@@ -88,26 +89,28 @@ Route::prefix('vacations')->name('vacations.')->middleware('auth')->group(functi
 });
 
 
-//Settings
-Route::middleware(['auth'])->group(function () {
-//Countries
-    Route::get('/settings/countries', [CountriesController::class, 'index'])->middleware('can:show countries')->name('countries.index');
-    Route::get('/settings/countries/add-form', [CountriesController::class, 'addCountryForm'])->middleware('can:add countries')->name('countries.add.form');
-    Route::post('/settings/countries/add', [CountriesController::class, 'addCountry'])->middleware('can:add countries')->name('countries.add');
-    Route::get('/settings/countries/edit-form/{id}', [CountriesController::class, 'editCountryForm'])->middleware('can:edit countries')->name('countries.edit.form');
-    Route::put('/settings/countries/edit/{id}', [CountriesController::class, 'editCountry'])->middleware('can:edit countries')->name('countries.edit');
-    Route::delete('/settings/countries/delete/{id}', [CountriesController::class, 'deleteCountry'])->middleware('can:delete countries')->name('countries.delete');
-//Cities
-    Route::get('/settings/cities', [CitiesController::class, 'index'])->middleware('can:show cities')->name('cities.index');
-    Route::get('/settings/cities/add-form', [CitiesController::class, 'addCityForm'])->middleware('can:add cities')->name('cities.add.form');
-    Route::post('/settings/cities/add', [CitiesController::class, 'addCity'])->middleware('can:add cities')->name('cities.add');
-    Route::get('/settings/cities/edit-form/{id}', [CitiesController::class, 'editCityForm'])->middleware('can:edit cities')->name('cities.edit.form');
-    Route::put('/settings/cities/edit/{id}', [CitiesController::class, 'editCity'])->middleware('can:edit cities')->name('cities.edit');
-    Route::delete('/settings/cities/delete/{id}', [CitiesController::class, 'deleteCity'])->middleware('can:delete cities')->name('cities.delete');
+// Settings
+Route::prefix('settings')->middleware('auth')->group(function () {
+    // Countries
+    Route::get('/countries', [CountriesController::class, 'index'])->middleware('can:show countries')->name('countries.index');
+    Route::get('/countries/add-form', [CountriesController::class, 'addCountryForm'])->middleware('can:add countries')->name('countries.add.form');
+    Route::post('/countries/add', [CountriesController::class, 'addCountry'])->middleware('can:add countries')->name('countries.add');
+    Route::get('/countries/edit-form/{id}', [CountriesController::class, 'editCountryForm'])->middleware('can:edit countries')->name('countries.edit.form');
+    Route::put('/countries/edit/{id}', [CountriesController::class, 'editCountry'])->middleware('can:edit countries')->name('countries.edit');
+    Route::delete('/countries/delete/{id}', [CountriesController::class, 'deleteCountry'])->middleware('can:delete countries')->name('countries.delete');
+    // Cities
+    Route::get('/cities', [CitiesController::class, 'index'])->middleware('can:show cities')->name('cities.index');
+    Route::get('/cities/add-form', [CitiesController::class, 'addCityForm'])->middleware('can:add cities')->name('cities.add.form');
+    Route::post('/cities/add', [CitiesController::class, 'addCity'])->middleware('can:add cities')->name('cities.add');
+    Route::get('/cities/edit-form/{id}', [CitiesController::class, 'editCityForm'])->middleware('can:edit cities')->name('cities.edit.form');
+    Route::put('/cities/edit/{id}', [CitiesController::class, 'editCity'])->middleware('can:edit cities')->name('cities.edit');
+    Route::delete('/cities/delete/{id}', [CitiesController::class, 'deleteCity'])->middleware('can:delete cities')->name('cities.delete');
+    // Roles
+    Route::resource('/roles', RoleController::class)->middleware('role:System Admin');
+    // Domains
+    Route::resource('/domains', DomainsController::class)->middleware('role:System Admin');
 });
 
-//Roles
-
-Route::resource('settings/roles', RoleController::class)->middleware('role:System Admin');
-Route::resource('settings/domains', DomainsController::class)->middleware('role:System Admin');
+// Public Holidays
+Route::resource('/holidays', PublicHolidaysController::class)->middleware('role:System Admin');
 

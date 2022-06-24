@@ -8,7 +8,7 @@ interface DomainsRepositoryInterface
 {
     public function all();
     public function getById(int $id);
-    public function store($request);
-    public function update(int $id, $request);
+    public function store(string $name);
+    public function update(int $id, string $name);
     public function delete(int $id);
 }

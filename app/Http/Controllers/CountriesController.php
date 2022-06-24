@@ -6,55 +6,60 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\AddCountryRequest;
 use App\Http\Requests\EditCountryRequest;
-use App\Repositories\Interfaces\CountriesRepositoryInterface;
+use App\Services\Settings\CountriesService;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Routing\Redirector;
 
 class CountriesController extends Controller
 {
-    private $countriesRepository;
+    private CountriesService $countriesService;
 
-    public function __construct(CountriesRepositoryInterface$countriesRepository)
+    public function __construct(CountriesService $countriesService)
     {
-        $this->countriesRepository = $countriesRepository;
+        $this->countriesService = $countriesService;
     }
 
-    public function index()
+    public function index(): Factory|View|Application
     {
-        $countries = $this->countriesRepository->all();
+        $countries = $this->countriesService->all();
 
         return view('settings.countries.index', ['countries' => $countries]);
     }
 
-    public function addCountryForm()
+    public function addCountryForm(): View
     {
         return view('settings.countries.create');
     }
 
-    public function addCountry(AddCountryRequest $request)
+    public function addCountry(AddCountryRequest $request): Redirector|RedirectResponse|Application
     {
-        $this->countriesRepository->add($request);
+        $this->countriesService->store($request);
 
         return redirect(route('countries.index'))->with('status', 'Country added!');
     }
 
-    public function editCountryForm(int $id)
+    public function editCountryForm(int $id): Factory|View|Application
     {
-        $country = $this->countriesRepository->getById((int)$id);
+        $country = $this->countriesService->getById($id);
 
         return view('settings.countries.edit', compact([
             'country'
         ]));
     }
 
-    public function editCountry(int $id, EditCountryRequest $request)
+    public function editCountry(int $id, EditCountryRequest $request): Redirector|RedirectResponse|Application
     {
-        $this->countriesRepository->update((int) $id, $request);
+        $this->countriesService->update($id, $request);
 
         return redirect(route('countries.index'))->with('status', 'Country edited!');
     }
 
-    public function deleteCountry(int $id)
+    public function deleteCountry(int $id): Redirector|RedirectResponse|Application
     {
-        if ($this->countriesRepository->delete((int)$id) === false){
+        if ($this->countriesService->delete($id) === false){
             return redirect(route('countries.index'))->with('status', 'Error! Cities exist!');
         }
 

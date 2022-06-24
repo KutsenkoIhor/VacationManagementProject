@@ -7,6 +7,7 @@ namespace App\Models;
 
 /**
  * @property int $id
+ * @property string $title
  * @property int $country_id
  * @property Carbon $holiday_date
  * @property Country $country;
@@ -20,6 +21,14 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class CountryHoliday extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'title',
+        'country_id',
+        'holiday_date',
+    ];
+
+    public $timestamps = false;
 
     public function country(): BelongsTo
     {

@@ -296,18 +296,22 @@
                         HR management
                     </a>
 
-                    <a href="{{route('page.publicHoliday')}}" id="sideBar_public_holiday"
+                    @role('System Admin')
+                    <a href="{{route('holidays.index')}}" id="sideBar_public_holiday"
                        class="sidebar_button_bg text-gray-300 hover:text-white hover:bg-gray-700 group flex items-center px-2 py-2 text-sm leading-6 font-medium rounded-md">
-                        <svg id="sideBar_public_holiday_svg" class="mr-4 flex-shrink-0 h-6 w-6 svg-text-gray-400 group-hover:text-white" xmlns="http://www.w3.org/2000/svg"
+                        <svg id="sideBar_Public_holidays_svg" class="mr-4 flex-shrink-0 h-6 w-6 svg-text-gray-400 group-hover:text-white" xmlns="http://www.w3.org/2000/svg"
                              fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                  d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                         </svg>
                         Public Holidays
                     </a>
+                    @endrole
 
-                    <a href="{{route('countries.index')}}" id="sideBar_settings_page"
-                       class="sidebar_button_bg text-gray-300 hover:text-white hover:bg-gray-700 group flex items-center px-2 py-2 text-sm leading-6 font-medium rounded-md">
+
+                    @if(auth()->user()->can('show countries') || auth()->user()->can('show cities'))
+
+                        <a href="@if(auth()->user()->can('show countries')){{route('countries.index')}} @else {{route('cities.index')}} @endif" id="sideBar_settings_page"
+                            class="sidebar_button_bg text-gray-300 hover:text-white hover:bg-gray-700 group flex items-center px-2 py-2 text-sm leading-6 font-medium rounded-md">
                         <svg id="sideBar_settings_page_svg" class="svg-text-gray-400 group-hover:text-white mr-4 h-6 w-6 " xmlns="http://www.w3.org/2000/svg" fill="none"
                              viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -316,7 +320,24 @@
                                   d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                         </svg>
                         Settings
-                    </a>
+                        </a>
+
+                    @elseif(auth()->user()->role('System Admin'))
+
+                        <a href="{{route('roles.index')}}" id="sideBar_settings_page"
+                           class="sidebar_button_bg text-gray-300 hover:text-white hover:bg-gray-700 group flex items-center px-2 py-2 text-sm leading-6 font-medium rounded-md">
+                            <svg id="sideBar_settings_page_svg" class="svg-text-gray-400 group-hover:text-white mr-4 h-6 w-6 " xmlns="http://www.w3.org/2000/svg" fill="none"
+                                 viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                      d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                      d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                            </svg>
+                            Settings
+                        </a>
+
+                    @endif
+
                 </div>
                 <div class="mt-6 pt-6">
                     <div class="px-2 space-y-1">

@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class AddCityRequest extends FormRequest
+class EditPublicHolidayRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,19 +24,19 @@ class AddCityRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'required|string|max:255|unique:App\Models\City',
+            'title' => 'string|max:255',
             'country_id' => 'required|exists:App\Models\Country,id',
+            'date' => 'required|date|after:today',
         ];
     }
 
     public function messages()
     {
         return [
-            'title.required' => 'A City field is required',
-            'title.string' => 'A City field must be string',
-            'title.unique' => 'This City exists',
-            'title.max' => 'The City name must not be greater than 255 characters',
-            'country_id.required' => 'The Country of City is required',
+            'title.required' => 'A Holiday field is required',
+            'title.string' => 'A Holiday field must be string',
+            'title.max' => 'The Holiday name must not be greater than 255 characters',
+            'country_id.required' => 'The Country of Holiday is required',
             'country_id.exists' => 'This Country does not exist',
         ];
     }

@@ -6,24 +6,29 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\AddDomainRequest;
 use App\Http\Requests\EditDomainRequest;
-use App\Repositories\Interfaces\DomainsRepositoryInterface;
+use App\Services\Settings\DomainsService;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Routing\Redirector;
 
 class DomainsController extends Controller
 {
-    private $domainRepository;
+    private DomainsService $domainsService;
 
-    public function __construct(DomainsRepositoryInterface $domainsRepository)
+    public function __construct(DomainsService $domainsService)
     {
-        $this->domainRepository = $domainsRepository;
+        $this->domainsService = $domainsService;
     }
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(): Factory|View|Application
     {
-        $domains = $this->domainRepository->all();
+        $domains = $this->domainsService->all();
 
         return view('settings.domains.index', ['domains' => $domains]);
     }
@@ -33,7 +38,7 @@ class DomainsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(): Factory|View|Application
     {
         return view('settings.domains.create');
     }
@@ -44,22 +49,11 @@ class DomainsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(AddDomainRequest $request)
+    public function store(AddDomainRequest $request): Redirector|RedirectResponse|Application
     {
-        $this->domainRepository->store($request);
+        $this->domainsService->store($request);
 
         return redirect(route('domains.index'))->with('status', 'Allowed domain added!');
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
     }
 
     /**
@@ -68,9 +62,9 @@ class DomainsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(int $id)
+    public function edit(int $id): Factory|View|Application
     {
-        $domain = $this->domainRepository->getById((int) $id);
+        $domain = $this->domainsService->getById($id);
 
         return view('settings.domains.edit', compact([
             'domain',
@@ -84,9 +78,9 @@ class DomainsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(int $id, EditDomainRequest $request)
+    public function update(int $id, EditDomainRequest $request): Redirector|RedirectResponse|Application
     {
-        $this->domainRepository->update((int) $id, $request);
+        $this->domainsService->update($id, $request);
 
         return redirect(route('domains.index'))->with('status', 'Allowed domain edited!');
     }
@@ -97,9 +91,9 @@ class DomainsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(int $id): Redirector|RedirectResponse|Application
     {
-        $this->domainRepository->delete((int) $id);
+        $this->domainsService->delete($id);
 
         return redirect(route('domains.index'))->with('status', 'Allowed domain deleted!');
     }

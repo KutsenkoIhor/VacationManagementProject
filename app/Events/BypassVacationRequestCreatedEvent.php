@@ -4,21 +4,22 @@ declare(strict_types=1);
 
 namespace App\Events;
 
+use App\DTO\UserDTO;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class DenyVacationRequestEvent
+class BypassVacationRequestCreatedEvent
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public int $vacationRequestId;
-    public int $userId;
+    public UserDTO $userDTO;
 
-    public function __construct(int $vacationRequestId, int $userId)
+    public function __construct(int $vacationRequestId, UserDTO $userDTO)
     {
         $this->vacationRequestId = $vacationRequestId;
-        $this->userId = $userId;
+        $this->userDTO = $userDTO;
     }
 
     public function getVacationRequestId(): int
@@ -26,8 +27,8 @@ class DenyVacationRequestEvent
         return $this->vacationRequestId;
     }
 
-    public function getUserId(): int
+    public function getUser(): UserDTO
     {
-        return $this->userId;
+        return $this->userDTO;
     }
 }

@@ -8,9 +8,9 @@ use App\Services\Vacation\BypassApprovalService;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use App\Events\VacationRequestCreatedEvent;
+use App\Events\BypassVacationRequestCreatedEvent;
 
-class BypassApprovalListener
+class BypassVacationRequestCreatedListener
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -21,7 +21,7 @@ class BypassApprovalListener
         $this->bypassApprovalService = $bypassApprovalService;
     }
 
-    public function handle(VacationRequestCreatedEvent $event)
+    public function handle(BypassVacationRequestCreatedEvent $event)
     {
         $this->bypassApprovalService->bypassApproveVacationRequest($event->getVacationRequestId(), $event->getUser());
     }

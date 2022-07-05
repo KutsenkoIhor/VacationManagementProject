@@ -16,6 +16,7 @@ use App\Repositories\Interfaces\UserRepositoryInterface;
 use App\Repositories\Interfaces\VacationDaysLeftRepositoryInterface;
 use App\Repositories\Interfaces\VacationDaysPerYearRepositoryInterface;
 use App\Services\Vacation\NumberOfDaysCalculationService;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -192,6 +193,7 @@ class ListEmployeesService
                     $request->get('vacationDays'),
                     $request->get('personalDays'),
                     $request->get('sickDays'),
+                    Carbon::now()->year
                 );
             });
         } catch (Exception $e) {

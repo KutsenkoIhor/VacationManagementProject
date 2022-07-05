@@ -3,14 +3,23 @@
 namespace App\Providers;
 
 use App\Events\ApproveVacationRequestEvent;
+use App\Events\BypassApprovalVacationRequestEvent;
+use App\Events\CancelVacationRequestEvent;
 use App\Events\CreateVacationRequestApprovalEvent;
+use App\Events\CreateVacationRequestEvent;
 use App\Events\DenyVacationRequestEvent;
-use App\Events\VacationRequestCreatedEvent;
+use App\Events\BypassVacationRequestCreatedEvent;
+use App\Events\EditVacationRequestEvent;
 use App\Listeners\ApproveVacationRequestListener;
-use App\Listeners\BypassApprovalListener;
+use App\Listeners\BypassApprovalVacationRequestListener;
+use App\Listeners\BypassVacationRequestCreatedListener;
+use App\Listeners\CancelVacationRequestListener;
 use App\Listeners\CheckVacationRequestListener;
+use App\Listeners\CreateBypassVacationListener;
 use App\Listeners\CreateVacationListener;
+use App\Listeners\CreateVacationRequestListener;
 use App\Listeners\DenyVacationRequestListener;
+use App\Listeners\EditVacationRequestListener;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -36,8 +45,21 @@ class EventServiceProvider extends ServiceProvider
             ApproveVacationRequestListener::class,
             CreateVacationListener::class,
         ],
-        VacationRequestCreatedEvent::class => [
-            BypassApprovalListener::class
+        BypassVacationRequestCreatedEvent::class => [
+            BypassVacationRequestCreatedListener::class
+        ],
+        BypassApprovalVacationRequestEvent::class => [
+            BypassApprovalVacationRequestListener::class,
+            CreateBypassVacationListener::class
+        ],
+        CreateVacationRequestEvent::class => [
+            CreateVacationRequestListener::class
+        ],
+        EditVacationRequestEvent::class => [
+            EditVacationRequestListener::class
+        ],
+        CancelVacationRequestEvent::class => [
+            CancelVacationRequestListener::class
         ]
     ];
 

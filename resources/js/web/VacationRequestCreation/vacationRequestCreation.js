@@ -22,7 +22,6 @@ function checkClick() {
     })
 }
 
-
 function openCreateModal() {
     const buttonOpenModalCreateVacationRequest = document.getElementsByClassName('button-vacationRequest-open');
 

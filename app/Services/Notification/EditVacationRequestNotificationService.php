@@ -2,16 +2,18 @@
 
 declare(strict_types=1);
 
+
 namespace App\Services\Notification;
 
+
 use App\DTO\VacationRequestDTO;
-use App\Notifications\ApproveVacationRequestNotification;
+use App\Notifications\EditVacationRequestNotification;
 use App\Repositories\Interfaces\CityHrRepositoryInterface;
 use App\Repositories\Interfaces\EmployeesAndPmRepositoryInterface;
 use App\Repositories\Interfaces\UserRepositoryInterface;
 use Illuminate\Support\Facades\Notification;
 
-class ApproveVacationRequestNotificationService
+class EditVacationRequestNotificationService
 {
     private UserRepositoryInterface $userRepositoryInterface;
     private EmployeesAndPmRepositoryInterface $employeesAndPmRepositoryInterface;
@@ -40,7 +42,8 @@ class ApproveVacationRequestNotificationService
                 $this->employeesAndPmRepositoryInterface->getPMModelById($vacationRequestDTO->getUser()->getId()),
                 $this->cityHrRepositoryInterface->getHrAssignedToUser($vacationRequestDTO->getUser()->getCityId())
             ],
-            new ApproveVacationRequestNotification($vacationRequestDTO, $userDTO)
+            new EditVacationRequestNotification($vacationRequestDTO, $userDTO)
         );
     }
+
 }

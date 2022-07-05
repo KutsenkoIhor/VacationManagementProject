@@ -40,4 +40,11 @@ class EmployeesAndPmRepository implements EmployeesAndPmRepositoryInterface
     {
         return EmployeePm::where('employee_id', $idEmployee)->firstOrFail()->getPm;
     }
+
+    public function getEmployeeIDs(int $idPm): array
+    {
+        return EmployeePm::where('pm_id', $idPm)
+            ->pluck('employee_id')
+            ->all();
+    }
 }

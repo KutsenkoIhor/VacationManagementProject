@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Repositories;
 
+use App\DTO\VacationDTO;
 use App\Factories\VacationFactory;
 use App\Models\Vacation;
 use App\Models\VacationRequest;
@@ -73,8 +74,16 @@ class VacationRepository implements VacationRepositoryInterface
 
     public function getVacationsByUserId(int $userId): array
     {
-        //TODO: include to a list of all employees
         //TODO: think about filter (f.e. per month)
         return $this->vacationFactory->makeDTOFromModelCollection(Vacation::where('user_id', $userId)->get());
     }
+
+    public function cancelVacation(int $vacationRequestId): void
+    {
+        /** @var Vacation $vacation */
+        $vacation = Vacation::where('vacation_request_id', $vacationRequestId)->firstOrFail();
+
+        $vacation->delete();
+    }
+
 }

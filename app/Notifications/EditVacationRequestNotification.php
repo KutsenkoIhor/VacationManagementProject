@@ -10,7 +10,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class ApproveVacationRequestNotification extends Notification
+class EditVacationRequestNotification extends Notification
 {
     use Queueable;
 
@@ -32,14 +32,14 @@ class ApproveVacationRequestNotification extends Notification
     {
         return (new MailMessage())
             ->view(
-                'emails.approve_vacation_request_email',
+                'emails.edit_vacation_request_email',
                 [
-                    'employee_last_name'     => $this->vacationRequestDTO->getUser()->getLastName(),
-                    'employee_first_name'    => $this->vacationRequestDTO->getUser()->getFirstName(),
-                    'start_date'             => $this->vacationRequestDTO->getStartDate()->format('Y-m-d'),
-                    'end_date'               =>  $this->vacationRequestDTO->getEndDate()->format('Y-m-d'),
-                    'approved_by_last_name'  => $this->userDTO->getLastName(),
-                    'approved_by_first_name' => $this->userDTO->getFirstName()
+                    'employee_last_name'   => $this->vacationRequestDTO->getUser()->getLastName(),
+                    'employee_first_name'  => $this->vacationRequestDTO->getUser()->getFirstName(),
+                    'start_date'           => $this->vacationRequestDTO->getStartDate()->format('Y-m-d'),
+                    'end_date'             =>  $this->vacationRequestDTO->getEndDate()->format('Y-m-d'),
+                    'edited_by_last_name'  => $this->userDTO->getLastName(),
+                    'edited_by_first_name' => $this->userDTO->getFirstName()
                 ]
             );
     }

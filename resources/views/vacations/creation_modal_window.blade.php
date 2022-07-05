@@ -3,7 +3,6 @@
         class="button-vacationRequest-open flex justify-end px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
     Create Vacation Request
 </button>
-
 <div id="create_vacation_request_modal" class="pop_up pop_up_employee">
     <div class="pop_up_container">
         <div class="pop_up_body_body">

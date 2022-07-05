@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-
 use App\Repositories\Interfaces\UserRepositoryInterface;
 use App\Services\Vacation\VacationDaysLeftCalculationService;
 use Carbon\Carbon;
@@ -18,24 +17,25 @@ use Illuminate\Support\Facades\Auth;
 class HomePageController extends Controller
 {
     private UserRepositoryInterface $userRepository;
+    private VacationDaysLeftCalculationService $service;
 
     /**
      * @param UserRepositoryInterface $userRepository
+     * @param VacationDaysLeftCalculationService $service
      */
-    public function __construct(UserRepositoryInterface $userRepository)
+    public function __construct(UserRepositoryInterface $userRepository, VacationDaysLeftCalculationService $service)
     {
         $this->userRepository = $userRepository;
+        $this->service = $service;
     }
 
     /**
      * @return Application|Factory|View
      */
-    public function getUserParametersByUserId(VacationDaysLeftCalculationService $service): Application|Factory|View
+    public function getUserParametersByUserId(): Application|Factory|View
     {
-        $userId = Auth::id();
-        $userParameters = $this->userRepository->getUserParameters($userId);
-
-        $vacationDaysLeft = $service->getVacationDaysLeftFilteredByType(Auth::id(), Carbon::now());
+        $userParameters = $this->userRepository->getUserParameters(Auth::id());
+        $vacationDaysLeft = $this->service->getVacationDaysLeftFilteredByType(Auth::id(), Carbon::now());
 
         return view('pages.homePage', ['userParameters' => $userParameters, 'vacationDaysLeft' => $vacationDaysLeft]);
     }

@@ -18,7 +18,6 @@ class UpdateVacationRequest extends FormRequest
     public function rules(): array
     {
         return [
-//            'start_date'     => 'required|date|after_or_equal:now', //TODO fix
             'start_date'     => 'required|date_format:"Y-m-d"',
             'end_date'       => 'required|date_format:"Y-m-d"|after:start_date',
             'type'           => [

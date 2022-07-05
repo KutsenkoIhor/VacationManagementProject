@@ -5,25 +5,29 @@ declare(strict_types=1);
 namespace App\Services\Vacation;
 
 use App\Models\Vacation;
-use App\Models\VacationDaysPerYear;
+use App\Repositories\Interfaces\VacationDaysPerYearRepositoryInterface;
 use App\Repositories\Interfaces\VacationRepositoryInterface;
 use Carbon\Carbon;
 
 class VacationDaysLeftCalculationService
 {
-    private VacationRepositoryInterface $interface;
+    private VacationRepositoryInterface $vacationRepositoryInterface;
+    private VacationDaysPerYearRepositoryInterface $vacationDaysPerYearRepositoryInterface;
     private NumberOfDaysCalculationService $service;
 
-    public function __construct(VacationRepositoryInterface $interface, NumberOfDaysCalculationService $service)
-    {
-        $this->interface = $interface;
+    public function __construct(
+        VacationRepositoryInterface $vacationRepositoryInterface,
+        NumberOfDaysCalculationService $service,
+        VacationDaysPerYearRepositoryInterface $vacationDaysPerYearRepositoryInterface
+    ) {
+        $this->vacationRepositoryInterface = $vacationRepositoryInterface;
         $this->service = $service;
+        $this->vacationDaysPerYearRepositoryInterface = $vacationDaysPerYearRepositoryInterface;
     }
 
     public function getVacationDaysLeftFilteredByType(int $userId, Carbon $date): array
     {
-        //TODO: move to VacationDaysPerYearRepository
-        $vacationDaysPerYear = VacationDaysPerYear::where('user_id', $userId)->firstOrFail();
+        $vacationDaysPerYear = $this->vacationDaysPerYearRepositoryInterface->getVacationDaysPerYear($userId);
 
         return [
             Vacation::TYPE_VACATIONS     => $this->calculateVacationDaysLeft($userId, $date, Vacation::TYPE_VACATIONS, $vacationDaysPerYear->vacations),
@@ -34,7 +38,7 @@ class VacationDaysLeftCalculationService
 
     private function calculateVacationDaysLeft(int $userId, Carbon $date, string $type, int $default): int
     {
-        $vacationsPerYear = $this->interface->getVacationsPerYear($userId, $date, $type);
+        $vacationsPerYear = $this->vacationRepositoryInterface->getVacationsPerYear($userId, $date, $type);
 
         $numberOfDaysSum = 0;
 
@@ -47,8 +51,9 @@ class VacationDaysLeftCalculationService
             );
 
             $numberOfDaysSum += $vacationDaysNumberDTO->getNumberOfDaysCurrentYear();
+
         }
 
-        return  $default - $numberOfDaysSum;
+        return $default - $numberOfDaysSum;
     }
 }

@@ -72,11 +72,22 @@ class VacationRequestController extends Controller
     {
         $startDate = Carbon::createFromFormat("Y-m-d", $request->get('start_date'));
         $endDate = Carbon::createFromFormat("Y-m-d", $request->get('end_date'));
+        $userId = Auth::id();
 
+        $vacationDaysNumberDTO = $this->numberOfDaysCalculationService->getNumberOfVacationRequestDays(
+            $userId,
+            clone $startDate,
+            clone $endDate,
+            clone $startDate,
+        );
+
+        //TODO: validate amount of vacation request days
         $vacationRequestService->updateVacationRequest(
+            $userId,
             $vacationRequestId,
             $startDate,
             $endDate,
+            $vacationDaysNumberDTO->getNumberOfDays(),
             $request->get('type')
         );
 
@@ -92,7 +103,7 @@ class VacationRequestController extends Controller
 
     public function cancelVacationRequest(int $vacationRequestId): void
     {
-        $this->vacationRequestService->cancelVacationRequest($vacationRequestId);
+        $this->vacationRequestService->cancelVacationRequest($vacationRequestId, Auth::id());
     }
 
     public function getEmployeesVacationRequests(): Factory|View|Application

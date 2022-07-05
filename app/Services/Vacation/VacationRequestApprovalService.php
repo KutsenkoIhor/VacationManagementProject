@@ -5,9 +5,11 @@ declare(strict_types = 1);
 namespace App\Services\Vacation;
 
 use App\Events\ApproveVacationRequestEvent;
+use App\Events\CalculateVacationDaysLeftEvent;
 use App\Events\CreateVacationRequestApprovalEvent;
 use App\Events\DenyVacationRequestEvent;
 use App\Repositories\Interfaces\VacationRequestApprovalRepositoryInterface;
+use Illuminate\Support\Facades\Auth;
 
 class VacationRequestApprovalService
 {
@@ -26,10 +28,10 @@ class VacationRequestApprovalService
             $isApproved
         );
 
-        event(new CreateVacationRequestApprovalEvent($vacationRequestId));
+        event(new CreateVacationRequestApprovalEvent($vacationRequestId, $userId));
     }
 
-    public function approveVacationRequest(int $vacationRequestId): void
+    public function approveVacationRequest(int $vacationRequestId, int $userId): void
     {
         $approvalRoles = config('approval_rule.approval_rule');
 
@@ -46,13 +48,13 @@ class VacationRequestApprovalService
         }
 
         if ($denyCount > 0) {
-            event(new DenyVacationRequestEvent($vacationRequestId));
+            event(new DenyVacationRequestEvent($vacationRequestId, $userId));
 
             return;
         }
 
         if ($approveCount == 2) {
-            event(new ApproveVacationRequestEvent($vacationRequestId));
+            event(new ApproveVacationRequestEvent($vacationRequestId, $userId));
         }
 
         // do nothing. We should wait for other approval

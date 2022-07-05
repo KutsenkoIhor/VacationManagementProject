@@ -31,6 +31,6 @@ class ApproveVacationRequestListener
     {
         $vacationRequestDTO = $this->vacationRequestService->approveVacationRequest($event->getVacationRequestId());
 
-        $this->approveVacationRequestNotificationService->notify($vacationRequestDTO);
+        $this->approveVacationRequestNotificationService->notify($vacationRequestDTO, $event->getUserId());
     }
 }

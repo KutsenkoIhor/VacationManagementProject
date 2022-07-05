@@ -6,9 +6,6 @@ namespace App\Repositories;
 
 use App\DTO\VacationRequestDTO;
 use App\Factories\VacationRequestFactory;
-use App\Models\CityHr;
-use App\Models\EmployeePm;
-use App\Models\User;
 use App\Models\VacationRequest;
 use App\Repositories\Interfaces\VacationRequestRepositoryInterface;
 use Carbon\Carbon;
@@ -52,6 +49,7 @@ class VacationRequestRepository implements VacationRequestRepositoryInterface
         int $vacationRequestId,
         Carbon $startDate,
         Carbon $endDate,
+        int $numberOfDays,
         string $type
     ): VacationRequestDTO {
         /** @var VacationRequest $vacationRequest */
@@ -59,6 +57,7 @@ class VacationRequestRepository implements VacationRequestRepositoryInterface
 
         $vacationRequest->start_date = $startDate;
         $vacationRequest->end_date = $endDate;
+        $vacationRequest->number_of_days = $numberOfDays;
         $vacationRequest->type = $type;
 
         $vacationRequest->save();
@@ -83,15 +82,9 @@ class VacationRequestRepository implements VacationRequestRepositoryInterface
         return $this->vacationRequestFactory->makeDTOFromModelCollection($vacationRequests);
     }
 
-    public function getEmployeesVacationRequestsForPM(int $userId): array
+    public function getEmployeesVacationRequestsForPM(int $userId, array $employeeIDs): array
     {
         //we can make join except 2 queries
-
-        //TODO: move to EmployeeAndPmRepository
-
-        $employeeIDs = EmployeePm::where('pm_id', $userId)
-            ->pluck('employee_id')
-            ->all();
 
         $vacationRequests = VacationRequest::whereIn('user_id', $employeeIDs)
             ->get();
@@ -99,7 +92,7 @@ class VacationRequestRepository implements VacationRequestRepositoryInterface
         return $this->vacationRequestFactory->makeDTOFromModelCollection($vacationRequests);
     }
 
-    public function denyVacationRequest(int $vacationRequestId): void
+    public function denyVacationRequest(int $vacationRequestId): VacationRequestDTO
     {
         /** @var VacationRequest $vacationRequest */
         $vacationRequest = VacationRequest::findOrFail($vacationRequestId);
@@ -107,6 +100,8 @@ class VacationRequestRepository implements VacationRequestRepositoryInterface
         $vacationRequest->is_approved = false;
 
         $vacationRequest->save();
+
+        return $this->vacationRequestFactory->makeDTOFromModel($vacationRequest);
     }
 
     public function approveVacationRequest(int $vacationRequestId): VacationRequestDTO
@@ -121,11 +116,13 @@ class VacationRequestRepository implements VacationRequestRepositoryInterface
         return $this->vacationRequestFactory->makeDTOFromModel($vacationRequest);
     }
 
-    public function cancelVacationRequest(int $vacationRequestId): bool
+    public function cancelVacationRequest(int $vacationRequestId): VacationRequestDTO
     {
         /** @var VacationRequest $vacationRequest */
         $vacationRequest = VacationRequest::findOrFail($vacationRequestId);
 
-        return $vacationRequest->is_approved == null ? $vacationRequest->delete() : throw new \Exception('You can`t cancel approved or denied vacation request!');
+        $vacationRequest->delete();
+
+        return $this->vacationRequestFactory->makeDTOFromModel($vacationRequest);
     }
 }

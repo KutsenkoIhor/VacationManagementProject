@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace App\Services\Notification;
 
 use App\DTO\VacationRequestDTO;
-use App\Notifications\ApproveVacationRequestNotification;
+use App\Notifications\CreateVacationRequestNotification;
 use App\Repositories\Interfaces\CityHrRepositoryInterface;
 use App\Repositories\Interfaces\EmployeesAndPmRepositoryInterface;
 use App\Repositories\Interfaces\UserRepositoryInterface;
 use Illuminate\Support\Facades\Notification;
 
-class ApproveVacationRequestNotificationService
+class CreateVacationRequestNotificationService
 {
     private UserRepositoryInterface $userRepositoryInterface;
     private EmployeesAndPmRepositoryInterface $employeesAndPmRepositoryInterface;
@@ -27,12 +27,10 @@ class ApproveVacationRequestNotificationService
         $this->cityHrRepositoryInterface = $cityHrRepositoryInterface;
     }
 
-    public function notify(VacationRequestDTO $vacationRequestDTO, int $userId): void
+    public function notify(VacationRequestDTO $vacationRequestDTO): void
     {
         //Here, we're forced to use Models instead of DTOs, cause Notifiable trait applied on Model level.
         //It's kinda brakes our Repository pattern. Sorry about that :(
-
-        $userDTO = $this->userRepositoryInterface->getUserParameters($userId);
 
         Notification::sendNow(
             [
@@ -40,7 +38,8 @@ class ApproveVacationRequestNotificationService
                 $this->employeesAndPmRepositoryInterface->getPMModelById($vacationRequestDTO->getUser()->getId()),
                 $this->cityHrRepositoryInterface->getHrAssignedToUser($vacationRequestDTO->getUser()->getCityId())
             ],
-            new ApproveVacationRequestNotification($vacationRequestDTO, $userDTO)
+            new CreateVacationRequestNotification($vacationRequestDTO)
         );
     }
+
 }

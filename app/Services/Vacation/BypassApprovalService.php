@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Services\Vacation;
 
 use App\DTO\UserDTO;
-use App\Events\ApproveVacationRequestEvent;
+use App\Events\BypassApprovalVacationRequestEvent;
 use App\Repositories\Interfaces\UserRepositoryInterface;
 
 class BypassApprovalService
@@ -20,7 +20,7 @@ class BypassApprovalService
     public function bypassApproveVacationRequest(int $vacationRequestId, UserDTO $user): void
     {
         if ($this->interface->hasAnyRole($user->getId(), config('approval_rule.approval_rule'))) {
-            event(new ApproveVacationRequestEvent($vacationRequestId));
+            event(new BypassApprovalVacationRequestEvent($vacationRequestId));
         }
     }
 }

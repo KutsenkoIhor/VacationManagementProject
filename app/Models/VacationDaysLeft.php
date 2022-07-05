@@ -24,7 +24,7 @@ class VacationDaysLeft extends Model
         'user_id',
         'vacations',
         'personal_days',
-        'sick_days',
+        'sick_days'
     ];
 
     public $timestamps = false;

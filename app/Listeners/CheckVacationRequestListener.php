@@ -23,6 +23,6 @@ class CheckVacationRequestListener
 
     public function handle(CreateVacationRequestApprovalEvent $event)
     {
-        $this->vacationRequestApprovalService->approveVacationRequest($event->getVacationRequestId());
+        $this->vacationRequestApprovalService->approveVacationRequest($event->getVacationRequestId(), $event->getUserId());
     }
 }

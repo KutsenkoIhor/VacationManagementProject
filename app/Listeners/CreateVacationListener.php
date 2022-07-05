@@ -14,15 +14,15 @@ class CreateVacationListener
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    private VacationService $service;
+    private VacationService $vacationService;
 
-    public function __construct(VacationService $service)
+    public function __construct(VacationService $vacationService)
     {
-        $this->service = $service;
+        $this->vacationService = $vacationService;
     }
 
-    public function handle(ApproveVacationRequestEvent $event)
+    public function handle(ApproveVacationRequestEvent $approveVacationRequestEvent)
     {
-        $this->service->createVacation($event->getVacationRequestId());
+        $this->vacationService->createVacation($approveVacationRequestEvent->getVacationRequestId());
     }
 }

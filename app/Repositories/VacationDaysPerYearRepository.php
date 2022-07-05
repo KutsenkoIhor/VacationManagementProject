@@ -24,4 +24,9 @@ class VacationDaysPerYearRepository implements VacationDaysPerYearRepositoryInte
         );
     }
 
+    public function getVacationDaysPerYear(int $userId): VacationDaysPerYear
+    {
+       return VacationDaysPerYear::where('user_id', $userId)->firstOrFail();
+    }
+
 }

@@ -13,4 +13,5 @@ interface EmployeesAndPmRepositoryInterface
     public function createTeam(int $idPm, int $idEmployee): object;
     public function getModelTeamPm(int $idPm, int $idEmployee): EmployeePm|null;
     public function getPMModelById(int $idEmployee): User;
+    public function getEmployeeIDs(int $idPm): array;
 }

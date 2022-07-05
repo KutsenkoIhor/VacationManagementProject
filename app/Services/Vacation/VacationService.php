@@ -59,4 +59,9 @@ class VacationService
     {
         return $this->vacationRepository->getVacationsByUserId($userId);
     }
+
+    public function cancelVacation(int $vacationRequestId): void
+    {
+        $this->vacationRepository->cancelVacation($vacationRequestId);
+    }
 }
